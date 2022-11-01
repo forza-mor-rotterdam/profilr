@@ -9,7 +9,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  nginx:
+  nginx-phpfpm:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
-        id: meta
+        id: meta_nginx
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx
@@ -38,27 +38,23 @@ jobs:
           context: .
           file: Dockerfile-nginx
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-  phpfpm:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+          outputs: |
+            type=docker
+            type=registry
+          tags: ${{ steps.meta_nginx.outputs.tags }}
+          labels: ${{ steps.meta_nginx.outputs.labels }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download manifest file from container
+        run: |
+          pwd
+          ls -larth public/build/
+          id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx)
+          docker cp $id:/srv/web/public/build/manifest.json public/build/manifest.json
+          ls -larth public/build/
+          docker rm -v $id
 
       - name: Extract metadata (tags, labels) for Docker
-        id: meta
+        id: meta_phpfpm
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-phpfpm
@@ -69,5 +65,5 @@ jobs:
           context: .
           file: Dockerfile-phpfpm
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta_phpfpm.outputs.tags }}
+          labels: ${{ steps.meta_phpfpm.outputs.labels }}
