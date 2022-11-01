@@ -43,13 +43,10 @@ jobs:
 
       - name: Download manifest file from container
         run: |
-          pwd
-          ls -larth
           mkdir -p public/build/
-          docker images
           id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx:main)
           docker cp $id:/srv/web/public/build/manifest.json public/build/manifest.json
-          ls -larth public/build/
+          docker cp $id:/srv/web/public/build/entrypoint.json public/build/entrypoint.json
           docker rm -v $id
 
       - name: Push Nginx Docker image to registry
