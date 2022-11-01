@@ -32,15 +32,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx
 
-      - name: Build and push Docker image
+      - name: Build Nginx Docker image, don't push it
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           file: Dockerfile-nginx
-          push: true
-          outputs: |
-            type=docker
-            type=registry
+          load: true
           tags: ${{ steps.meta_nginx.outputs.tags }}
           labels: ${{ steps.meta_nginx.outputs.labels }}
 
@@ -52,6 +49,15 @@ jobs:
           docker cp $id:/srv/web/public/build/manifest.json public/build/manifest.json
           ls -larth public/build/
           docker rm -v $id
+
+      - name: Push Nginx Docker image to registry
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          file: Dockerfile-nginx
+          push: true
+          tags: ${{ steps.meta_nginx.outputs.tags }}
+          labels: ${{ steps.meta_nginx.outputs.labels }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta_phpfpm
