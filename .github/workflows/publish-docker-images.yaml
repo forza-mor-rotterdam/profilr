@@ -45,7 +45,7 @@ jobs:
         run: |
           pwd
           docker images
-          id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx)
+          id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx:main)
           docker cp $id:/srv/web/public/build/manifest.json public/build/manifest.json
           ls -larth public/build/
           docker rm -v $id
