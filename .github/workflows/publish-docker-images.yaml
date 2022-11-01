@@ -44,7 +44,6 @@ jobs:
       - name: Download manifest file from container
         run: |
           pwd
-          ls -larth public/build/
           id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx)
           docker cp $id:/srv/web/public/build/manifest.json public/build/manifest.json
           ls -larth public/build/
