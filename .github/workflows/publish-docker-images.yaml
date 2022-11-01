@@ -46,7 +46,7 @@ jobs:
           mkdir -p public/build/
           id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx:main)
           docker cp $id:/srv/web/public/build/manifest.json public/build/manifest.json
-          docker cp $id:/srv/web/public/build/entrypoint.json public/build/entrypoint.json
+          docker cp $id:/srv/web/public/build/entrypoints.json public/build/entrypoints.json
           docker rm -v $id
 
       - name: Push Nginx Docker image to registry
