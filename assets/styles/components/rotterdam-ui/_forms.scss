@@ -1,0 +1,118 @@
+/**
+ * Tweak bootstrap form styling.  Main styling is in bootstrap _forms.scss
+ */
+
+ /**
+  * Col-form-label and the lg and sm variants are used in legend,
+  * as the name of a radio-button group, or in label, as the name
+  * of a text-field or dropdown.
+  * Note that label can also be used without this class, eg as a
+  * possible value within a radio group.
+  * The names of text fields and radio-buttons should match the
+  * typography of names in completed forms, and we render those with dt/dd pairs.
+  * So we use the font-weight variable that bootstrap defines for dt elements.
+  */
+.col-form-label, .col-form-label-lg, .col-form-label-sm {
+  font-weight: $dt-font-weight;
+}
+
+/**
+ * Sanders design calls for a button in error state, not normally
+ * something done in forms.  We do markup with existing classes:
+ *   -- .btn, like any button,
+ *   -- .is-invalid, like textfield with error.
+ * The .is-invalid does a red border in combination with .form-control,
+ * and we want the red border, but not the .form-control, since that
+ * also affects sizing of the button.
+ * So we provide explicit CSS for btn in combination with is-invalid.
+ * This is based on _forms.scss in bootstrap: @mixin form-validation-state
+ */
+.btn.is-invalid {
+  border-color: $form-feedback-invalid-color;
+  &:focus {
+    border-color: $form-feedback-invalid-color;
+    box-shadow: 0 0 0 $input-focus-width rgba($form-feedback-invalid-color, .25);
+  }
+}
+
+%disable-platform-appearance {
+  -moz-appearance: none;             // Disable platform-native styling for Firefox in order to apply the In10 design.
+  -webkit-appearance: none;          // Disable platform-native styling for Safari in order to apply the In10 design.
+}
+.form-control, .form-select {
+  @extend %disable-platform-appearance;
+  min-height: 48px;
+  line-height: 24px;
+  &:hover:not(:focus):not([disabled]) {
+    border-color: $hover-border-color;
+    box-shadow: 0 0 0 1px $hover-border-color;
+  }
+  &:focus {
+    border-color: $focus-border-color;
+    box-shadow: 0 0 0 1px $focus-border-color;
+  }
+  &:disabled {
+    color: $text-muted;
+  }
+  &.search {
+    padding-left: 40px;
+    background-repeat: no-repeat;
+  }
+}
+
+$form-search-indicator: url("data:image/svg+xml,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' clip-rule='evenodd' d='M19.5005 9.75C19.5005 6.825 17.1755 4.5 14.2505 4.5C11.3255 4.5 9.00046 6.825 9.00046 9.75C9.00046 12.675 11.3255 15 14.2505 15C17.1755 15 19.5005 12.675 19.5005 9.75ZM7.50046 9.75C7.50046 6 10.5005 3 14.2505 3C18.0005 3 21.0005 6 21.0005 9.75C21.0005 13.5 18.0005 16.5 14.2505 16.5C12.6478 16.5 11.1822 15.9521 10.0292 15.0319L4.25792 20.8031L3.19727 19.7425L8.96853 13.9712C8.04835 12.8182 7.50046 11.3526 7.50046 9.75Z' fill='#{$gray-800}'/> </svg>");
+$form-search-indicator-position: left 10px center !default;
+.form-control {
+  &.search {
+    background-image: escape-svg($form-search-indicator) !important;
+    background-position: $form-search-indicator-position;
+  }
+}
+.form-select {
+  &.search {
+    background-image: escape-svg($form-search-indicator), escape-svg($form-select-indicator) !important;
+    background-position: $form-search-indicator-position, $form-select-bg-position;
+  }
+  option {
+    color: $body-color;                           // Default color for select elements
+  }
+}
+
+.form-check-input {
+  @extend %disable-platform-appearance;
+  &:disabled {
+    background-color: $input-disabled-bg;
+    opacity: 1;
+    ~ .form-check-label {
+      color: $input-disabled-color;
+    }
+  }
+  &:disabled:checked {
+    background-color: $disabled-border-color;
+    border-color: $disabled-border-color;
+    opacity: 1;
+  }
+  &:disabled:checked[type="radio"] {
+    background-image: none;
+  }
+  &:focus:checked {
+    background-color: $black;
+    border-color: $black;
+    box-shadow: 0 0 0 1px $black;
+    opacity: 1;
+  }
+  &:focus:not(checked) {
+    border-color: $focus-border-color;
+    box-shadow: 0 0 0 1px $focus-border-color;
+    opacity: 1;
+  }
+  &:hover {
+    border-color: $hover-border-color;
+    box-shadow: 0 0 0 1px $hover-border-color;
+    opacity: 1;
+  }
+}
+
+.form-title-muted {
+  color: $gray-tint08;
+}

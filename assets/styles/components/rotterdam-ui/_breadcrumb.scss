@@ -1,0 +1,43 @@
+/**
+ * This overrides bootstrap _breadcrumb.scss.
+ * Adapted to
+ *   -- drop all but last element on small screen.
+ *   -- have a muted appearance
+ * The chevron right (SVG) separator between elements is realized by the underlying
+ * bootstrap classes with the same name, directed by variables
+ * in _rotterdam-theme.scss.
+ * On mobile screens (XS) there is one chevron left SVG, instead of multiple chevron right SVGs (SM+),
+ * There is no special formatting for the active element, since we're
+ * not supposed to add that to the crumble trail.
+ */
+
+.breadcrumb-item, .breadcrumb-item a {
+  font-weight: 400;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.breadcrumb-item {
+  // The separator between breadcrumbs (by default, a forward-slash: "/")
+  + .breadcrumb-item {
+    &::before {
+      padding-top: 2px; // Move divider slightly more down.
+    }
+  }
+}
+
+@media (max-width: map-get($grid-breakpoints, sm)) {
+  .breadcrumb-item {
+    display:none;              // Verberg alle breadcrumb items.
+    &:nth-last-of-type(-n+1) { // Behalve de laatste.
+      padding-left: 0;         // zorg dat < uitgelijnd is met titel er onder
+      &::before {              // Bij XS schermen chevron left in plaats van chevron right.
+        content: var(--#{$variable-prefix}breadcrumb-divider, escape-svg($breadcrumb-divider-flipped)) #{"/* rtl:"} var(--#{$variable-prefix}breadcrumb-divider, escape-svg($breadcrumb-divider-flipped)) #{"*/"};
+      }
+      font-size: 0.75em;
+      font-weight: 400;
+      display: inherit;
+    }
+  }
+}
