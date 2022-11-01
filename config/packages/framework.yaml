@@ -16,6 +16,10 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    http_client:
+        scoped_clients:
+            api.client:
+                base_uri: '%env(APP_BACKEND_API)%'
 
 when@test:
     framework:
