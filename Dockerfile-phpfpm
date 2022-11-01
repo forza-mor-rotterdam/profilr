@@ -57,5 +57,5 @@ RUN cd /srv/web \
 WORKDIR /srv/web
 
 # Run application
-CMD ["/srv/web/docker-phpfpm/phpfpm-entrypoint.sh"]
+CMD ["/srv/web/docker/phpfpm-entrypoint.sh"]
 #CMD ["php-fpm7.4"]
