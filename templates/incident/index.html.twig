@@ -16,5 +16,18 @@
         <li>Your controller at <code><a href="{{ '/Users/remcohoff/projects/rotterdam/forza-mor/profilr/src/Controller/IncidentController.php'|file_link(0) }}">src/Controller/IncidentController.php</a></code></li>
         <li>Your template at <code><a href="{{ '/Users/remcohoff/projects/rotterdam/forza-mor/profilr/templates/incident/index.html.twig'|file_link(0) }}">templates/incident/index.html.twig</a></code></li>
     </ul>
+    Meldingen({{ incidents|length }})
+    <ul>
+    {% for incident in incidents.result %}
+        <li>
+            {% for k, v in incident %}
+            <dl>
+                <dt>{{ k }}</dt>
+                <dd>{{ dump(v) }}</dd>
+            </dl>
+            {% endfor %}
+        </li>
+    {% endfor %}
+    </ul>
 </div>
 {% endblock %}
