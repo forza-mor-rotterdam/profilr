@@ -56,4 +56,25 @@ class IncidentController extends AbstractController
             'incident' => $incident
         ]);
     }
+
+    #[Route('/incident/{id}/handle', name: 'app_incident_handle')]
+    public function handle(Request $request, int $id, RequestStack $requestStack, HttpClientInterface $apiClient): Response
+    {
+        // if not logged in, redirect to login page
+        // if ($requestStack->getSession()->get('is_logged_in') !== true) {
+        //     return $this->redirectToRoute('app_login_index');
+        // }
+
+        // call api client
+        $incident = $apiClient->request('GET', '/signals/v1/private/signals/' . $id, [
+            'query' => [],
+            'auth_bearer' => $requestStack->getSession()->get('msb_token')
+        ])->toArray();
+
+        // render template
+        return $this->render('incident/handle.html.twig', [
+            'id' => $id,
+            'incident' => $incident
+        ]);
+    }
 }

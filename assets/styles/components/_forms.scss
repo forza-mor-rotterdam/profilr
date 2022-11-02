@@ -72,6 +72,7 @@ $form-search-indicator-position: left 10px center !default;
     background-color: #fff;
     border: 1px solid #7C8B90;
     box-sizing: border-box;
+    font-family: 'Bolder', sans-serif;
   &.search {
     background-image: escape-svg($form-search-indicator) !important;
     background-position: $form-search-indicator-position;
@@ -115,7 +116,8 @@ $form-search-indicator-position: left 10px center !default;
     box-shadow: 0 0 0 1px $focus-border-color;
     opacity: 1;
   }
-  &:hover {
+  &:hover,
+  &:focus {
     border-color: $hover-border-color;
     box-shadow: 0 0 0 1px $hover-border-color;
     opacity: 1;
@@ -126,6 +128,14 @@ $form-search-indicator-position: left 10px center !default;
   color: $gray-tint08;
 }
 
+.container__form {
+    h1 {
+        small {
+            font-weight: 400;
+            font-size: $font-size-base;
+        }
+    }
+}
 .form-row {
     > label,
     > input {
@@ -139,27 +149,45 @@ $form-search-indicator-position: left 10px center !default;
 
     .btn {
         border: 1px solid transparent;
-    }
 
-    button { 
         @extend .btn;
         display: block;
         padding: 8px 0;
-        background-color: $magenta-tint01;
         width: 100%;
         min-height: 48px;
         line-height: 24px;
-        border-color: $magenta-tint01;
-        color: $white;
         font-size: 1rem;
         font-weight: 700;
 
-        &:hover {
+        &-action {
+            background-color: $magenta-tint01;
+            border-color: $magenta-tint01;
             color: $white;
-            background-color: $magenta-tint02;
-            border-color: $magenta-tint02;
+
+            &:hover,
+            &:focus {
+                color: $white;
+                background-color: $magenta-tint02;
+                border-color: $magenta-tint02;
+            }
+    
         }
 
+        &-tertiary {
+            background-color: $white;
+            border-color: $gray-tint08;
+            color: $gray-tint11;
+
+            &:hover,
+            &:focus {
+                color: $green-tint01;
+                background-color: $white;
+                border-color: $green-tint01;
+            }
+    
+        }
+
+        
         &:not(:disabled) {
             cursor: pointer;
         }
@@ -168,16 +196,33 @@ $form-search-indicator-position: left 10px center !default;
             padding: 0 16px;
         }
     }
-    @media (min-width: map-get($grid-breakpoints, sm)) {
+
+
+    @media (min-width: map-get($grid-breakpoints, md)) {
         display: flex;
 
         > label,
+        > textarea,
         > input {
             flex: 1;
         }
 
         button {
             width: auto;
+        }
+    }
+
+    &.container__button {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+
+        button {
+            flex: 0 1 10%;
+        }
+
+        button:not(:first-child) {
+            margin-left: 16px;
         }
     }
 }

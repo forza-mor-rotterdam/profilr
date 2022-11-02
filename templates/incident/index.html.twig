@@ -18,17 +18,19 @@
             </a>
             <div class="container__info">
             {# TODO add optional huisletter and huisnummer_toevoeging  #}
-                <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
-                <span class="incident__category">
-                    {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
-                </span>
-                <div class="incident__moment">
-                    <span>{{ incident.id }}</span>
-                    <span>
-                        {{ incident.datumMelding | date('d-m-Y') }} 
-                        {{ incident.datumMelding | date('H:i') }}
+                <a href="/incident/{{ incident.id }}/handle">
+                    <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
+                    <span class="incident__category">
+                        {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
                     </span>
-                </div>
+                    <div class="incident__moment">
+                        <span>{{ incident.id }}</span>
+                        <span>
+                            {{ incident.datumMelding | date('d-m-Y') }} 
+                            {{ incident.datumMelding | date('H:i') }}
+                        </span>
+                    </div>
+                </a>
             </div>
         </li>
         {% endfor %}
