@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IncidentController!{% endblock %}
+{% block title %}Meldingen{% endblock %}
 
 {% block body %}
 
@@ -11,9 +11,11 @@
     <ul class="list__incidents">
         {% for incident in incidents.results %}
         <li>
-            <div class="container__image">
-                <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
-            </div>
+            <a href="/incident/{{ incident.id }}">
+                <div class="container__image">
+                    <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
+                </div>
+            </a>
             <div class="container__info">
             {# TODO add optional huisletter and huisnummer_toevoeging #}
                 <h2>{{ incident.location.address.openbare_ruimte }} {{ incident.location.address.huisnummer }}</h2>

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ incident.location.address.openbare_ruimte }} {{ incident.location.address.huisnummer }}{% endblock %}
+
+{% block body %}
+
+    <h1>{{ incident.location.address.openbare_ruimte }} {{ incident.location.address.huisnummer }}</h1>
+
+    {{ dump(incident) }}
+
+
+{% endblock %}

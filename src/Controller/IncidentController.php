@@ -35,9 +35,9 @@ class IncidentController extends AbstractController
     public function detail(Request $request, int $id, RequestStack $requestStack, HttpClientInterface $apiClient): Response
     {
         // if not logged in, redirect to login page
-        if ($requestStack->getSession()->get('is_logged_in') !== true) {
-            return $this->redirectToRoute('app_login_index');
-        }
+        // if ($requestStack->getSession()->get('is_logged_in') !== true) {
+        //     return $this->redirectToRoute('app_login_index');
+        // }
 
         // call api client
         $incident = $apiClient->request('GET', '/signals/v1/private/signals/' . $id, [
