@@ -48,7 +48,7 @@ class IncidentController extends AbstractController
         $incident = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/melding/' . $id, [
             'query' => [],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
-        ])->toArray();
+        ])->toArray()['result'];
 
         // render template
         return $this->render('incident/detail.html.twig', [

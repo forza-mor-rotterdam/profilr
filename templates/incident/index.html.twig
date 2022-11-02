@@ -4,12 +4,12 @@
 
 {% block body %}
 
-    <h1>Meldingen ({{ incidents.results | length }})</h1>
+    <h1>Meldingen ({{ incidents.result | length }})</h1>
 
     {# {{ dump(incidents.results) }} #}
 
     <ul class="list__incidents">
-        {% for incident in incidents.results %}
+        {% for incident in incidents.result %}
         <li>
             <a href="/incident/{{ incident.id }}">
                 <div class="container__image">
@@ -17,23 +17,23 @@
                 </div>
             </a>
             <div class="container__info">
-            {# TODO add optional huisletter and huisnummer_toevoeging #}
-                <h2>{{ incident.location.address.openbare_ruimte }} {{ incident.location.address.huisnummer }}</h2>
+            {# TODO add optional huisletter and huisnummer_toevoeging  #}
+                <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
                 <span class="incident__category">
-                    {{ incident.category.sub }} - {{ incident.status.state_display }}
+                    {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
                 </span>
                 <div class="incident__moment">
                     <span>{{ incident.id }}</span>
                     <span>
-                        {{ incident.created_at | date('d-m-Y') }} 
-                        {{ incident.created_at | date('H:i') }}
+                        {{ incident.datumMelding | date('d-m-Y') }} 
+                        {{ incident.datumMelding | date('H:i') }}
                     </span>
                 </div>
             </div>
         </li>
         {% endfor %}
     </ul>
-    Meldingen({{ incidents|length }})
+    {# Meldingen({{ incidents|length }})
     <ul>
     {% for incident in incidents.result %}
         <li>
@@ -46,5 +46,5 @@
         </li>
     {% endfor %}
     </ul>
-</div>
+</div> #}
 {% endblock %}
