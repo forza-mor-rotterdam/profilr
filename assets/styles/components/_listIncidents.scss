@@ -1,0 +1,52 @@
+.list__incidents {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid $gray-tint04;
+
+    li {
+        display: flex;
+        justify-items: flex-start;
+        border-bottom: 1px solid $gray-tint04;
+        >div {
+            
+        }
+
+        .container__image {
+            padding: 8px 16px 14px 0;
+            img {
+                width: calc(78px + 2vw);
+            }
+        }
+
+        .container__info {
+            font-size: $h6-font-size;
+            flex: 1;
+
+            h2 {
+                font-size: $h5-font-size;
+                margin: 0.5rem 0;
+            }
+
+            .incident__category,
+            .incident__moment {
+                color: $gray-tint08;
+                margin-bottom: 0.5rem;
+            }
+
+            .incident__category {
+                display: inline-block;
+            }
+
+            .incident__moment {
+                display: flex;
+                justify-content: space-between;
+
+                span {
+                    display: inline-block;
+                }
+            }
+        }
+
+    }
+}

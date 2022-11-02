@@ -3,18 +3,33 @@
 {% block title %}Hello IncidentController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Meldingen ({{ incidents.results | length }})</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/remcohoff/projects/rotterdam/forza-mor/profilr/src/Controller/IncidentController.php'|file_link(0) }}">src/Controller/IncidentController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/remcohoff/projects/rotterdam/forza-mor/profilr/templates/incident/index.html.twig'|file_link(0) }}">templates/incident/index.html.twig</a></code></li>
+    {# {{ dump(incidents.results) }} #}
+
+    <ul class="list__incidents">
+        {% for incident in incidents.results %}
+        <li>
+            <div class="container__image">
+                <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
+            </div>
+            <div class="container__info">
+            {# TODO add optional huisletter and huisnummer_toevoeging #}
+                <h2>{{ incident.location.address.openbare_ruimte }} {{ incident.location.address.huisnummer }}</h2>
+                <span class="incident__category">
+                    {{ incident.category.sub }} - {{ incident.status.state_display }}
+                </span>
+                <div class="incident__moment">
+                    <span>{{ incident.id }}</span>
+                    <span>
+                        {{ incident.created_at | date('d-m-Y') }} 
+                        {{ incident.created_at | date('H:i') }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
     </ul>
     Meldingen({{ incidents|length }})
     <ul>

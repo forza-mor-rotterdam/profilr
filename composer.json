@@ -16,6 +16,7 @@
         "symfony/maker-bundle": "^1.47",
         "symfony/runtime": "6.1.*",
         "symfony/twig-bundle": "6.1.*",
+        "symfony/var-dumper": "6.1.*",
         "symfony/webpack-encore-bundle": "^1.16",
         "symfony/yaml": "6.1.*",
         "twig/extra-bundle": "^2.12|^3.0",
@@ -74,6 +75,7 @@
         }
     },
     "require-dev": {
+        "symfony/debug-bundle": "6.1.*",
         "symfony/stopwatch": "6.1.*",
         "symfony/web-profiler-bundle": "6.1.*"
     }

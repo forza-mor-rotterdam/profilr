@@ -1,7 +1,9 @@
 html,
 body {
+    margin: 0;
     font-family: 'Bolder', sans-serif;
     font-size: 16px;
+    color: $gray-tint11;
 
     @media (min-width: map-get($grid-breakpoints, sm)) {
         font-size: 18px;
@@ -13,7 +15,7 @@ body {
 }
 
 main {
-    padding: $container-padding-x;
+    padding: 0 16px 16px;
     margin: 0 auto;
 
     > .container {
