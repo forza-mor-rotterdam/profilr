@@ -1,16 +1,39 @@
 .list__incidents {
-    list-style-type: none;
-    margin: 0;
+    list-style: none;
     padding: 0;
     border-top: 1px solid $gray-tint04;
+    overflow: hidden;
+    width: 375px;
 
     li {
-        display: flex;
-        justify-items: flex-start;
         border-bottom: 1px solid $gray-tint04;
+        scroll-snap-type: x mandatory;
+        overflow-x: auto;
+        scrollbar-width: none;
+        cursor: grab;
+        height: 80px;
+        display: flex;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        > * {
+            scroll-snap-align: start;
+        }
+        .wrapper__swipe {
+            flex: 2 0 100%;
+            background-color: $white;
+        }
+
+        .container__flex {
+            display: flex;
+            justify-items: flex-start;
+            
+        }
 
         .container__image {
             padding: 8px 16px 14px 0;
+            width: 100px;
             img {
                 width: calc(78px + 2vw);
             }
@@ -49,6 +72,13 @@
                     display: inline-block;
                 }
             }
+        }
+
+        .container__actions {
+            flex: 1 0 30%;
+            text-align: center;
+            line-height: 60px;
+            background-color: $green-tint01;
         }
 
     }
