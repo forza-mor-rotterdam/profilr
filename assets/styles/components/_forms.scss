@@ -127,6 +127,7 @@ $form-search-indicator-position: left 10px center !default;
 }
 
 .form-row {
+    border: 1px solid gold;
     > label,
     > input {
         display: block;
