@@ -33,35 +33,3 @@
     </ul>
 
 {% endblock %}
-
-{# 
-<SignalImage onKeyPress={() => navigateToIncident(incident.id)}>
-            <Link to={`${detailLink}?fromOverview=true`} tabIndex={-1}>
-
-              image
-            </Link>
-          </SignalImage>
-          <SignalInfo onClick={() => openHandleModal()}>
-            <h2>
-              <StyledIcon>
-                {getListIconByKey(priority, incident.priority?.priority)}
-              </StyledIcon>{' '}
-              <AddressDisplay
-                streetName={address.openbare_ruimte}
-                streetNumber={address.huisnummer}
-                suffix={address.huisletter}
-                etage={address.huisnummer_toevoeging}
-              />
-            </h2>
-            <span className="category">
-              {incident.category?.sub} - {incident.status?.state_display}
-            </span>
-            <div>
-              <span className="text-light">{incident.id}</span>
-              <span className="text-light">
-                {string2date(incident.created_at)}{' '}
-                {string2time(incident.created_at)}
-              </span>
-            </div>
-            {/* </Link> */}
-          </SignalInfo> #}
