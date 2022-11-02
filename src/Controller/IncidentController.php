@@ -15,19 +15,24 @@ class IncidentController extends AbstractController
     public function index(Request $request, RequestStack $requestStack, HttpClientInterface $apiClient): Response
     {
         // if not logged in, redirect to login page
-        // if ($requestStack->getSession()->get('is_logged_in') !== true) {
-        //     return $this->redirectToRoute('app_login_index');
-        // }
-
+        if ($requestStack->getSession()->get('is_logged_in') !== true) {
+            return $this->redirectToRoute('app_login_index');
+        }
         // call api client
-        $incidents = $apiClient->request('GET', '/signals/v1/private/signals', [
+        $incidents = $apiClient->request('POST', 'https://diensten.rotterdam.nl/sbmob/api/msb/openmeldingen', [
             'query' => [],
+            'body' => [
+                'x' => 92441,
+                'y' => 437718,
+                'radius' => 200,
+            ],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray();
 
         // render template
         return $this->render('incident/index.html.twig', [
-            'incidents' => $incidents
+            'incidents' => $incidents,
+            'controller_name' => "My controller",
         ]);
     }
 
@@ -40,7 +45,7 @@ class IncidentController extends AbstractController
         // }
 
         // call api client
-        $incident = $apiClient->request('GET', '/signals/v1/private/signals/' . $id, [
+        $incident = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/melding/' . $id, [
             'query' => [],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray();

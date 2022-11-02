@@ -22,10 +22,10 @@ class LoginController extends AbstractController
         // if the submit form is submitted
         if ($request->isMethod('POST')) {
             // check credentials against api
-            $loginResponse = $apiClient->request('POST', '/sbmob/api/login', [
+            $loginResponse = $apiClient->request('POST', 'https://diensten.rotterdam.nl/sbmob/api/login', [
                 'body' => [
-                    'username' => $request->request->get('_username'),
-                    'password' => $request->request->get('_password'),
+                    'uid' => $request->request->get('_username'),
+                    'pwd' => $request->request->get('_password'),
                 ]
             ])->toArray();
 

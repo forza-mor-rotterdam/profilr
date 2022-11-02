@@ -33,5 +33,18 @@
         </li>
         {% endfor %}
     </ul>
-
+    Meldingen({{ incidents|length }})
+    <ul>
+    {% for incident in incidents.result %}
+        <li>
+            {% for k, v in incident %}
+            <dl>
+                <dt>{{ k }}</dt>
+                <dd>{{ dump(v) }}</dd>
+            </dl>
+            {% endfor %}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}
