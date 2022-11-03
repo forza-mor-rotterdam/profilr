@@ -47,13 +47,11 @@
     const btn = e.target.closest("button");
     
     if (li && li.scrollLeft === 0) {
-        console.log('li', li.scrollLeft)
         li.scrollBy({
         left: 1,
         behavior: "smooth"
         });
     } else if (!btn && li) {
-        console.log('!btn && li')
         li.scrollBy({
         left: -1,
         behavior: "smooth"
