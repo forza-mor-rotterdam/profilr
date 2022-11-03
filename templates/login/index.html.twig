@@ -4,6 +4,7 @@
 
 {% block body %}
 <h1>Inloggen</h1>
+{% if error %} {{ error }} {% endif %}
 <form action="" method="post" data-testid="loginForm">
     <div class="form-row">
         <label for="_username">Personeelsnummer</label>
