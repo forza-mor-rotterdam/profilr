@@ -73,12 +73,14 @@
         }
 
         .container__actions {
-            flex: 1 0 30%;
+            display: block;
+            flex: 1 0 100%;
             text-align: center;
             line-height: 60px;
             background-color: $green-tint01;
             margin-right: 1px;
             cursor: pointer;
+            border: none;
             
             .checkmark-handle {
                 margin-top: 25px;
