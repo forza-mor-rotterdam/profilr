@@ -6,47 +6,66 @@
 
     <h1>Meldingen ({{ incidents.result | length }})</h1>
 
-    {# {{ dump(incidents.results) }} #}
-
-    <ul class="list__incidents">
+    <ul class="list__incidents" data-testid="IncidentsList">
         {% for incident in incidents.result %}
         <li>
-            <a href="/incident/{{ incident.id }}">
-                <div class="container__image">
-                    <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
-                </div>
-            </a>
-            <div class="container__info">
-            {# TODO add optional huisletter and huisnummer_toevoeging  #}
-                <a href="/incident/{{ incident.id }}/handle">
-                    <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
-                    <span class="incident__category">
-                        {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
-                    </span>
-                    <div class="incident__moment">
-                        <span>{{ incident.id }}</span>
-                        <span>
-                            {{ incident.datumMelding | date('d-m-Y') }} 
-                            {{ incident.datumMelding | date('H:i') }}
-                        </span>
+            <div class="wrapper__swipe">
+                <div class="container__flex">
+                    {# <a href="/incident/{{ incident.id }}"> #}
+                        <div class="container__image">
+                            <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
+                        </div>
+                    {# </a> #}
+                    <div class="container__info">
+                    {# TODO add optional huisletter and huisnummer_toevoeging  #}
+                        {# <a href="/incident/{{ incident.id }}/handle"> #}
+                            <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
+                            <span class="incident__category">
+                                {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
+                            </span>
+                            <div class="incident__moment">
+                                <span>{{ incident.id }}</span>
+                                <span>
+                                    {{ incident.datumMelding | date('d-m-Y') }} 
+                                    {{ incident.datumMelding | date('H:i') }}
+                                </span>
+                            </div>
+                        {# </a> #}
                     </div>
-                </a>
+                </div>
+            </div>
+            <div class="container__actions" data-id="{{ incident.id }}">
+                <img src="{{ asset('build/icons/checkmark.svg') }}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
             </div>
         </li>
         {% endfor %}
     </ul>
-    {# Meldingen({{ incidents|length }})
-    <ul>
-    {% for incident in incidents.result %}
-        <li>
-            {% for k, v in incident %}
-            <dl>
-                <dt>{{ k }}</dt>
-                <dd>{{ dump(v) }}</dd>
-            </dl>
-            {% endfor %}
-        </li>
-    {% endfor %}
-    </ul>
-</div> #}
+    
+<script>
+    document.querySelector("ul").addEventListener("click", (e) => {
+    const li = e.target.closest("li");
+    const btn = e.target.closest(".container__actions");
+    const incidentID = btn.dataset.id;
+    console.log('incidentJS', incidentID)
+    if (li && li.scrollLeft === 0) {
+        console.log('li', li.scrollLeft)
+        li.scrollBy({
+        left: 1,
+        behavior: "smooth"
+        });
+    } else if (!btn && li) {
+        li.scrollBy({
+        left: -1,
+        behavior: "smooth"
+        });
+    } else if (btn && li) {
+        window.location.href=`/incident/${incidentID}/handle`;
+        li.scrollBy({
+            left: -1,
+            behavior: "smooth"
+        });
+    }
+    });
+
+</script>
 {% endblock %}

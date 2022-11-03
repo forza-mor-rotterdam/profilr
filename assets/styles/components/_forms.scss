@@ -137,6 +137,7 @@ $form-search-indicator-position: left 10px center !default;
     }
 }
 .form-row {
+    position: relative;
     > label,
     > input {
         display: block;
@@ -201,9 +202,7 @@ $form-search-indicator-position: left 10px center !default;
     @media (min-width: map-get($grid-breakpoints, md)) {
         display: flex;
 
-        > label,
-        > textarea,
-        > input {
+        > * {
             flex: 1;
         }
 
@@ -223,6 +222,20 @@ $form-search-indicator-position: left 10px center !default;
 
         button:not(:first-child) {
             margin-left: 16px;
+        }
+    }
+
+    .container__toggle {
+        position: relative;
+    }
+
+    .password__toggle {
+        position: absolute;
+        right: 20px;
+        top: 25px;
+
+        &-active {
+            opacity: 0.5;
         }
     }
 }

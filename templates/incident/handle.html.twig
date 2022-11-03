@@ -11,16 +11,16 @@
         </h1>
         
 
-        <form action="" method="post">
+        <form action="" method="post" data-testid="handleIncidentForm">
             <div class="form-row">
                 <label htmlFor="group">Groep</label>
                 <input
                     class="form-control"
-                data-testid="group"
-                value="{{ incident.afdeling.omschrijving }}"
-                id="group"
-                name="group"
-                type="text"
+                    data-testid="group"
+                    value="{{ incident.afdeling.omschrijving }}"
+                    id="group"
+                    name="group"
+                    type="text"
                 />
             </div>
 
