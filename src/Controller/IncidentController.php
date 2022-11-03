@@ -71,10 +71,16 @@ class IncidentController extends AbstractController
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
 
+        $groupedSubjects = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/onderwerpgroepen/', [
+            'query' => [],
+            'auth_bearer' => $requestStack->getSession()->get('msb_token')
+        ])->toArray()['result'];
+
         // render template
         return $this->render('incident/handle.html.twig', [
             'id' => $id,
-            'incident' => $incident
+            'incident' => $incident,
+            'groupedSubjects' => $groupedSubjects
         ]);
     }
 }
