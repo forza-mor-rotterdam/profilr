@@ -3,7 +3,6 @@
     padding: 0;
     border-top: 1px solid $gray-tint04;
     overflow: hidden;
-    width: 375px;
 
     li {
         border-bottom: 1px solid $gray-tint04;
@@ -11,7 +10,6 @@
         overflow-x: auto;
         scrollbar-width: none;
         cursor: grab;
-        height: 80px;
         display: flex;
         &::-webkit-scrollbar {
             display: none;
@@ -33,7 +31,7 @@
 
         .container__image {
             padding: 8px 16px 14px 0;
-            width: 100px;
+            // width: 100px;
             img {
                 width: calc(78px + 2vw);
             }
@@ -79,7 +77,13 @@
             text-align: center;
             line-height: 60px;
             background-color: $green-tint01;
+            margin-right: 1px;
+            cursor: pointer;
             
+            .checkmark-handle {
+                margin-top: 25px;
+                width: 40px;
+            }
         }
 
     }
