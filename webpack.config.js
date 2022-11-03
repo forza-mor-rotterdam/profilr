@@ -63,6 +63,11 @@ Encore
         from: './assets/images', pattern: /\.(png|jpg|jpeg|svg)$/,
         to: 'images/[path][name].[ext]'
     })
+
+    .copyFiles({
+        from: './assets/icons', pattern: /\.(svg)$/,
+        to: 'icons/[path][name].[ext]'
+    })
     
 
     // uncomment if you use TypeScript
