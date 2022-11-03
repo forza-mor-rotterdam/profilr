@@ -6,8 +6,7 @@
 
     <h1>Meldingen ({{ incidents.result | length }})</h1>
 
-    {# {{ dump(incidents.results) }} #}
-    <ul class="list__incidents">
+    <ul class="list__incidents" data-testid="IncidentsList">
         {% for incident in incidents.result %}
         <li>
             <div class="wrapper__swipe">
@@ -41,21 +40,7 @@
         </li>
         {% endfor %}
     </ul>
-    {# Meldingen({{ incidents|length }})
-    <ul>
-    {% for incident in incidents.result %}
-        <li>
-            {% for k, v in incident %}
-            <dl>
-                <dt>{{ k }}</dt>
-                <dd>{{ dump(v) }}</dd>
-            </dl>
-            {% endfor %}
-        </li>
-    {% endfor %}
-    </ul>
-</div> #}
-
+    
 <script>
     document.querySelector("ul").addEventListener("click", (e) => {
     const li = e.target.closest("li");
