@@ -5,7 +5,7 @@ export default class extends Controller {
         id: String
       }
     swipe(e) {
-        const li = e.target.closest("li");
+        const li = e.target.tagName.toLowerCase() !== "img" && e.target.closest("li");
         const btn = e.target.closest("button");
         if (li && li.scrollLeft === 0) {
             li.scrollBy({

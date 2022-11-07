@@ -16,16 +16,15 @@
             data-incident-id-value="{{ incident.id }}">
             <div class="wrapper__swipe">
                 <div class="container__flex">
-                    {# <a href="/incident/{{ incident.id }}"> #}
+                    <a href="/incident/{{ incident.id }}">
                         <div class="container__image">
-                        {{ incident.id }}
                             {% if incident._detail is defined and incident._detail.fotos %}
                                 <img src="{{ path('app_image_full', {'id': incident._detail.fotos|first.id}) }}"> 
                             {% else %}
                                 <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
                             {% endif %}
                         </div>
-                    {# </a> #}
+                    </a>
                     <div class="container__info">
                     {# TODO add optional huisletter and huisnummer_toevoeging  #}
                         {# <a href="/incident/{{ incident.id }}/handle"> #}
