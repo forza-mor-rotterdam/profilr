@@ -12,10 +12,25 @@
     </div>
     <div class="form-row">
         <label for="_password">Wachtwoord</label>
-        <div class="container__toggle">
-            <input class="form-control" type="password" name="_password" id="_password">
+        <div class="container__toggle" data-controller="password">
+            <input
+                class="form-control"
+                type="password"
+                name="_password"
+                id="_password"
+                data-password-target="input"
+            >
             {# <i class="password__toggle" id="togglePassword" style="margin-left: -30px; cursor: pointer;">o</i> #}
-            <img src="{{ asset('build/icons/eye.svg') }}" width="20" alt="" class="password__toggle" id="togglePassword" style="margin-left: -30px; cursor: pointer;"/>
+            <img
+                src="{{ asset('build/icons/eye.svg') }}"
+                width="20"
+                alt=""
+                class="password__toggle"
+                id="togglePassword"
+                style="margin-left: -30px; cursor: pointer;"
+                data-action="click->password#toggle"
+                data-password-target="toggle"
+            />
         </div>
     </div>
     <div class="form-row ">
@@ -23,16 +38,4 @@
     </div>
 </form>
 
-<script>
-    const togglePassword = document.querySelector('#togglePassword');
-    const password = document.querySelector('#_password');
-
-    togglePassword.addEventListener('click', function (e) {
-        // toggle the type attribute
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-        // toggle the eye slash icon
-        this.classList.toggle('password__toggle-active');
-    });
-</script>
 {% endblock %}
