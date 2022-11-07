@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -12,12 +13,14 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class IncidentController extends AbstractController
 {
     #[Route('/incident', name: 'app_incident_index')]
-    public function index(Request $request, RequestStack $requestStack, HttpClientInterface $apiClient): Response
+    public function index(Request $request, RequestStack $requestStack, HttpClientInterface $apiClient, LoggerInterface $logger): Response
     {
         // if not logged in, redirect to login page
         if ($requestStack->getSession()->get('is_logged_in') !== true) {
+            $logger->warning('Not logged in', ['started' => $requestStack->getSession()->isStarted()]);
             return $this->redirectToRoute('app_login_index');
         }
+
         // call api client
         $incidents = $apiClient->request('POST', 'https://diensten.rotterdam.nl/sbmob/api/msb/openmeldingen', [
             'query' => [],
