@@ -4,10 +4,10 @@
 
 {% block body %}
 
-    <h1>Meldingen ({{ incidents.result | length }})</h1>
+    <h1>Meldingen ({{ incidents | length }})</h1>
 
-    <ul class="list__incidents" data-testid="IncidentsList">
-        {% for incident in incidents.result %}
+    <ul class="list__incidents" data-testid="IncidentsList" data-controller="incident">
+        {% for incident in incidents %}
         <li>
             <div class="wrapper__swipe">
                 <div class="container__flex">
