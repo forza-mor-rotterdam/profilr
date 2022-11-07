@@ -1,16 +1,28 @@
 import { Controller } from '@hotwired/stimulus';
 
-/*
- * This is an example Stimulus controller!
- *
- * Any element with a data-controller="hello" attribute will cause
- * this controller to be executed. The name "hello" comes from the filename:
- * hello_controller.js -> "hello"
- *
- * Delete this file or adapt it for your use!
- */
 export default class extends Controller {
-    connect() {
-        window.alert('incident controller loaded');
+    static values = {
+        id: String
+      }
+    swipe(e) {
+        const li = e.target.closest("li");
+        const btn = e.target.closest("button");
+        if (li && li.scrollLeft === 0) {
+            li.scrollBy({
+            left: 1,
+            behavior: "smooth"
+            });
+        } else if (!btn && li) {
+            li.scrollBy({
+            left: -1,
+            behavior: "smooth"
+            });
+        } else if (btn && li) {
+            window.location.href=`/incident/${this.idValue}/handle`;
+            li.scrollBy({
+                left: -1,
+                behavior: "smooth"
+            });
+        }
     }
 }

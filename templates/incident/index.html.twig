@@ -5,13 +5,20 @@
 {% block body %}
 
     <h1>Meldingen ({{ incidents | length }})</h1>
-    <ul class="list__incidents" data-testid="IncidentsList" data-controller="incident">
+    <ul 
+        class="list__incidents" 
+        data-testid="IncidentsList" 
+        >
         {% for incident in incidents %}
-        <li>
+        <li
+            data-controller="incident" 
+            data-action="click->incident#swipe"
+            data-incident-id-value="{{ incident.id }}">
             <div class="wrapper__swipe">
                 <div class="container__flex">
                     {# <a href="/incident/{{ incident.id }}"> #}
                         <div class="container__image">
+                        {{ incident.id }}
                             {% if incident._detail is defined and incident._detail.fotos %}
                                 <img src="{{ path('app_image_full', {'id': incident._detail.fotos|first.id}) }}"> 
                             {% else %}
@@ -44,30 +51,4 @@
         {% endfor %}
     </ul>
     
-<script>
-    document.querySelector("ul").addEventListener("click", (e) => {
-    const li = e.target.closest("li");
-    const btn = e.target.closest("button");
-    
-    if (li && li.scrollLeft === 0) {
-        li.scrollBy({
-        left: 1,
-        behavior: "smooth"
-        });
-    } else if (!btn && li) {
-        li.scrollBy({
-        left: -1,
-        behavior: "smooth"
-        });
-    } else if (btn && li) {
-        const incidentID = btn.dataset.id;
-        window.location.href=`/incident/${incidentID}/handle`;
-        li.scrollBy({
-            left: -1,
-            behavior: "smooth"
-        });
-    }
-    });
-
-</script>
 {% endblock %}
