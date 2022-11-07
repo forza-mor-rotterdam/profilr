@@ -5,7 +5,6 @@
 {% block body %}
 
     <h1>Meldingen ({{ incidents | length }})</h1>
-
     <ul class="list__incidents" data-testid="IncidentsList" data-controller="incident">
         {% for incident in incidents %}
         <li>
@@ -13,7 +12,11 @@
                 <div class="container__flex">
                     {# <a href="/incident/{{ incident.id }}"> #}
                         <div class="container__image">
-                            <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
+                            {% if incident._detail is defined and incident._detail.fotos %}
+                                <img src="{{ path('app_image_full', {'id': incident._detail.fotos|first.id}) }}"> 
+                            {% else %}
+                                <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
+                            {% endif %}
                         </div>
                     {# </a> #}
                     <div class="container__info">
