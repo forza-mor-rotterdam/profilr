@@ -43,6 +43,8 @@ class LoginController extends AbstractController
 
                 return $this->redirectToRoute('app_incident_index');
             } else {
+                $requestStack->getSession()->set('is_logged_in', false);
+
                 // login failed, set error message for the template
                 $error = 'invalid_username_or_password';
             }
