@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class IncidentController extends AbstractController
 {
@@ -31,6 +32,18 @@ class IncidentController extends AbstractController
             ],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray();
+
+        $apiCalls = [];
+        foreach ($incidents['results'] as $k => $incident) {
+            $apiCalls[$k] = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/melding/' . $incident['id'], [
+                'query' => [],
+                'auth_bearer' => $requestStack->getSession()->get('msb_token')
+            ]);
+        }
+        foreach ($apiCalls as $apiCall) {
+            /** @var ResponseInterface $apiCall */
+            $incidents['results']['_detail'] = $apiCall->toArray()['result'];
+        }
 
         // render template
         return $this->render('incident/index.html.twig', [
