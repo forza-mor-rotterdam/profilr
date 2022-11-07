@@ -2,22 +2,26 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class IncidentController extends AbstractController
 {
     #[Route('/incident', name: 'app_incident_index')]
-    public function index(Request $request, RequestStack $requestStack, HttpClientInterface $apiClient): Response
+    public function index(Request $request, RequestStack $requestStack, HttpClientInterface $apiClient, LoggerInterface $logger): Response
     {
         // if not logged in, redirect to login page
-        // if ($requestStack->getSession()->get('is_logged_in') !== true) {
-        //     return $this->redirectToRoute('app_login_index');
-        // }
+        if ($requestStack->getSession()->get('is_logged_in') !== true) {
+            $logger->warning('Not logged in', ['started' => $requestStack->getSession()->isStarted()]);
+            return $this->redirectToRoute('app_login_index');
+        }
+
         // call api client
         // $incidents = $apiClient->request('POST', 'https://diensten.rotterdam.nl/sbmob/api/msb/openmeldingen', [
         //     'query' => [],
@@ -113,6 +117,18 @@ class IncidentController extends AbstractController
                   "y": 437777.95756
                 }
               }]');
+
+        $apiCalls = [];
+        foreach ($incidents['results'] as $k => $incident) {
+            $apiCalls[$k] = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/melding/' . $incident['id'], [
+                'query' => [],
+                'auth_bearer' => $requestStack->getSession()->get('msb_token')
+            ]);
+        }
+        foreach ($apiCalls as $apiCall) {
+            /** @var ResponseInterface $apiCall */
+            $incidents['results']['_detail'] = $apiCall->toArray()['result'];
+        }
 
         // render template
         return $this->render('incident/index.html.twig', [
