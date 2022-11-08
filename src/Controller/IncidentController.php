@@ -70,6 +70,21 @@ class IncidentController extends AbstractController
             'query' => [],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
+        $groupedSubjects = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/onderwerpgroepen/', [
+            'query' => [],
+            'auth_bearer' => $requestStack->getSession()->get('msb_token')
+        ])->toArray()['result'];
+
+        // extend incident with group information
+        foreach($groupedSubjects as $group) {
+            foreach ($group['onderwerpen'] as $subjects) {
+                if ($subjects['code'] == $incident['onderwerp']['id']) {
+                    $incident['groep'] = $group;
+                    unset($incident['groep']['onderwerpen']);
+                    break 2;
+                }
+            }
+        }
 
         // render template
         return $this->render('incident/detail.html.twig', [
