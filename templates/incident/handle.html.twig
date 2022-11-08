@@ -4,37 +4,37 @@
 
 {% block body %}
 
-{# {{ dump(groupedSubjects) }} #}
-    <div class="container__form">
+    <div class="container__form" 
+        data-controller="getGroups"
+        data-getGroups-group-selected-value = "{{ incident.afdeling.omschrijving }}"
+        data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode() }}"
+    >
         <h1>
             Melding afhandelen<br>
             <small>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</small>
         </h1>
         
-
         <form action="" method="post" data-testid="handleIncidentForm">
             <div class="form-row">
                 <label htmlFor="group">Groep</label>
-                <input
-                    class="form-control"
-                    data-testid="group"
-                    value="{{ incident.afdeling.omschrijving }}"
-                    id="group"
-                    name="group"
-                    type="text"
-                />
+                <select
+                    class="form-control form-select"
+                    name="groupList"
+                    id="groupList"
+                    data-getGroups-target="groupList"
+                    data-action="change->getGroups#setSubjects"
+                    {# data-getGroups-selectedGroup-param="" #}
+                ></select>
             </div>
 
             <div class="form-row">
                 <label htmlFor="subject">Onderwerp</label>
-                <input
-                    class="form-control"
-                    data-testid="subject"
-                    value="{{ incident.onderwerp.omschrijving }}"
-                    id="subject"
-                    name="subject"
-                    type="text"
-                />
+                <select
+                    class="form-control form-select"
+                    name="subjectList"
+                    id="subjectList"
+                    data-getGroups-target="subjectList"
+                ></select>
             </div>
 
             <div class="form-row">

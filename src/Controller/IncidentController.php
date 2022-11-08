@@ -112,6 +112,20 @@ class IncidentController extends AbstractController
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
 
+        // extend incident with group information
+        foreach($groupedSubjects as $group) {
+            
+            foreach ($group['onderwerpen'] as $subjects) {
+                dump($subjects['omschrijving'], $incident['onderwerp']['omschrijving']);
+                if ($subjects['omschrijving'] == $incident['onderwerp']['omschrijving']) {
+                    $incident['groep'] = $group;
+                    
+                    unset($incident['groep']['onderwerpen']);
+                    break 2;
+                }
+            }
+        }
+
         // render template
         return $this->render('incident/handle.html.twig', [
             'id' => $id,
