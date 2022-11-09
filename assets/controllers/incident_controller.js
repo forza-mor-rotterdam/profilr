@@ -20,12 +20,31 @@ export default class extends Controller {
                 behavior: "smooth"
                 });
             } else if (btn && li) {
-                window.location.href=`/incident/${this.idValue}/handle`;
+                // window.location.href=`/incident/${this.idValue}/handle`;
                 li.scrollBy({
                     left: -1,
                     behavior: "smooth"
                 });
             }
         }
+    }
+
+    openModal(e) {
+        console.log('openModal.. ', e.params.object)
+        const modal = document.getElementById('modal-one');
+            const modalBackdrop = document.getElementById('modal-backdrop');
+            modal.classList.add('show');
+            modalBackdrop.classList.add('show');
+            document.body.classList.add('show-modal');
+            const exits = modal.querySelectorAll('.modal-exit');
+            exits.forEach(function (exit) {
+
+                exit.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    modal.classList.remove('show');
+                    modalBackdrop.classList.remove('show');
+                    document.body.classList.remove('show-modal');
+                });
+            });
     }
 }
