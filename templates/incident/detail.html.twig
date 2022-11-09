@@ -4,6 +4,66 @@
 
 {% block body %}
 
-    <h1>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h1>
+{% if incident.fotos|length > 0 %}
+    <section class="section--seperated">
+        <div class="full-width">
+            <div class="container__imageslider">
+                <div class="container__image">
+                    <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}" alt="" />
+                </div>
+                <div class="container__thumbs">
+                    {% for foto in incident.fotos %}
+                        <div class="container__image">
+                            <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}?thumbnail=true" alt="" />
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+    <section class="section--seperated">
+        <div class="container__details">
+        {# TODO add optional huisletter and huisnummer_toevoeging  #}
+            <h1 class="h3">{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h1>
+            <span>
+                {{ incident.datumMelding | date('d-m-Y') }} 
+                {{ incident.datumMelding | date('H:i') }}
+            </span>
+
+            <h2 class="h5">Omschrijving</h2>
+            <p>
+                {{ incident.omschrijving }}
+            </p>
+            <h2 class="h5">Onderwerp</h2>
+            <p>
+                {{ incident.onderwerp.omschrijving }}
+            </p>
+            <h2 class="h5">Afdeling</h2>
+            <p>
+                {{ incident.onderwerp.omschrijving }}
+            </p>
+
+            <h2 class="h5">Melding {{ incident.id }}</h2>
+            <p>
+                Status: {{ incident.status }}
+            </p>
+
+        </div>
+    </section>
+
+    <section class="section--seperated">
+        #locatie
+    </section>
+
+    <section class="section--seperated">
+        #melder
+    </section>
+
+    <section class="section--seperated">
+        #acties
+    </section>
+
+    {{ dump(incident) }}
 
 {% endblock %}

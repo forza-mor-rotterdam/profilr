@@ -19,7 +19,7 @@
                     <a href="/incident/{{ incident.id }}">
                         <div class="container__image">
                             {% if incident._detail is defined and incident._detail.fotos %}
-                            <div class="background-image" style="background-image: url('{{ path('app_image_full', {'id': incident._detail.fotos|first.id}) }}')"></div>
+                            <div class="background-image" style="background-image: url('{{ path('app_image_full', {'id': incident._detail.fotos|first.id}) }}?thumbnail=true')"></div>
                             {% else %}
                                 <div class="background-image" style="background-image: url('{{ asset('build/images/logo-rotterdam.svg') }}'); background-size: 80%;"></div>
                             {% endif %}
