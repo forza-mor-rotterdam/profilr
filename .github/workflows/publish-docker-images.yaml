@@ -72,3 +72,13 @@ jobs:
           push: true
           tags: ${{ steps.meta_phpfpm.outputs.tags }}
           labels: ${{ steps.meta_phpfpm.outputs.labels }}
+      
+      - name: Start rollout on k8s platform
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_HOST: ${{ secrets.KUBE_HOST }}
+          KUBE_CERTIFICATE: ${{ secrets.KUBE_CERTIFICATE }}
+          KUBE_TOKEN: ${{ secrets.KUBE_TOKEN }}
+        with:
+          args: rollout restart deployment/profilr-deployment
+          
