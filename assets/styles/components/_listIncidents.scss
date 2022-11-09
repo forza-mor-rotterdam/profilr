@@ -30,10 +30,15 @@
         }
 
         .container__image {
-            padding: 8px 16px 14px 0;
-            // width: 100px;
-            img {
+            margin: 8px 16px 14px 0;
+            .background-image {
                 width: calc(78px + 2vw);
+                height: calc(58px + 1vw);
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+                background-color: $gray-tint04;
+                box-sizing: border-box;
             }
         }
 

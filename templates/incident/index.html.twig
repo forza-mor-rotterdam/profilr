@@ -5,6 +5,7 @@
 {% block body %}
 
     <h1>Meldingen ({{ incidents | length }})</h1>
+    
     <ul 
         class="list__incidents" 
         data-testid="IncidentsList" 
@@ -19,9 +20,9 @@
                     <a href="/incident/{{ incident.id }}">
                         <div class="container__image">
                             {% if incident._detail is defined and incident._detail.fotos %}
-                                <img src="{{ path('app_image_full', {'id': incident._detail.fotos|first.id}) }}"> 
+                            <div class="background-image" style="background-image: url('{{ path('app_image_full', {'id': incident._detail.fotos|first.id}) }}')"></div>
                             {% else %}
-                                <img src="https://via.placeholder.com/78x58?text=ProfilR" alt="" />
+                                <div class="background-image" style="background-image: url('{{ asset('build/images/logo-rotterdam.svg') }}'); background-size: 80%;"></div>
                             {% endif %}
                         </div>
                     </a>
