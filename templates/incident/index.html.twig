@@ -69,66 +69,9 @@
                     <button type="button" class="btn-close modal-exit" aria-label="Sluit"></button>    
                 </div>
                 <div class="modal-body">
-                    {# {% if incident is defined %} #}
-                    <div class="container__form" 
-                        data-controller="getGroups"
-                        {# data-getGroups-group-selected-value = "{{ incident.afdeling.omschrijving }}"
-                        data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode() }}" #}
-                        data-getGroups-group-selected-value = "1"
-                        data-getGroups-group-list-value =  "..."
-                    >
-                        <form action="" method="post" data-testid="handleIncidentForm">
-                            <div class="form-row">
-                                <label htmlFor="group">Groep</label>
-                                <select
-                                    class="form-control form-select"
-                                    name="groupList"
-                                    id="groupList"
-                                    data-getGroups-target="groupList"
-                                    data-action="change->getGroups#setSubjects"
-                                    {# data-getGroups-selectedGroup-param="" #}
-                                ></select>
-                            </div>
-
-                            <div class="form-row">
-                                <label htmlFor="subject">Onderwerp</label>
-                                <select
-                                    class="form-control form-select"
-                                    name="subjectList"
-                                    id="subjectList"
-                                    data-getGroups-target="subjectList"
-                                ></select>
-                            </div>
-
-                            <div class="form-row">
-                                <label htmlFor="messageSelector">Tekst voor melder</label>
-                                <input
-                                    class="form-control"
-                                    data-testid="messageSelector"
-                                    id="messageSelector"
-                                    name="messageSelector"
-                                    value="Afval weggehaald"
-                                    type="text"
-                                />
-                            </div>
-                            <div class="form-row">
-                                <textarea
-                                    class="form-control"
-                                    data-testid="message"
-                                    id="message"
-                                    name="message"
-                                    rows="4"
-                                >Beste melder, Ons team heeft het afval weggehaald. Bedankt voor uw hulp.
-                                </textarea>
-                            </div>
-                            <div class="form-row container__button">
-                                <button type="reset" class="btn btn-tertiary" onclick="window.history.go(-1); return false;"><span>Annuleren</span></button>
-                                {# TODO make it a submit button when we are not testing on production #}
-                                <button type="reset" class="btn btn-action"><span>Afhandelen</span></button>
-                            </div>
-                        </form>
-                    </div>
-                    {# {% endif %} #}
+                {# {% if incident is defined %} #}
+                    {% include('./snippets/form_handle.html.twig') %}
+                {# {% endif %} #}
                 </div>
             </div>
         </div>

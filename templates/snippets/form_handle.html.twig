@@ -1,12 +1,15 @@
 
 <div class="container__form" 
     data-controller="getGroups"
-    data-getGroups-group-selected-value = "{{ incident.afdeling.omschrijving }}"
-    data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode() }}"
+    {# data-getGroups-group-selected-value = "{{ incident.afdeling.omschrijving }}"
+    data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode() }}" #}
+    data-getGroups-group-selected-value = "{}"
+    data-getGroups-group-list-value =  "..."
 >
     <h1>
         Melding afhandelen<br>
-        <small>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</small>
+        {# <small>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</small> #}
+        <small>...</small>
     </h1>
     
     <form action="" method="post" data-testid="handleIncidentForm">
