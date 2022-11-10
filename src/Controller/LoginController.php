@@ -41,7 +41,7 @@ class LoginController extends AbstractController
                 $requestStack->getSession()->set('msb_token', $loginResponse['result']);
                 $requestStack->getSession()->set('is_logged_in', true);
 
-                return $this->redirectToRoute('app_incident_index');
+                return $this->redirectToRoute('app_filter_index');
             } else {
                 $requestStack->getSession()->set('is_logged_in', false);
 

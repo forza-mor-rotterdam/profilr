@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Filter op wijk en/of buurt{% endblock %}
+
+{% block body %}
+
+    <div class="container__form" 
+        data-controller="areaFilters"
+        data-areaFilters-area-list-value =  "{{ areas|json_encode() }}"
+    >
+        <h1>Filter op wijk en/of buurt</h1>
+        <form action="" method="post" data-testid="areaFilterForm">
+            <div class="form-row">
+                <label for="wijken">Wijk</label>
+                <select
+                    class="form-control form-select"
+                    name="wijken"
+                    id="wijken"
+                    data-areaFilters-target="areaList"
+                    data-action="change->areaFilters#setDistrict"
+                ></select>
+            </div>
+
+            <div class="form-row">
+                <label for="buurten">Buurt</label>
+                <select
+                    class="form-control form-select"
+                    name="buurten"
+                    id="buurten"
+                    data-areaFilters-target="districtList"
+                ></select>
+            </div>
+            <div class="form-row container__button">
+                <button type="submit" class="btn btn-action"><span>Filter</span></button>
+            </div>
+        </form>
+        {{ dump(areas)}}
+        
+    </div>
+
+{% endblock %}
