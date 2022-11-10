@@ -22,8 +22,7 @@ class LoginController extends AbstractController
 
         // if the submit form is submitted
         if ($request->isMethod('POST')) {
-            $logger->debug('Trying to login', ['user' => $request->request->get('_username')]);
-
+            
             // check credentials against api
             $loginResponse = $apiClient->request('POST', 'https://diensten.rotterdam.nl/sbmob/api/login', [
                 'body' => [
@@ -32,12 +31,9 @@ class LoginController extends AbstractController
                 ]
             ])->toArray();
 
-            $logger->debug('SBMob successfully reached for login', ['user' => $request->request->get('_username')]);
-
             // if success, save the received token and redirect user to incidents index page
             if ($loginResponse['success'] === true) {
-                $logger->debug('Session tokens set', ['user' => $request->request->get('_username')]);
-
+            
                 $requestStack->getSession()->set('msb_token', $loginResponse['result']);
                 $requestStack->getSession()->set('is_logged_in', true);
 
