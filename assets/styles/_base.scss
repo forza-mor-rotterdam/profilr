@@ -17,7 +17,7 @@ body {
 }
 
 main {
-    padding: 0 16px 16px;
+    padding: 0 map-get($container-margin, md) 16px;
     margin: 0 auto;
 
     > .container {

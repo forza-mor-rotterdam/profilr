@@ -37,7 +37,7 @@ class IncidentController extends AbstractController
         $i = 0;
         foreach ($incidents as $k => $incident) {
             $i++;
-            if ($i > 10) {
+            if ($i > 20) {
                 break;
             }
             $apiCalls[$k] = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/melding/' . $incident['id'], [

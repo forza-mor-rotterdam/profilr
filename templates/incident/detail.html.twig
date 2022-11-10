@@ -12,11 +12,15 @@
                     <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}" alt="" />
                 </div>
                 <div class="container__thumbs">
-                    {% for foto in incident.fotos %}
-                        <div class="container__image">
-                            <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}?thumbnail=true" alt="" />
-                        </div>
-                    {% endfor %}
+                    <ul>
+                        {% for foto in incident.fotos %}
+                        <li>
+                            <div class="container__image">
+                                <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}?thumbnail=true" alt="" />
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
