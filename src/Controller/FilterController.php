@@ -28,6 +28,12 @@ class FilterController extends AbstractController
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
 
+        if ($request->isMethod('POST')) {
+            $requestStack->getSession()->set('wijken', $request->request->get('wijken'));
+            $requestStack->getSession()->set('buurten', $request->request->get('buurten'));
+            return $this->redirectToRoute('app_incident_index');
+        }
+
         // render template
         return $this->render('filter/index.html.twig', [
             'areas' => $areas

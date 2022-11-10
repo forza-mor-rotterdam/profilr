@@ -26,11 +26,8 @@ class IncidentController extends AbstractController
         $incidents = $apiClient->request('POST', 'https://diensten.rotterdam.nl/sbmob/api/msb/openmeldingen', [
             'query' => [],
             'body' => [
-                // 'x' => 92441,
-                // 'y' => 437718,
-                // 'radius' => 200,
-                'buurten' => ["24"],
-                'wijken' => ["3"]
+                'buurten' => $requestStack->getSession()->get('buurten'),
+                'wijken' => $requestStack->getSession()->get('wijken')
             ],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
