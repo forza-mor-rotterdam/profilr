@@ -20,6 +20,14 @@ export default class extends Controller {
         }
 
         const departmentsOptions = JSON.parse(this.departmentListValue)
+        
+        const instruction = document.createElement("option");
+        instruction.setAttribute('disabled', 'disabled');
+        instruction.setAttribute('selected', 'selected');
+        instruction.setAttribute('hidden', 'hidden');
+        instruction.textContent = 'Selecteer een afdeling';
+        this.departmentListTarget.appendChild(instruction);
+            
         for(let i = 0; i < departmentsOptions.length; i++) {
             const opt = departmentsOptions[i];
             const el = document.createElement("option");
