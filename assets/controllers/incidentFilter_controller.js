@@ -1,9 +1,10 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = [ "areaList", "districtList" ]
+    static targets = [ "areaList", "districtList", "departmentList" ]
     static values = {
         areaList: String,
+        departmentList: String,
         areaSelected: String
     }
     
@@ -17,15 +18,29 @@ export default class extends Controller {
             el.value = opt.code;
             this.areaListTarget.appendChild(el);
         }
-        this.setDistrict()
-    }
 
-    initialize() {
+        const departmentsOptions = JSON.parse(this.departmentListValue)
         
+        const instruction = document.createElement("option");
+        instruction.setAttribute('disabled', 'disabled');
+        instruction.setAttribute('selected', 'selected');
+        instruction.setAttribute('hidden', 'hidden');
+        instruction.textContent = 'Selecteer een afdeling';
+        this.departmentListTarget.appendChild(instruction);
+            
+        for(let i = 0; i < departmentsOptions.length; i++) {
+            const opt = departmentsOptions[i];
+            const el = document.createElement("option");
+            el.textContent = opt.omschrijving;
+            el.value = opt.code;
+            this.departmentListTarget.appendChild(el);
+        }
+
+        this.setDistrict()
+
     }
 
     setDistrict(event) {
-        console.log('event', event)
         const areaOptions = JSON.parse(this.areaListValue)
         const selectedValue = event !== undefined ? event.target.value : "1"
         // const selectedValue = event.target.value
@@ -38,7 +53,6 @@ export default class extends Controller {
 
         for(let i = 0; i < districtOptions.length; i++) {
             const opt = districtOptions[i];
-            console.log('option', opt)
             const el = document.createElement("option");
             el.textContent = opt.omschrijving;
             el.value = opt.code;

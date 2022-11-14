@@ -27,7 +27,8 @@ class IncidentController extends AbstractController
             'query' => [],
             'body' => [
                 'buurten' => $requestStack->getSession()->get('buurten'),
-                'wijken' => $requestStack->getSession()->get('wijken')
+                'wijken' => $requestStack->getSession()->get('wijken'),
+                'afdelingen' => $requestStack->getSession()->get('afdelingen')
             ],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
