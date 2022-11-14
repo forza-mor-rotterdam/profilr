@@ -30,21 +30,27 @@ export default class extends Controller {
     }
 
     openModal(e) {
+        const data = e.params.object
         console.log('openModal.. ', e.params.object)
         const modal = document.getElementById('modal-one');
-            const modalBackdrop = document.getElementById('modal-backdrop');
-            modal.classList.add('show');
-            modalBackdrop.classList.add('show');
-            document.body.classList.add('show-modal');
-            const exits = modal.querySelectorAll('.modal-exit');
-            exits.forEach(function (exit) {
+        const modalBackdrop = document.getElementById('modal-backdrop');
 
-                exit.addEventListener('click', function (event) {
-                    event.preventDefault();
-                    modal.classList.remove('show');
-                    modalBackdrop.classList.remove('show');
-                    document.body.classList.remove('show-modal');
-                });
+        modal.setAttribute('data-id', data.id);
+        modal.setAttribute('data-subjectId', data.onderwerp.id);
+        modal.querySelector('[data-address]').textContent= `${data.locatie.adres.straatNaam}${' '}${data.locatie.adres.huisnummer} `;
+                    
+        modal.classList.add('show');
+        modalBackdrop.classList.add('show');
+        document.body.classList.add('show-modal');
+        const exits = modal.querySelectorAll('.modal-exit');
+        exits.forEach(function (exit) {
+
+            exit.addEventListener('click', function (event) {
+                event.preventDefault();
+                modal.classList.remove('show');
+                modalBackdrop.classList.remove('show');
+                document.body.classList.remove('show-modal');
             });
+        });
     }
 }

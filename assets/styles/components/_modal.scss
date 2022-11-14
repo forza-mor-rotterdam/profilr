@@ -48,6 +48,14 @@ body.show-modal {
 
         h1 {
             padding: 48px 48px 0 0;
+            margin: 0 0 1rem;
+            
+            small {
+                display: block;
+                font-weight: 400;
+                font-size: $font-size-base;
+                margin-top: 0.5rem;
+            }
         }
 
         .btn-close {

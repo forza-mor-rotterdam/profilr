@@ -133,14 +133,6 @@ $form-search-indicator-position: left 10px center !default;
   color: $gray-tint08;
 }
 
-.container__form {
-    h1 {
-        small {
-            font-weight: 400;
-            font-size: $font-size-base;
-        }
-    }
-}
 .form-row {
     position: relative;
     > label,
