@@ -28,15 +28,22 @@ class FilterController extends AbstractController
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
 
+        $departments = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/afdelingen', [
+            'query' => [],
+            'auth_bearer' => $requestStack->getSession()->get('msb_token')
+        ])->toArray()['result'];
+
         if ($request->isMethod('POST')) {
             $requestStack->getSession()->set('wijken', $request->request->get('wijken'));
             $requestStack->getSession()->set('buurten', $request->request->get('buurten'));
+            $requestStack->getSession()->set('afdelingen', $request->request->get('afdelingen'));
             return $this->redirectToRoute('app_incident_index');
         }
 
         // render template
         return $this->render('filter/index.html.twig', [
-            'areas' => $areas
+            'areas' => $areas,
+            'departments' => $departments
         ]);
     }
 }
