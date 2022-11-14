@@ -1,8 +1,7 @@
 
 <div class="container__form" 
     data-controller="getGroups"
-    {# data-getGroups-group-selected-value = "{{ incident.afdeling.omschrijving }}"
-    data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode() }}" #}
+    data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode() }}"
     data-getGroups-group-selected-value = "{}"
     data-getGroups-group-list-value =  "..."
 >
@@ -51,7 +50,7 @@
             </textarea>
         </div>
         <div class="form-row container__button">
-            <button type="reset" class="btn btn-tertiary" onclick="window.history.go(-1); return false;"><span>Annuleren</span></button>
+            <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
             {# TODO make it a submit button when we are not testing on production #}
             <button type="reset" class="btn btn-action"><span>Afhandelen</span></button>
         </div>

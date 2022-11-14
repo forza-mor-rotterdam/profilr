@@ -50,10 +50,30 @@ class IncidentController extends AbstractController
             $incidents[$k]['_detail'] = $apiCall->toArray()['result'];
         }
 
+        $groupedSubjects = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/onderwerpgroepen/', [
+            'query' => [],
+            'auth_bearer' => $requestStack->getSession()->get('msb_token')
+        ])->toArray()['result'];
+
+        // extend incident with group information
+        //     foreach($groupedSubjects as $group) {
+                
+        //         foreach ($group['onderwerpen'] as $subjects) {
+        //             dump($subjects['omschrijving'], $incident['onderwerp']['omschrijving']);
+        //             if ($subjects['omschrijving'] == $incident['onderwerp']['omschrijving']) {
+        //                 $incident['groep'] = $group;
+                        
+        //                 unset($incident['groep']['onderwerpen']);
+        //                 break 2;
+        //             }
+        //         }
+        //     }
+
         // render template
         return $this->render('incident/index.html.twig', [
             'incidents' => $incidents,
             'controller_name' => "My controller",
+            'groupedSubjects' => $groupedSubjects
         ]);
     }
 
@@ -93,44 +113,4 @@ class IncidentController extends AbstractController
         ]);
     }
 
-    #[Route('/incident/{id}/handle', name: 'app_incident_handle')]
-    public function handle(Request $request, int $id, RequestStack $requestStack, HttpClientInterface $apiClient): Response
-    {
-        // if not logged in, redirect to login page
-        if ($requestStack->getSession()->get('is_logged_in') !== true) {
-            return $this->redirectToRoute('app_login_index');
-        }
-
-        // call api client
-        $incident = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/melding/' . $id, [
-            'query' => [],
-            'auth_bearer' => $requestStack->getSession()->get('msb_token')
-        ])->toArray()['result'];
-
-        $groupedSubjects = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/onderwerpgroepen/', [
-            'query' => [],
-            'auth_bearer' => $requestStack->getSession()->get('msb_token')
-        ])->toArray()['result'];
-
-        // extend incident with group information
-        foreach($groupedSubjects as $group) {
-            
-            foreach ($group['onderwerpen'] as $subjects) {
-                dump($subjects['omschrijving'], $incident['onderwerp']['omschrijving']);
-                if ($subjects['omschrijving'] == $incident['onderwerp']['omschrijving']) {
-                    $incident['groep'] = $group;
-                    
-                    unset($incident['groep']['onderwerpen']);
-                    break 2;
-                }
-            }
-        }
-
-        // render template
-        return $this->render('incident/handle.html.twig', [
-            'id' => $id,
-            'incident' => $incident,
-            'groupedSubjects' => $groupedSubjects
-        ]);
-    }
 }

@@ -5,7 +5,6 @@
 {% block body %}
 
     <h1>Meldingen ({{ incidents | length }})</h1>
-    <a data-modal="modal-one">Open Modal</a>
     <ul 
         class="list__incidents" 
         data-testid="IncidentsList" 
@@ -56,7 +55,7 @@
         {% endfor %}
     </ul>
     
-    <div class="modal" id="modal-one">
+    <div class="modal" id="modal-handleForm">
         <div class="modal-dialog">
             <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
             <div class="modal-content">

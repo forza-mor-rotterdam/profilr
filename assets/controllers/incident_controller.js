@@ -32,7 +32,7 @@ export default class extends Controller {
     openModal(e) {
         const data = e.params.object
         console.log('openModal.. ', e.params.object)
-        const modal = document.getElementById('modal-one');
+        const modal = document.getElementById('modal-handleForm');
         const modalBackdrop = document.getElementById('modal-backdrop');
 
         modal.setAttribute('data-id', data.id);
