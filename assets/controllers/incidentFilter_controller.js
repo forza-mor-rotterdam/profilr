@@ -42,7 +42,7 @@ export default class extends Controller {
 
     setDistrict(event) {
         const areaOptions = JSON.parse(this.areaListValue)
-        const selectedValue = event !== undefined ? event.target.value : "1"
+        const selectedValue = event !== undefined ? event.target.value : "26"
         // const selectedValue = event.target.value
         const district = areaOptions.find(district => district.code === selectedValue)
         const districtOptions = district.buurten

@@ -55,7 +55,8 @@
         {% endfor %}
     </ul>
     
-    <div class="modal" id="modal-handleForm">
+    {% include('./snippets/modal_form_handle.html.twig') %}
+    {# <div class="modal" id="modal-handleForm">
         <div class="modal-dialog">
             <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
             <div class="modal-content">
@@ -67,12 +68,10 @@
                     <button type="button" class="btn-close modal-exit" aria-label="Sluit"></button>    
                 </div>
                 <div class="modal-body">
-                {# {% if incident is defined %} #}
                     {% include('./snippets/form_handle.html.twig') %}
-                {# {% endif %} #}
                 </div>
             </div>
         </div>
-    </div>
+    </div> #}
 
 {% endblock %}

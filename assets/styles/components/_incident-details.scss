@@ -1,5 +1,8 @@
 
 .container__details {
+    > *:first-child {
+        margin-top: 0;
+    }
     h1 {
         margin-top: 0;
     }
@@ -80,7 +83,7 @@
 
 .incident-meta-list {
     li {
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
         > *:last-child {
             margin-bottom: 0;
         }

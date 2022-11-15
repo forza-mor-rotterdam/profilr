@@ -78,15 +78,25 @@ a {
     &.link--email {
         @include has-icon();
         &:before {
-            content: url('../icons/person.svg');
+            content: url('../icons/email.svg');
             top: 2px;
         }
     }
     &.link--phone {
         @include has-icon();
         &:before {
-            content: url('../icons/person.svg');
-            top: 2px;
+            content: url('../icons/phone.svg');
+            top: 0;
+            left: -22px;
+        }
+    }
+
+    &.link--next {
+        @include has-icon();
+        &:before {
+            content: url('../icons/arrow-right.svg');
+            top: 0;
+            left: -18px;
         }
     }
 }
@@ -103,8 +113,9 @@ p {
     &.text--close {
         @include has-icon();
         &:before {
-            content: url('../icons/person.svg');
+            content: url('../icons/close.svg');
             top: 2px;
+            left: -23px;
         }
     }
 }
