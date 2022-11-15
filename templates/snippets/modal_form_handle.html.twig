@@ -1,0 +1,17 @@
+<div class="modal" id="modal-handleForm">
+    <div class="modal-dialog">
+        <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>
+                    Melding afhandelen<br>
+                    <small data-address>...</small>
+                </h1>
+                <button type="button" class="btn-close modal-exit" aria-label="Sluit"></button>    
+            </div>
+            <div class="modal-body">
+                {% include('./snippets/form_handle.html.twig') %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,8 +10,14 @@ body {
     }
 }
 
+body {
+    -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-smoothing: antialiased;
+}
+
 main {
-    padding: 0 16px 16px;
+    padding: 0 map-get($container-margin, md) 16px;
     margin: 0 auto;
 
     > .container {
@@ -39,4 +45,110 @@ h5, .h5 {
 }
 h6, .h6 {
     font-size: $h6-font-size;
+}
+
+@mixin has-icon {
+    display: inline-block;
+        margin-left: 25px;
+        position: relative;
+        &:before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 4px;
+        }
+}
+
+a {
+    color: $green-tint01;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+
+    &.link--location {
+        @include has-icon();
+        &:before {
+            content: url('../icons/pin.svg');
+        }
+    }
+
+    &.link--email {
+        @include has-icon();
+        &:before {
+            content: url('../icons/email.svg');
+            top: 2px;
+        }
+    }
+    &.link--phone {
+        @include has-icon();
+        &:before {
+            content: url('../icons/phone.svg');
+            top: 0;
+            left: -22px;
+        }
+    }
+
+    &.link--next {
+        @include has-icon();
+        &:before {
+            content: url('../icons/arrow-right.svg');
+            top: 0;
+            left: -18px;
+        }
+    }
+}
+
+p {
+    &.text--person {
+        @include has-icon();
+        &:before {
+            content: url('../icons/person.svg');
+            top: 2px;
+        }
+    }
+
+    &.text--close {
+        @include has-icon();
+        &:before {
+            content: url('../icons/close.svg');
+            top: 2px;
+            left: -23px;
+        }
+    }
+}
+
+
+// LISTS
+
+ul {
+    &.list-clean {
+        list-style-type: none;
+        padding: 0;
+    }
+}
+
+dl {
+    div{
+        display: flex;
+
+        dd,
+        dt {
+            margin: 0 0 .5rem;
+        }
+        dt {
+            margin-right: .5rem;
+        }
+
+    }
+}
+
+// SECTIONS
+section {
+    &.section--seperated {
+        padding: 1rem 0 0.75rem;
+        border-bottom: 1px solid $gray-tint04;
+    }
 }

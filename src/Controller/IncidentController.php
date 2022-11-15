@@ -37,7 +37,7 @@ class IncidentController extends AbstractController
         $i = 0;
         foreach ($incidents as $k => $incident) {
             $i++;
-            if ($i > 10) {
+            if ($i > 20) {
                 break;
             }
             $apiCalls[$k] = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/melding/' . $incident['id'], [
@@ -90,6 +90,7 @@ class IncidentController extends AbstractController
             'query' => [],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
         ])->toArray()['result'];
+
         $groupedSubjects = $apiClient->request('GET', 'https://diensten.rotterdam.nl/sbmob/api/msb/onderwerpgroepen/', [
             'query' => [],
             'auth_bearer' => $requestStack->getSession()->get('msb_token')
@@ -109,7 +110,8 @@ class IncidentController extends AbstractController
         // render template
         return $this->render('incident/detail.html.twig', [
             'id' => $id,
-            'incident' => $incident
+            'incident' => $incident,
+            'groupedSubjects' => $groupedSubjects
         ]);
     }
 
