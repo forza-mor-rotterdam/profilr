@@ -4,9 +4,10 @@
 
 {% block body %}
 
-{% if incident.fotos|length > 0 %}
+
     <section class="section--seperated">
         <div class="full-width">
+        {% if incident.fotos|length > 0 %}
             <div class="container__imageslider">
                 <div class="container__image">
                     <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}" alt="" />
@@ -16,16 +17,19 @@
                         {% for foto in incident.fotos %}
                         <li>
                             <div class="container__image">
-                                <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}?thumbnail=true" alt="" />
+                                <img src="{{ path('app_image_full', {'id': foto.id}) }}?thumbnail=true" alt="" />
                             </div>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
+        {% else %}
+            <div class="no-image" style="background-image: url('{{ asset('build/icons/noimage.svg') }}');"></div>
+        {% endif %}
         </div>
     </section>
-{% endif %}
+
     <section class="section--seperated">
         <div class="container__details">
         {# TODO add optional huisletter and huisnummer_toevoeging  #}
