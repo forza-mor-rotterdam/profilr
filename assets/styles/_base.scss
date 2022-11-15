@@ -47,6 +47,43 @@ h6, .h6 {
     font-size: $h6-font-size;
 }
 
+a {
+    color: $green-tint01;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+
+    &.link--location {
+        display: inline-block;
+        margin-left: 25px;
+        position: relative;
+        &:before {
+            content: url('../icons/pin.svg');
+            position: absolute;
+            left: -25px;
+            top: 4px;
+        }
+    }
+}
+
+dl {
+    div{
+        display: flex;
+
+        dd,
+        dt {
+            margin: 0 0 .5rem;
+        }
+        dt {
+            margin-right: .5rem;
+        }
+
+    }
+}
+
 // SECTIONS
 section {
     &.section--seperated {

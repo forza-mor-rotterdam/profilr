@@ -61,7 +61,25 @@
     </section>
 
     <section class="section--seperated">
-        #locatie
+        <div class="container__details">
+            <p>
+                <a href="#" class="link--location">{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</a>
+            </p>
+            <dl>
+                <div>
+                    <dt>Wijk:</dt>
+                    <dd>** api call **</dd>
+                </div>
+                <div>
+                    <dt>Buurt:</dt>
+                    <dd>** api call **</dd>
+                </div>
+                <div>
+                    <dt>Subbuurt:</dt>
+                    <dd>{{ incident.locatie.subbuurt }}</dd>
+                </div>
+            </dl>
+        </div>
     </section>
 
     <section class="section--seperated">
