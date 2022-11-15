@@ -83,7 +83,29 @@
     </section>
 
     <section class="section--seperated">
-        #melder
+        <h2 class="h5">Gemeld door</h2>
+        <ul class="list-clean incident-meta-list">
+            {% if incident.melder.herkomst|default %}
+            <li>
+                <p class="text--person">{{ incident.melder.herkomst }}</p>
+            </li>
+            {% endif %}
+            {% if incident.melder.telefoon|default %}
+            <li>
+                <a href="tel:{{ incident.melder.telefoon }}" class="link--phone">{{ incident.melder.telefoon }}</a>
+            </li>
+            {% endif %}
+            {% if incident.melder.email|default %}
+            <li>
+                <a href="mailto:{{ incident.melder.email }}" class="link--email">{{ incident.melder.email }}</a>
+            </li>
+            {% endif %}
+            {% if incident.melder.informeren is same as("Nee") %}
+            <li>
+                <p class="text--close">De melder wil niet op de hoogte blijven</p>
+            </li>
+            {% endif %}
+        </ul>
     </section>
 
     <section class="section--seperated">

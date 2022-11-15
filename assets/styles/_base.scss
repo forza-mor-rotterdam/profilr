@@ -47,6 +47,18 @@ h6, .h6 {
     font-size: $h6-font-size;
 }
 
+@mixin has-icon {
+    display: inline-block;
+        margin-left: 25px;
+        position: relative;
+        &:before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 4px;
+        }
+}
+
 a {
     color: $green-tint01;
     text-decoration: underline;
@@ -57,15 +69,53 @@ a {
     }
 
     &.link--location {
-        display: inline-block;
-        margin-left: 25px;
-        position: relative;
+        @include has-icon();
         &:before {
             content: url('../icons/pin.svg');
-            position: absolute;
-            left: -25px;
-            top: 4px;
         }
+    }
+
+    &.link--email {
+        @include has-icon();
+        &:before {
+            content: url('../icons/person.svg');
+            top: 2px;
+        }
+    }
+    &.link--phone {
+        @include has-icon();
+        &:before {
+            content: url('../icons/person.svg');
+            top: 2px;
+        }
+    }
+}
+
+p {
+    &.text--person {
+        @include has-icon();
+        &:before {
+            content: url('../icons/person.svg');
+            top: 2px;
+        }
+    }
+
+    &.text--close {
+        @include has-icon();
+        &:before {
+            content: url('../icons/person.svg');
+            top: 2px;
+        }
+    }
+}
+
+
+// LISTS
+
+ul {
+    &.list-clean {
+        list-style-type: none;
+        padding: 0;
     }
 }
 
