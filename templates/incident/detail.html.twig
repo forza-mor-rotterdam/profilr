@@ -4,8 +4,12 @@
 
 {% block body %}
 
-
-    <section class="section--seperated">
+<div 
+    data-controller="detail"
+    data-detail-area-list-value="{{ areas|json_encode() }}"
+    data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
+>
+    <section class="section--seperated" data-testid="detailPhotoviewer">
         <div class="full-width">
         {% if incident.fotos|length > 0 %}
             <div class="container__imageslider">
@@ -32,7 +36,7 @@
         </div>
     </section>
 
-    <section class="section--seperated">
+    <section class="section--seperated"  data-testid="detailAbout">
         <div class="container__details">
         {# TODO add optional huisletter and huisnummer_toevoeging  #}
             <h1 class="h3">{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h1>
@@ -43,48 +47,63 @@
 
             <h2 class="h5">Omschrijving</h2>
             <p>
-                {{ incident.omschrijving }}
+                {% if incident.omschrijving %}
+                    {{ incident.omschrijving }}
+                {% else %}
+                    -
+                {% endif %}
             </p>
             <h2 class="h5">Onderwerp</h2>
             <p>
-                {{ incident.onderwerp.omschrijving }}
+                {% if incident.onderwerp.omschrijving %}
+                    {{ incident.onderwerp.omschrijving }}
+                {% else %}
+                    -
+                {% endif %}
             </p>
             <h2 class="h5">Afdeling</h2>
             <p>
-                {{ incident.onderwerp.omschrijving }}
+                {% if incident.afdeling.omschrijving %}
+                    {{ incident.afdeling.omschrijving }}
+                {% else %}
+                    -
+                {% endif %}
             </p>
 
             <h2 class="h5">Melding {{ incident.id }}</h2>
             <p>
-                Status: {{ incident.status }}
+                {% if incident.status %}
+                    Status: {{ incident.status }}
+                {% else %}
+                    Status: -
+                {% endif %}
             </p>
 
         </div>
     </section>
 
-    <section class="section--seperated">
+    <section class="section--seperated" data-testid="detailLocation">
         <div class="container__details">
             <h2 class="h5">Locatie</h2>
             <p>
                 <a href="#" class="link--location">{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</a>
             </p>
             <dl>
-            {# if wijk.. #}
                 <div>
                     <dt>Wijk:</dt>
-                    <dd></dd>
+                    <dd data-detail-target="area"></dd>
                 </div>
-            {# if buurt.. #}
                 <div>
                     <dt>Buurt:</dt>
-                    <dd></dd>
+                    <dd data-detail-target="district"></dd>
                 </div>
-            {# if subbuurt.. #}
+                {% if incident.locatie.subbuurt %}
                 <div>
                     <dt>Subbuurt:</dt>
                     <dd>{{ incident.locatie.subbuurt }}</dd>
                 </div>
-                {% if incident.locatie.plaatsbepaling|default %}
+                {% endif %}
+                {% if incident.locatie.plaatsbepaling %}
                 <div>
                     <dt>Plaatsbepaling:</dt>
                     <dd>{{ incident.locatie.plaatsbepaling }}</dd>
@@ -94,7 +113,7 @@
         </div>
     </section>
 
-    <section class="section--seperated">
+    <section class="section--seperated" data-testid="detailReporter">
         <div class="container__details">
             <h2 class="h5">Gemeld door</h2>
             <ul class="list-clean incident-meta-list">
@@ -122,7 +141,7 @@
         </div>
     </section>
 
-    <section class="section--seperated">
+    <section class="section--seperated" data-testid="detailActions">
         <div class="container__details">
             <ul class="list-clean incident-meta-list">
                 {% if incident.magInBehandelingNemen %}
@@ -155,7 +174,7 @@
             {% endif %}
         </div>
     </section>
-
+</div>
     {% include('./snippets/modal_form_handle.html.twig') %}
 
 {% endblock %}
