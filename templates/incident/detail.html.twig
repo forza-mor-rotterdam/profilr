@@ -14,15 +14,19 @@
         {% if incident.fotos|length > 0 %}
             <div class="container__imageslider">
                 <div class="container__image">
-                    <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}" alt="" />
+                    <img src="{{ path('app_image_full', {'id': incident.fotos|first.id}) }}" alt="" data-detail-target="selectedImage" />
                 </div>
                 {% if incident.fotos|length > 1 %}
                 <div class="container__thumbs">
-                    <ul>
+                    <ul 
+                        data-detail-target="thumbList">
                         {% for foto in incident.fotos %}
-                        <li>
+                        <li 
+                            data-action="click->detail#selectImage"
+                            data-detail-image-source-param="{{ path('app_image_full', {'id': foto.id}) }}"
+                        >
                             <div class="container__image">
-                                <img src="{{ path('app_image_full', {'id': foto.id}) }}?thumbnail=true" alt="" />
+                                <img src="{{ path('app_image_full', {'id': foto.id}) }}?thumbnail=true" alt="" data-detail-target="selectedThumb" />
                             </div>
                         </li>
                         {% endfor %}
