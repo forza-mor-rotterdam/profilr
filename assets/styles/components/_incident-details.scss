@@ -82,6 +82,17 @@
     }
 }
 
+.container__map {
+    
+    .section--seperated & {
+        margin-bottom: -16px !important;
+    }
+
+    img {
+        width: 100%;
+    };
+}
+
 .incident-meta-list {
     li {
         margin-bottom: 0.5rem;
