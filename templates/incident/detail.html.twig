@@ -26,7 +26,7 @@
                             data-detail-image-source-param="{{ path('app_image_full', {'id': foto.id}) }}"
                         >
                             <div class="container__image">
-                                <img src="{{ path('app_image_full', {'id': foto.id}) }}?thumbnail=true" alt="" data-detail-target="selectedThumb" />
+                                <img src="{{ path('app_image_thumbnail', {'id': foto.id}) }}" alt="" data-detail-target="selectedThumb" />
                             </div>
                         </li>
                         {% endfor %}
