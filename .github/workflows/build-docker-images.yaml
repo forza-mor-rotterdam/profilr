@@ -1,0 +1,54 @@
+name: Create and publish a Docker image
+
+on: [push, pull_request]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  apps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta_frontend
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
+
+      - name: Build Nginx Docker image, don't push it
+        uses: docker/build-push-action@v3
+        with:
+          context: "{{defaultContext}}:frontend"
+          load: true
+          tags: ${{ steps.meta_frontend.outputs.tags }}
+          labels: ${{ steps.meta_frontend.outputs.labels }}
+
+      - name: Download manifest file from container
+        run: |
+          mkdir -p public/build/
+          id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:main)
+          docker cp $id:/srv/web/public/build/webpack-stats.json public/build/webpack-stats.json
+          docker rm -v $id
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta_backend
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
+
+      - name: Build and push backend Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: "{{defaultContext}}:backend"
+          load: true
+          tags: ${{ steps.meta_backend.outputs.tags }}
+          labels: ${{ steps.meta_backend.outputs.labels }}
+          
