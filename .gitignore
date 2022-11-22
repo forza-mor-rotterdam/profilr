@@ -10,10 +10,17 @@
 ###< symfony/framework-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
+**/node_modules/
 /node_modules/
-/public/build/
+/frontend/public/build/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 .php-version
+
+**/__pycache__/
+/__pycache__/
+*__py_cache*
+*.py[cod]
+*.pytest_cache*

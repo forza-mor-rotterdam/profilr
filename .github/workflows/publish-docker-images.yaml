@@ -9,7 +9,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  nginx-phpfpm:
+  apps:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,51 +27,47 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
-        id: meta_nginx
+        id: meta_frontend
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
 
       - name: Build Nginx Docker image, don't push it
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@v3
         with:
-          context: .
-          file: Dockerfile-nginx
+          context: "{{defaultContext}}:frontend"
           load: true
-          tags: ${{ steps.meta_nginx.outputs.tags }}
-          labels: ${{ steps.meta_nginx.outputs.labels }}
+          tags: ${{ steps.meta_frontend.outputs.tags }}
+          labels: ${{ steps.meta_frontend.outputs.labels }}
 
       - name: Download manifest file from container
         run: |
           mkdir -p public/build/
-          id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-nginx:main)
-          docker cp $id:/srv/web/public/build/manifest.json public/build/manifest.json
-          docker cp $id:/srv/web/public/build/entrypoints.json public/build/entrypoints.json
+          id=$(docker create ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:main)
+          docker cp $id:/srv/web/public/build/webpack-stats.json public/build/webpack-stats.json
           docker rm -v $id
 
-      - name: Push Nginx Docker image to registry
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      - name: Build and push frontend Docker image
+        uses: docker/build-push-action@v3
         with:
-          context: .
-          file: Dockerfile-nginx
+          context: "{{defaultContext}}:frontend"
           push: true
-          tags: ${{ steps.meta_nginx.outputs.tags }}
-          labels: ${{ steps.meta_nginx.outputs.labels }}
+          tags: ${{ steps.meta_frontend.outputs.tags }}
+          labels: ${{ steps.meta_frontend.outputs.labels }}
 
       - name: Extract metadata (tags, labels) for Docker
-        id: meta_phpfpm
+        id: meta_backend
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-phpfpm
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      - name: Build and push backend Docker image
+        uses: docker/build-push-action@v3
         with:
-          context: .
-          file: Dockerfile-phpfpm
+          context: "{{defaultContext}}:backend"
           push: true
-          tags: ${{ steps.meta_phpfpm.outputs.tags }}
-          labels: ${{ steps.meta_phpfpm.outputs.labels }}
+          tags: ${{ steps.meta_backend.outputs.tags }}
+          labels: ${{ steps.meta_backend.outputs.labels }}
       
       - name: Start rollout on k8s platform
         uses: actions-hub/kubectl@master
