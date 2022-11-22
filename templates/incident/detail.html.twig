@@ -1,11 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent()}}
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
+{% endblock %}
 
 {% block body %}
 
 <div 
     data-controller="detail"
+    data-detail-incident-x-value="{{ incident.locatie.x }}"
+    data-detail-incident-y-value="{{ incident.locatie.y }}"
     data-detail-area-list-value="{{ areas|json_encode() }}"
     data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
 >
@@ -114,8 +129,7 @@
                 </div>
                 {% endif %}
             </dl>
-            <div class="container__map full-width">
-                <img src="{{ asset('build/images/kaart.png') }}" alt="kaart locatie melding" />
+            <div class="container__map full-width" id="incidentMap">
             </div>
         </div>
     </section>
@@ -188,6 +202,5 @@
         </div>
     </section>
 </div>
-    {% include('./snippets/modal_form_handle.html.twig') %}
-
+{% include('./snippets/modal_form_handle.html.twig') %}
 {% endblock %}
