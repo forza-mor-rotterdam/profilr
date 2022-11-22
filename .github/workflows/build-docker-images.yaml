@@ -27,4 +27,12 @@ jobs:
           context: "{{defaultContext}}:backend"
           push: false
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
+
+      -
+        name: Build frontend
+        uses: docker/build-push-action@v3
+        with:
+          context: "{{defaultContext}}:frontend"
+          push: false
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
           
