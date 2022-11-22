@@ -1,7 +1,7 @@
 /**
  * Customizes Bootstrap to match the style of Rotterdam.
  */
- $rotterdam-ui-path: '.';
+ $rotterdam-ui-path: '../';
 
  // grijstinten zoals bekend bij In10 design
  // met overeenkomstige bootstrap naam
@@ -23,7 +23,7 @@ $green-tint02: #006E32;
 $green-tint03: #006E32;
 
 // magentatinten zoals bekend bij In10 design
-$magenta-tint01: #C93676;
+$magenta-tint01: #C93675;
 $magenta-tint02: #A12B5E;
 
 // herdefinieer de bootstrap grijswaarden op basis van in10 palet

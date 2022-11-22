@@ -10,12 +10,7 @@ export default class extends Controller {
     
 
     connect() {
-        console.log(this.departmentListValue)
-        const departmentsOptions = JSON.parse(this.departmentListValue)
-        console.log(departmentsOptions.length);
-        // console.log(this.areaListValue)
-        const areaOptions = JSON.parse(this.areaListValue);
-        console.log(areaOptions.length);
+        const areaOptions = JSON.parse(this.areaListValue)
         for(let i = 0; i < areaOptions.length; i++) {
             const opt = areaOptions[i];
             const el = document.createElement("option");
@@ -24,7 +19,7 @@ export default class extends Controller {
             this.areaListTarget.appendChild(el);
         }
 
-        console.log(departmentsOptions.length);
+        const departmentsOptions = JSON.parse(this.departmentListValue)
         
         const instruction = document.createElement("option");
         instruction.setAttribute('disabled', 'disabled');

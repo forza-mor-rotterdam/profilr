@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inloggen{% endblock %}
+
+{% block body %}
+<h1>Inloggen</h1>
+{% if error %} {{ error }} {% endif %}
+<form action="" method="post" data-testid="loginForm">
+    <div class="form-row">
+        <label for="_username">Personeelsnummer</label>
+        <input class="form-control" type="text" name="_username" id="_username" value="{{ last_username }}">
+    </div>
+    <div class="form-row">
+        <label for="_password">Wachtwoord</label>
+        <div class="container__toggle" data-controller="password">
+            <input
+                class="form-control"
+                type="password"
+                name="_password"
+                id="_password"
+                data-password-target="input"
+            >
+            {# <i class="password__toggle" id="togglePassword" style="margin-left: -30px; cursor: pointer;">o</i> #}
+            <img
+                src="{{ asset('build/icons/eye.svg') }}"
+                width="20"
+                alt=""
+                class="password__toggle"
+                id="togglePassword"
+                style="margin-left: -30px; cursor: pointer;"
+                data-action="click->password#toggle"
+                data-password-target="toggle"
+            />
+        </div>
+    </div>
+    <div class="form-row ">
+        <button class="btn btn-action" type="submit"><span>Inloggen</span></button>
+    </div>
+</form>
+
+{% endblock %}
