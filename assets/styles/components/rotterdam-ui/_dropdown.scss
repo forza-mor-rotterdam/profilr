@@ -1,0 +1,30 @@
+/**
+ * dropdown as used for translate button.
+ * see also rotterdam-theme, where caret for dropdowns is disabled
+ * (caret triangle is implemented as fat border around zero-sized content,
+ * with 3 out of 4 sides invisible.  that avoids drawing an svg or icon)
+ * TODO: do we need different behavior for user-profile dropdown?
+ */
+.dropdown-item {
+
+  &.active,
+  &:active {
+    color: $dark;
+    background-color: $gray-tint04;
+  }
+
+  &.active:after,
+  &:active:after {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'Icon-Line-Gemeente-Rotterdam' !important;
+    @extend %rtm-icon-base;
+    content: " " + $rtm-icon-line-check;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $black;
+    color: $white;
+  }
+
+}

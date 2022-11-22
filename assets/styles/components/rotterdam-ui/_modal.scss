@@ -1,0 +1,69 @@
+
+header {
+  .modal-dialog {
+    margin: 0 0 auto auto;
+    height: 100%;
+    max-width: 100%;
+    @include media-breakpoint-up(md) {
+      max-width: 21rem;
+    }
+
+    .modal-content {
+      min-height: 100%;
+    }
+
+
+  }
+
+  .modal-body {
+    padding: 0;
+  }
+}
+
+.modal-body {
+  padding-top: 0px;             // Do not generate extra space between header and body.
+                                // It will add unnecessary additional whitespace.
+}
+
+.modal-content {
+  border: none;                 // Disable border for the modal. Figma In10 design has no border.
+}
+
+.modal-footer {
+  border-top: none;             // Disable top line for the modal. Figma In10 design has no top line.
+}
+
+.modal-header {
+  align-items: normal;        // both h1 and button top of div; bootstrap says center
+  border-bottom: none;        // Disable bottom line for the modal. Figma In10 design has no bottom line.
+  padding-bottom: 4px;
+  h1.modal-title {
+    font-size: 40px;          // In10 wants modal-title somewhere between normal h1 and h2.
+    margin-top: 48px;
+    padding-right: 48px;
+  }
+  .btn-close {
+    background-color: black;
+    min-height: 32px;
+    min-width: 32px;
+    padding: 8px;             // Override bootstraps calculated button padding
+                              // ($modal-header-padding-y * .5) ($modal-header-padding-x * .5);
+    margin: 0 0 0 auto;
+    box-shadow: none;         // Disable shadow for the close button. Figma In10 design has no shadow/border.
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .modal-header {
+    padding-left: 24px;
+    h1.modal-title {
+      font-size: 24px;        // In10 wants smaller title on narrow window
+      margin-top: 32px;
+      padding-right: 24px;
+    }
+  }
+  .modal-body {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}

@@ -1,0 +1,13 @@
+/**
+ * In verband met WCAG zal de focus/hover state duidelijk zichtbaar worden gemaakt.
+ */
+@mixin outline (
+  $color
+) {
+  outline: solid $color 2px !important;
+  outline-offset: 2px !important;
+}
+
+*:focus-visible {
+  @include outline($focus-border-color);
+}
