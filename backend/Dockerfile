@@ -2,8 +2,6 @@ FROM python:3.9.15-slim-buster
 
 ENV PYTHONUNBUFFERED 1
 
-EXPOSE 8000
-
 WORKDIR /app/
 
 RUN apt-get update && apt-get install -y build-essential python-dev
