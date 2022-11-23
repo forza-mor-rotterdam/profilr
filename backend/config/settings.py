@@ -14,10 +14,10 @@ WSGI_APPLICATION = "config.wsgi.application"
 USE_TZ = True
 TIME_ZONE = "Europe/Amsterdam"
 
-DEFAULT_ALLOWED_HOSTS = '*.forzamor.nl,localhost,127.0.0.1'
+DEFAULT_ALLOWED_HOSTS = '.forzamor.nl,localhost,127.0.0.1'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', DEFAULT_ALLOWED_HOSTS).split(',')
 
-FRONTEND_URL = os.environ.get("FRONTEND_URL")
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
 
 INSTALLED_APPS = (
     "django.contrib.staticfiles",
