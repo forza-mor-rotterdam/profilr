@@ -1,0 +1,21 @@
+.full-page-view__filters {
+
+    .show-filters & {
+        .full-page-view__main {
+            opacity: 1;
+            transform: translateZ(0);   
+        }
+    }
+
+    .full-page-view__footer {
+
+        .btn {
+            width: 100%;
+            margin-bottom: $input-padding-x;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+    
