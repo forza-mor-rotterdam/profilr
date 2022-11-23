@@ -4,10 +4,26 @@
 {% load json_encode from profilr_tags %}
 {% block title %}{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent()}}
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+        crossorigin=""></script>
+{% endblock %}
+
 {% block body %}
 
 <div 
     data-controller="detail"
+    data-detail-incident-x-value="{{ incident.locatie.x }}"
+    data-detail-incident-y-value="{{ incident.locatie.y }}"
     data-detail-area-list-value="{{ areas|json_encode }}"
     data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
 >
@@ -20,9 +36,10 @@
                 </div>
                 {% if incident.fotos|length > 1 %}
                 <div class="container__thumbs">
-                    <ul>
+                    <ul data-detail-target="thumbList">
                         {% for foto in incident.fotos %}
-                        <li>
+                        <li data-action="click->detail#selectImage"
+                            data-detail-image-source-param="{% url 'image_full' foto.id %}">
                             <div class="container__image">
                                 <img src="{% url 'image_thumbnail' foto.id %}" alt="" />
                             </div>
@@ -112,6 +129,15 @@
                 </div>
                 {% endif %}
             </dl>
+            <div class="container__map full-width">
+                <div class="map" id="incidentMap">
+                    <div class="map__overlay">
+                        <span>
+                            Gebruik twee vingers om de kaart te verplaatsen
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -146,6 +172,12 @@
     <section class="section--seperated" data-testid="detailActions">
         <div class="container__details">
             <ul class="list-clean incident-meta-list">
+                <li>
+                    <a href="#" class="link--file-text">Mutatieregels</a>
+                </li>
+                <li>
+                    <a href="#" class="link--file">Bestanden</a>
+                </li>
                 {% if incident.magInBehandelingNemen %}
                 <li>
                     <a href="#" class="link--next">In behandeling nemen</a>
@@ -153,7 +185,7 @@
                 {% endif %}
                 {% if incident.magDoorsturenMelddesk %}
                 <li>
-                    <a href="#" class="link--next">Doorsturen naar Meld desk</a>
+                    <a href="#" class="link--next">Doorsturen</a>
                 </li>
                 {% endif %}
             </ul>
