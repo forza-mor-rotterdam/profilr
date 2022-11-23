@@ -1,9 +1,10 @@
 FROM node:18-bullseye AS node_step
 
+WORKDIR /srv/web/
 COPY . /srv/web/
-RUN cd /srv/web
-RUN npm install
-RUN npm run build
+RUN cd /srv/web \
+ && npm install \
+ && npm run build
 
 FROM nginx:latest
 
