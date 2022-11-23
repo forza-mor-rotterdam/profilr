@@ -43,7 +43,6 @@ export default class extends Controller {
         }
         document.getElementById('incidentMap').addEventListener('touchstart', onTwoFingerDrag);
         document.getElementById('incidentMap').addEventListener('touchend', onTwoFingerDrag);
-
     }
 
     selectImage(e) {

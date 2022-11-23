@@ -1,0 +1,22 @@
+{
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_er-f24dd6.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_er-f24dd6.js",
+  "build/fonts/Bolder-Bold.woff": "/build/fonts/Bolder-Bold.a717ad90.woff",
+  "build/fonts/Bolder-RegularItalic.woff": "/build/fonts/Bolder-RegularItalic.5390c333.woff",
+  "build/fonts/Bolder-Regular.woff": "/build/fonts/Bolder-Regular.42fdb9e5.woff",
+  "build/fonts/Bolder-Light.woff": "/build/fonts/Bolder-Light.56cdcb10.woff",
+  "build/fonts/Bolder-Bold.woff2": "/build/fonts/Bolder-Bold.d5e7cbf9.woff2",
+  "build/fonts/Bolder-RegularItalic.woff2": "/build/fonts/Bolder-RegularItalic.a748fcb4.woff2",
+  "build/fonts/Bolder-Regular.woff2": "/build/fonts/Bolder-Regular.4cbb37c6.woff2",
+  "build/fonts/Bolder-Light.woff2": "/build/fonts/Bolder-Light.7429b447.woff2",
+  "build/images/logo-rotterdam.svg": "/build/images/logo-rotterdam.svg",
+  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ar-049f80.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ar-049f80.js",
+  "build/images/person.svg": "/build/images/person.eae25366.svg",
+  "build/images/pin.svg": "/build/images/pin.808bb43f.svg",
+  "build/images/phone.svg": "/build/images/phone.372d5c6c.svg",
+  "build/images/close.svg": "/build/images/close.6c746ef9.svg",
+  "build/images/email.svg": "/build/images/email.9d828ce9.svg",
+  "build/images/arrow-right.svg": "/build/images/arrow-right.a9c91ff8.svg"
+}
