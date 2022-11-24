@@ -1,25 +1,33 @@
 from django.shortcuts import render, redirect
 from apps.services.msb import MSBService
-from django.http import HttpResponseRedirect
+from apps.services.profilr_api import ProfilrApi
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django import template
 import json
 from django.http import FileResponse
+from django.template import RequestContext
+from django.conf import settings
 
+from django.http import HttpResponse
+
+def http_response(request):
+    return HttpResponse('<h1>Hello HttpResponse</h1>')   
 
 def root(request):
     if not request.session.get('is_logged_in'):
         return redirect(reverse("login"))
 
-    wijken = request.session['wijken']
-    buurten = request.session['buurten']
-    afdelingen = request.session['afdelingen']
-
-    if not wijken or not buurten or not afdelingen:
+    if request.session.get("profile", None):
         return redirect(reverse("filter"))
     return redirect(reverse("incident_index"))
-    
+
+def logout(request):
+    MSBService.logout()
+    del request.session['msb_token']
+    request.session['is_logged_in'] = False
+    return redirect(reverse("root"))
 
 def login(request):
     if request.session.get('is_logged_in'):
@@ -60,9 +68,16 @@ def filter(request):
     categories = MSBService.get_onderwerpgroepen(user_token).get("result", [])
 
     if request.POST:
-        request.session['wijken'] = request.POST.get("wijken")
-        request.session['buurten'] = request.POST.get("buurten")
-        request.session['afdelingen'] = request.POST.get("afdelingen")
+        data = {
+            "filters": {
+                "wijken": request.POST.get("wijken"),
+                "buurten": request.POST.get("buurten"),
+                "afdelingen": request.POST.get("afdelingen"),
+            }
+        }
+        if settings.PROFILR_API_URL:
+            ProfilrApi.set_profile(user_token, data)
+        request.session['profile'] = data
         return redirect(reverse("incident_index"))
 
     return render(
@@ -80,21 +95,17 @@ def incident_index(request):
         return redirect(reverse("login"))
 
     user_token = request.session.get('msb_token')
-    wijken = request.session.get("wijken", [])
-    buurten = request.session.get("buurten", [])
-    afdelingen = request.session.get("afdelingen", [])
+    profile = request.session.get("profile", {})
+    if settings.PROFILR_API_URL:
+        profile = ProfilrApi.get_profile(user_token)
 
-    filters = {
-        "wijken": wijken,
-        "buurten": buurten,
-        "afdelingen": afdelingen,
-    }
-    incidents = MSBService.get_list(user_token, filters, no_cache=True).get("result", [])
+    filters = profile.get("filters", {})
+    incidents = MSBService.get_list(user_token, data=filters, no_cache=True).get("result", [])
 
     incidents = [{**i, **{
         "detail": MSBService.get_detail(i.get("id"), user_token).get("result", {})
     }} for i in incidents]
-    print(incidents)
+
     categories = MSBService.get_onderwerpgroepen(user_token).get("result", [])
 
     return render(
