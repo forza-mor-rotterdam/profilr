@@ -2,6 +2,7 @@ import os
 from os.path import join
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TRUE_VALUES = [True, "True", "true", "1"]
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
@@ -75,10 +76,10 @@ TEMPLATES = [
     }
 ]
 
-SECURE_SSL_REDIRECT = False
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = DEBUG
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SESSION_COOKIE_SECURE = not DEBUG
+# CSRF_COOKIE_SECURE = not DEBUG
 
 CACHES = {
     'default': {
@@ -89,4 +90,5 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache" 
 
-MSB_API_URL = os.getenv("MSB_API_URL", "http://localhost:42")
+MSB_API_URL = os.getenv("MSB_API_URL", "https://diensten.rotterdam.nl")
+PROFILR_API_URL = os.getenv("PROFILR_API_URL", "https://api.profilr.forzamor.nl")
