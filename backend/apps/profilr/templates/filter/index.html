@@ -22,7 +22,7 @@
                 {% for area in areas %}
                     <li>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="{{ area.code }}" name="area_{{ area.code }}" id="area_{{ area.code }}">
+                            <input class="form-check-input" type="checkbox" value="{{ area.code }}" name="wijken" id="area_{{ area.code }}">
                             <label class="form-check-label" for="area_{{ area.code }}">{{ area.omschrijving }}</label>
                         </div>
                         <div class="container__list--districts">
@@ -31,7 +31,7 @@
                             {% for district in area.buurten %}
                             <li>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ district.code }}" name="district_{{ district.code }}" id="district_{{ district.code }}">
+                                    <input class="form-check-input" type="checkbox" value="{{ district.code }}" name="buurten" id="district_{{ district.code }}">
                                     <label class="form-check-label" for="district_{{ district.code }}">{{ district.omschrijving }}</label>
                                 </div>
                             </li>
@@ -42,7 +42,7 @@
                 {% endfor %}
                 </ul>
             </div>
-            <div class="form-row">
+            <!-- <div class="form-row">
                 <label for="wijken">Wijk</label>
                 <select
                     class="form-control form-select"
@@ -51,9 +51,9 @@
                     data-incidentFilter-target="areaList"
                     data-action="change->incidentFilter#setDistrict"
                 ></select>
-            </div>
+            </div> -->
 
-            <div class="form-row">
+            <!-- <div class="form-row">
                 <label for="buurten">Buurt</label>
                 <select
                     class="form-control form-select"
@@ -61,7 +61,7 @@
                     id="buurten"
                     data-incidentFilter-target="districtList"
                 ></select>
-            </div>
+            </div> -->
 
             <div class="form-row">
                 <label for="afdelingen">Afdeling</label>

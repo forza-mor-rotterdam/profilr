@@ -67,6 +67,7 @@ def filter(request):
     departments = msb_api_service.get_afdelingen(user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)
 
+    print(request.POST)
     if request.POST:
         data = {
             "filters": {
