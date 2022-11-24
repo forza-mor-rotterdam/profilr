@@ -4,7 +4,7 @@
 
     .show-filters & {
         .full-page-view__main {
-            opacity: 1;
+            // opacity: 1;
             transform: translateZ(0);   
         }
     }
@@ -25,6 +25,11 @@
         margin-bottom: $input-padding-x;
         border-top: 1px solid $gray-tint04;
 
+
+        &:last-child{
+            border-bottom: 1px solid $gray-tint04;
+        }
+
         &--active {
             background-color: $gray-tint01;
             border: 0;
@@ -37,12 +42,13 @@
             position: relative;
 
             &::before {
-                content: url('../../icons/arrow-right.svg');
+                content: url('../icons/arrow-right.svg');
                 position: absolute;
                 top: 0;
                 left: 0;
                 transform: rotate(90deg);
             }
+            
         }
 
         &[open] {
@@ -59,4 +65,13 @@
         }
     }
 }
-    
+
+.container__list--districts {
+    background-color: $gray-tint01;
+    margin: 0 -8px 16px;
+    padding: 16px;
+
+    > *:first-child {
+        margin-top: 0;
+    }
+}

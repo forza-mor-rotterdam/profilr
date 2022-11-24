@@ -84,8 +84,8 @@ def filter(request):
         request,
         "filter/index.html",
         {
-            "areas": json.dumps(areas),
-            "departments": json.dumps(departments),
+            "areas": areas,
+            "departments": departments,
             "categories": categories,
         },
     )

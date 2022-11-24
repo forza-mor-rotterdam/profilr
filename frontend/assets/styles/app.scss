@@ -1,10 +1,11 @@
 @import "./rotterdam-theme";
 @import "./base";
-@import "./components/fonts.scss";
-@import "./components/buttons.scss";
-@import "./components/pageHeader.scss";
+@import "./components/fonts";
+@import "./components/full-page-view";
+@import "./components/buttons";
+@import "./components/pageHeader";
 @import "./components/forms";
 @import "./components/listIncidents";
 @import "./components/modal";
+@import "./components/filters";
 @import "./components/incident-details";
-

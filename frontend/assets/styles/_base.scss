@@ -141,10 +141,14 @@ p {
 
 // LISTS
 
+@mixin list-clean {
+    list-style-type: none;
+    padding: 0;
+}
+
 ul {
     &.list-clean {
-        list-style-type: none;
-        padding: 0;
+        @include list-clean();
     }
 }
 
@@ -159,9 +163,9 @@ dl {
         dt {
             margin-right: .5rem;
         }
-
     }
 }
+
 
 // SECTIONS
 section {

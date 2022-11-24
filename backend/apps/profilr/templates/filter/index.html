@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load json_encode from profilr_tags %}
 
 {% block title %}Filter op wijk en/of buurt{% endblock %}
 
@@ -6,12 +7,41 @@
 
     <div class="container__form" 
         data-controller="incidentFilter"
-        data-incidentFilter-area-list-value='{{ areas }}'
-        data-incidentFilter-department-list-value='{{ departments }}'
+        data-incidentFilter-area-list-value='{{ areas|json_encode }}'
+        data-incidentFilter-department-list-value='{{ departments|json_encode }}'
     >
         <h1>Filter op wijk en/of buurt</h1>
         <form action="" method="post" data-testid="incidentFilterForm">
             {% csrf_token %}
+            <h2 class="h4">Selecteer een wijk</h2>
+            <div
+                class="form-row"
+                data-incidentFilter-target="areaCheckboxes"
+            >
+                <ul class="list-clean">  
+                {% for area in areas %}
+                    <li>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{ area.code }}" name="area_{{ area.code }}" id="area_{{ area.code }}">
+                            <label class="form-check-label" for="area_{{ area.code }}">{{ area.omschrijving }}</label>
+                        </div>
+                        <div class="container__list--districts">
+                            <h3 class="h5">Buurten in deze wijk</h3>
+                            <ul class="list-clean">
+                            {% for district in area.buurten %}
+                            <li>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{ district.code }}" name="district_{{ district.code }}" id="district_{{ district.code }}">
+                                    <label class="form-check-label" for="district_{{ district.code }}">{{ district.omschrijving }}</label>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
             <div class="form-row">
                 <label for="wijken">Wijk</label>
                 <select
