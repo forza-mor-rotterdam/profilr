@@ -17,7 +17,62 @@
         </div>
         <div class="full-page-view__scroll-pane">
             <div class="full-page-view__content">
-                filters...
+                <form>
+                    <details class="filter filter--active">
+                        <summary>
+                            <span>Actieve filters</span>
+                            <span>(xx)</span>
+                        </summary>
+                        <fieldset>
+                            <ul>
+                                <li>
+                                    <h3 class="h5">Afdeling</h3>
+                                    <ul>
+                                        <li class="filter--active">
+                                            <span>Inzamelig Zuid</span>
+                                        </li>
+                                        <li class="filter--active">
+                                            <span>Inzamelig Zuid-AL</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h3 class="h5">Groep</h3>
+                                    <ul>
+                                        <li class="filter--active">
+                                            <span>Afval</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-tertiary">
+                                Wis alle filters
+                            </button>
+                        </fieldset>
+                    </details>
+                    <details class="filter">
+                        <summary>
+                            <span>Afdeling</span>
+                            <span>(xx)</span>
+                        </summary>
+                        <fieldset>
+                            <ul>
+                                <li>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="checkOne">
+                                        <label class="form-check-label" for="checkOne">Schone Stad inzameling Zuid</label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="checkTwo">
+                                        <label class="form-check-label" for="checkTwo">Schone Stad inzameling Zuid-AL</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </fieldset>
+                    </details>
+                </form>
             </div>
         </div>
         <div class="full-page-view__footer">

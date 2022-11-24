@@ -1,3 +1,5 @@
+// @use './../base' as base;
+
 .full-page-view__filters {
 
     .show-filters & {
@@ -15,6 +17,46 @@
             &:last-child {
                 margin-bottom: 0;
             }
+        }
+    }
+
+    .filter {
+        padding: $input-padding-x;
+        margin-bottom: $input-padding-x;
+        border-top: 1px solid $gray-tint04;
+
+        &--active {
+            background-color: $gray-tint01;
+            border: 0;
+        }
+
+        summary {
+            display: flex;
+            justify-content: space-between;
+            padding-left: 20px;
+            position: relative;
+
+            &::before {
+                content: url('./../../icons/arrow-right.svg');
+                position: absolute;
+                top: 0;
+                left: 0;
+                transform: rotate(90deg);
+            }
+            
+        }
+
+        &[open] {
+            summary {
+                &::before {
+                    transform: rotate(-90deg);
+                    left: 3px;
+                }
+            }
+        }
+        
+        ul {
+            @include list-clean();
         }
     }
 }
