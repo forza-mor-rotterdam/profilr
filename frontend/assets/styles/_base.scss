@@ -174,3 +174,16 @@ section {
         border-bottom: 1px solid $gray-tint04;
     }
 }
+
+// HELPER-CLASSES
+.foldout {
+    height: auto;
+    overflow: hidden;
+    
+
+    &.hidden {
+        height: 0;
+        padding: 0;
+        margin: 0;
+    }
+}

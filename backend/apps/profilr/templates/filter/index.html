@@ -16,54 +16,49 @@
             <h2 class="h4">Selecteer een wijk</h2>
             <div
                 class="form-row"
-                data-incidentFilter-target="areaCheckboxes"
             >
                 <ul class="list-clean">  
                 {% for area in areas %}
-                    <li>
+                    <li class="container__check-area">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="{{ area.code }}" name="wijken" id="area_{{ area.code }}">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value="{{ area.code }}"
+                                name="wijken"
+                                id="area_{{ area.code }}"
+                                data-action="change->incidentFilter#toggleArea"
+                            >
                             <label class="form-check-label" for="area_{{ area.code }}">{{ area.omschrijving }}</label>
                         </div>
-                        <div class="container__list--districts">
+                        {% if area.buurten %}
+                        <div class="container__list--districts foldout hidden">
                             <h3 class="h5">Buurten in deze wijk</h3>
                             <ul class="list-clean">
-                            {% for district in area.buurten %}
-                            <li>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ district.code }}" name="buurten" id="district_{{ district.code }}">
-                                    <label class="form-check-label" for="district_{{ district.code }}">{{ district.omschrijving }}</label>
-                                </div>
-                            </li>
-                            {% endfor %}
+                                {% for district in area.buurten %}
+                                <li>
+                                    <div class="form-check">
+                                        <input 
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            value="{{ district.code }}"
+                                            name="buurten"
+                                            id="district_{{ district.code }}"
+                                            data-action="change->incidentFilter#selectAreaFromDistrict"
+                                        >
+                                        <label class="form-check-label" for="district_{{ district.code }}">{{ district.omschrijving }}</label>
+                                    </div>
+                                </li>
+                                {% endfor %}
                             </ul>
                         </div>
+                        {% endif %}
                     </li>
                 {% endfor %}
                 </ul>
             </div>
+            
             <!-- <div class="form-row">
-                <label for="wijken">Wijk</label>
-                <select
-                    class="form-control form-select"
-                    name="wijken"
-                    id="wijken"
-                    data-incidentFilter-target="areaList"
-                    data-action="change->incidentFilter#setDistrict"
-                ></select>
-            </div> -->
-
-            <!-- <div class="form-row">
-                <label for="buurten">Buurt</label>
-                <select
-                    class="form-control form-select"
-                    name="buurten"
-                    id="buurten"
-                    data-incidentFilter-target="districtList"
-                ></select>
-            </div> -->
-
-            <div class="form-row">
                 <label for="afdelingen">Afdeling</label>
                 <select
                     class="form-control form-select"
@@ -71,7 +66,7 @@
                     id="afdelingen"
                     data-incidentFilter-target="departmentList"
                 ></select>
-            </div>
+            </div> -->
             <div class="form-row container__button">
                 <button type="submit" class="btn btn-action"><span>Filter</span></button>
             </div>
