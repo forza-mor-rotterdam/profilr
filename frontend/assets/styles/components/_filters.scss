@@ -62,6 +62,14 @@
         
         ul {
             @include list-clean();
+
+            &.list-filters--active {
+                li {
+                    display: inline-block;
+                    margin-right: 8px;
+                }
+            }
+
         }
     }
 }

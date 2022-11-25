@@ -27,12 +27,23 @@
                             <ul>
                                 <li>
                                     <h3 class="h5">Afdeling</h3>
-                                    <ul>
-                                        <li class="filter--active">
-                                            <span>Inzamelig Zuid</span>
+                                    <ul class="list-filters--active">
+                                        <li>
+                                            <button
+                                                class="btn btn-secondary btn-filter--active"
+                                                data-action="click->filter#removeFilter"    
+                                            >
+                                                <span>Inzamelig Zuid</span>
+                                            </button>
+                                            
                                         </li>
                                         <li class="filter--active">
-                                            <span>Inzamelig Zuid-AL</span>
+                                            <button
+                                                class="btn btn-secondary btn-filter--active"
+                                                data-action="click->filter#removeFilter"    
+                                            >
+                                                <span>Inzamelig Zuid-AL</span>
+                                            </button>
                                         </li>
                                     </ul>
                                 </li>
@@ -40,13 +51,18 @@
                                     <h3 class="h5">Groep</h3>
                                     <ul>
                                         <li class="filter--active">
-                                            <span>Afval</span>
+                                            <button
+                                                class="btn btn-secondary btn-filter--active"
+                                                data-action="click->filter#removeFilter"    
+                                            >
+                                                <span>Afval</span>
+                                            </button>
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
-                            <button type="button" class="btn btn-tertiary">
-                                Wis alle filters
+                            <button type="button" class="btn btn-secondary">
+                                Actieve filters opslaan
                             </button>
                             <button type="button" class="btn btn-tertiary">
                                 Wis alle filters
