@@ -32,7 +32,7 @@
         {% if incident.fotos|length > 0 %}
             <div class="container__imageslider">
                 <div class="container__image">
-                    <img src="{% url 'image_full' incident.fotos.0.id %}" alt="" />
+                    <img src="{% url 'image_full' incident.fotos.0.id %}" alt="" data-detail-target="selectedImage" />
                 </div>
                 {% if incident.fotos|length > 1 %}
                 <div class="container__thumbs">
