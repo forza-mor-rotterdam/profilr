@@ -71,9 +71,9 @@ def filter(request):
     if request.POST:
         data = {
             "filters": {
-                "wijken": request.POST.get("wijken"),
-                "buurten": request.POST.get("buurten"),
-                "afdelingen": request.POST.get("afdelingen"),
+                "wijken": request.POST.getlist("wijken"),
+                "buurten": request.POST.getlist("buurten"),
+                "afdelingen": request.POST.getlist("afdelingen"),
             }
         }
         if settings.ENABLE_PROFILR_API:
