@@ -6,6 +6,8 @@ set -x
 echo Collecting static files
 python manage.py collectstatic --no-input
 
+chmod -R ugo+rwx /srv/web/var/cache
+
 chmod -R 777 /static
 
 exec uwsgi --ini /app/deploy/config.ini
