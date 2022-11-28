@@ -47,7 +47,7 @@ jobs:
         id: meta_backend
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-phpfpm
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-app
 
       - name: Build and push backend Docker image
         uses: docker/build-push-action@v3
