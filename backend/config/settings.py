@@ -19,6 +19,7 @@ DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
 
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
+PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
 
 INSTALLED_APPS = (
     "django.contrib.staticfiles",
@@ -51,11 +52,9 @@ MEDIA_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), "media"))
 WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": not DEBUG,
-        # 'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
         "POLL_INTERVAL": 0.1,
         "IGNORE": [r".+\.hot-update.js", r".+\.map"],
         "LOADER_CLASS": "config.webpack.ExternalWebpackLoader",
-        # Custom config setting made available in WebpackLoader's self.config
         "STATS_URL": f"{FRONTEND_URL}/build/webpack-stats.json",
     }
 }
