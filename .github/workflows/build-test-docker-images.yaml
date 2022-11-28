@@ -1,0 +1,23 @@
+name: 'Install, lint, test & build'
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v3.1.2
+      with:
+        python-version: 3.9.7
+    - name: Linting
+      run: bash bin/cleanup_pre_commit.sh
+    - name: Build Docker images
+      run: docker-compose build
+    - name: Create Docker network
+      run: docker network create profilr_network
+    - name: Start images
+      run: docker-compose up -d
+    - name: Run Tests
+      run: docker-compose exec -T backend python manage.py test
