@@ -7,6 +7,7 @@ class ServicesConfig(AppConfig):
     verbose_name = "Health"
 
     def ready(self):
-        from apps.health.custom_checks import ProfilRAPIHealthCheck, MSBAPIHealthCheck
+        from apps.health.custom_checks import MSBAPIHealthCheck, ProfilRAPIHealthCheck
+
         plugin_dir.register(MSBAPIHealthCheck)
         plugin_dir.register(ProfilRAPIHealthCheck)

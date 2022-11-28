@@ -28,7 +28,6 @@ INSTALLED_APPS = (
     "health_check",
     "health_check.cache",
     "health_check.storage",
-
     # Apps
     "apps.profilr",
     "apps.health",
