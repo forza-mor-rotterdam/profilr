@@ -28,6 +28,7 @@ def logout(request):
 
 
 def login(request):
+    request.session["session_var"] = "session_value"
     if request.session.get("is_logged_in"):
         return redirect(reverse("filter"))
     error = None
@@ -51,6 +52,7 @@ def login(request):
         {
             "last_username": request.POST.get("_username", ""),
             "error": error,
+            "session_var": request.session["session_var"],
         },
     )
 

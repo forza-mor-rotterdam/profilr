@@ -4,7 +4,7 @@
 {% block title %}Inloggen{% endblock %}
 
 {% block body %}
-<h1>Inloggen</h1>
+<h1>Inloggen {{session_var}}</h1>
 {% if error %} {{ error }} {% endif %}
 <form action="" method="post" data-testid="loginForm">
     {% csrf_token %}
