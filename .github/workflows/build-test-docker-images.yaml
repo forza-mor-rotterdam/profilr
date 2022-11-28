@@ -13,7 +13,7 @@ jobs:
         python-version: 3.9.7
     - name: Linting
       run: bash bin/cleanup_pre_commit.sh
-    - name: Build Docker image backend
+    - name: Build Docker images
       run: docker-compose build
     - name: Create Docker network
       run: docker network create profilr_network
