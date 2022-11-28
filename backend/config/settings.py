@@ -25,8 +25,12 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "rest_framework",
     "webpack_loader",
+    "health_check",
+    "health_check.cache",
+    "health_check.storage",
     # Apps
     "apps.profilr",
+    "apps.health",
 )
 
 MIDDLEWARE = (
