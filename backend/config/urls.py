@@ -1,7 +1,14 @@
+from apps.profilr.views import (
+    filter,
+    image_full,
+    image_thumbnail,
+    incident_detail,
+    incident_index,
+    login,
+    logout,
+    root,
+)
 from django.urls import path
-from django.conf import settings
-from apps.profilr.views import filter, login, logout, root, incident_index, incident_detail, image_full, image_thumbnail
-
 
 urlpatterns = [
     path("", root, name="root"),

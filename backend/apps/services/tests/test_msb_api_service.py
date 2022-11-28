@@ -1,7 +1,8 @@
-from django.conf import settings
-from django.test import SimpleTestCase
-from ..msb import MSBService
 from unittest.mock import MagicMock, patch
+
+from django.test import SimpleTestCase
+
+from ..msb import MSBService
 
 
 class APIServiceTest(SimpleTestCase):
@@ -16,8 +17,8 @@ class APIServiceTest(SimpleTestCase):
         self.assertEquals(msb_api_service.__class__.__name__, "MSBService")
         self.assertEquals(msb_api_service.__class__.__mro__[1].__name__, "APIService")
 
-    @patch('apps.services.base.cache')
-    @patch('apps.services.base.requests')
+    @patch("apps.services.base.cache")
+    @patch("apps.services.base.requests")
     def test_get_list(self, mock_requests, mock_cache):
         """
         Tests get_list
@@ -29,10 +30,12 @@ class APIServiceTest(SimpleTestCase):
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
-            'success': True,
-            'result': [{
-                "mock_key": "mock_result",            
-            }],
+            "success": True,
+            "result": [
+                {
+                    "mock_key": "mock_result",
+                }
+            ],
         }
 
         mock_requests.post.return_value.status_code = 200
@@ -48,8 +51,8 @@ class APIServiceTest(SimpleTestCase):
         self.assertEquals(len(response), 1)
         self.assertEquals(response[0].get("mock_key"), "mock_result")
 
-    @patch('apps.services.base.cache')
-    @patch('apps.services.base.requests')
+    @patch("apps.services.base.cache")
+    @patch("apps.services.base.requests")
     def test_get_list_from_cache(self, mock_requests, mock_cache):
         """
         Tests get_list from cache
@@ -57,10 +60,12 @@ class APIServiceTest(SimpleTestCase):
 
         mock_response = MagicMock()
         mock_response.json.return_value = {
-            'success': True,
-            'result': [{
-                "mock_key": "mock_result",            
-            }],
+            "success": True,
+            "result": [
+                {
+                    "mock_key": "mock_result",
+                }
+            ],
         }
         mock_cache.get.return_value = mock_response
         mock_token = "mock_token"
@@ -70,4 +75,3 @@ class APIServiceTest(SimpleTestCase):
 
         self.assertEquals(len(response), 1)
         self.assertEquals(response[0].get("mock_key"), "mock_result")
-

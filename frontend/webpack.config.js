@@ -85,15 +85,15 @@ let config = {
         new MiniCssExtractPlugin(),
         new CopyPlugin({
             patterns: [
-                { 
-                    from: './assets/images/*.*', 
+                {
+                    from: './assets/images/*.*',
                     globOptions: {
                         patterns: "*.+(png|jpg|jpeg|svg)",
                     },
                     to: 'images/[path][name][ext]'
                 },
                 {
-                    from: './assets/icons/*.svg', 
+                    from: './assets/icons/*.svg',
                     to: 'icons/[path][name][ext]'
                 }
             ],
@@ -108,10 +108,9 @@ module.exports = (env, argv) => {
       config.devtool = 'source-map';
       config.output.filename = "[name].js";
     }
-  
+
     if (argv.mode === 'production') {
     }
-  
+
     return config;
 };
-

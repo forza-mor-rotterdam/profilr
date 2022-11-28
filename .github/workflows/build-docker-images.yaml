@@ -35,4 +35,3 @@ jobs:
           context: "{{defaultContext}}:frontend"
           push: false
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
-          

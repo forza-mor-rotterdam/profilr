@@ -1,12 +1,11 @@
-import requests
-from requests import Response
-from django.conf import settings
-from django.core.cache import cache
 from urllib.parse import urlencode
+
+import requests
+from django.core.cache import cache
+from requests import Response
 
 
 class BaseAPIService:
-
     def __init__(self, *args, **kwargs):
         assert not args
         assert not kwargs
@@ -71,7 +70,7 @@ class APIService(BaseAPIService):
             action_params = {
                 "url": url,
                 "headers": headers,
-                "json" if self._json_enabled else "data" : data,
+                "json" if self._json_enabled else "data": data,
                 "timeout": self._timeout,
             }
             response = action(**action_params)

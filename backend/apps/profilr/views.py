@@ -1,35 +1,34 @@
-from django.shortcuts import render, redirect
-from apps.services import msb_api_service, profilr_api_service
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
-from django.utils.safestring import mark_safe
-from django import template
 import json
-from django.http import FileResponse
-from django.template import RequestContext
-from django.conf import settings
 
-from django.http import HttpResponse
+from apps.services import msb_api_service, profilr_api_service
+from django.conf import settings
+from django.http import FileResponse, HttpResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+
 
 def http_response(request):
-    return HttpResponse('<h1>Hello HttpResponse</h1>')   
+    return HttpResponse("<h1>Hello HttpResponse</h1>")
+
 
 def root(request):
-    if not request.session.get('is_logged_in'):
+    if not request.session.get("is_logged_in"):
         return redirect(reverse("login"))
 
     if request.session.get("profile", None):
         return redirect(reverse("filter"))
     return redirect(reverse("incident_index"))
 
+
 def logout(request):
     msb_api_service.logout()
-    del request.session['msb_token']
-    request.session['is_logged_in'] = False
+    del request.session["msb_token"]
+    request.session["is_logged_in"] = False
     return redirect(reverse("root"))
 
+
 def login(request):
-    if request.session.get('is_logged_in'):
+    if request.session.get("is_logged_in"):
         return redirect(reverse("filter"))
     error = None
     if request.POST:
@@ -38,30 +37,30 @@ def login(request):
             request.POST.get("_password"),
         )
         if success:
-            request.session['msb_token'] = user_token
-            request.session['is_logged_in'] = True
+            request.session["msb_token"] = user_token
+            request.session["is_logged_in"] = True
 
             return redirect(reverse("filter"))
         else:
-            request.session['is_logged_in'] = False
+            request.session["is_logged_in"] = False
             error = "invalid_username_or_password"
-
 
     return render(
         request,
-        'login/index.html',
+        "login/index.html",
         {
             "last_username": request.POST.get("_username", ""),
             "error": error,
         },
     )
 
+
 def filter(request):
 
-    if not request.session.get('is_logged_in'):
+    if not request.session.get("is_logged_in"):
         return redirect(reverse("login"))
 
-    user_token = request.session.get('msb_token')
+    user_token = request.session.get("msb_token")
     areas = msb_api_service.get_wijken(user_token)
     departments = msb_api_service.get_afdelingen(user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)
@@ -76,7 +75,7 @@ def filter(request):
         }
         if settings.ENABLE_PROFILR_API:
             profilr_api_service.set_profile(user_token, data)
-        request.session['profile'] = data
+        request.session["profile"] = data
         return redirect(reverse("incident_index"))
 
     return render(
@@ -86,14 +85,15 @@ def filter(request):
             "areas": json.dumps(areas),
             "departments": json.dumps(departments),
             "categories": categories,
-        }
+        },
     )
 
+
 def incident_index(request):
-    if not request.session.get('is_logged_in'):
+    if not request.session.get("is_logged_in"):
         return redirect(reverse("login"))
 
-    user_token = request.session.get('msb_token')
+    user_token = request.session.get("msb_token")
     profile = request.session.get("profile", {})
     if settings.ENABLE_PROFILR_API:
         profile = profilr_api_service.get_profile(user_token)
@@ -101,9 +101,10 @@ def incident_index(request):
     filters = profile.get("filters", {})
     incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
     print(incidents)
-    incidents = [{**i, **{
-        "detail": msb_api_service.get_detail(i.get("id"), user_token)
-    }} for i in incidents]
+    incidents = [
+        {**i, **{"detail": msb_api_service.get_detail(i.get("id"), user_token)}}
+        for i in incidents
+    ]
 
     categories = msb_api_service.get_onderwerpgroepen(user_token)
 
@@ -113,17 +114,22 @@ def incident_index(request):
         {
             "incidents": incidents,
             "groupedSubjects": categories,
-        }
+        },
     )
 
+
 def incident_detail(request, id):
-    if not request.session.get('is_logged_in'):
+    if not request.session.get("is_logged_in"):
         return redirect(reverse("login"))
 
-    user_token = request.session.get('msb_token')
+    user_token = request.session.get("msb_token")
     incident = msb_api_service.get_detail(id, user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)
-    sub_cat_ids = {sub_cat.get("id"): cat for cat in categories for sub_cat in cat.get("onderwerpen")}
+    sub_cat_ids = {
+        sub_cat.get("id"): cat
+        for cat in categories
+        for sub_cat in cat.get("onderwerpen")
+    }
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
     areas = msb_api_service.get_wijken(user_token)
 
@@ -135,7 +141,7 @@ def incident_detail(request, id):
             "incident": incident,
             "groupedSubjects": categories,
             "areas": areas,
-        }
+        },
     )
 
 
@@ -144,10 +150,9 @@ def image_thumbnail(request, id):
 
 
 def image_full(request, id, thumbnail=False):
-    if not request.session.get('is_logged_in'):
+    if not request.session.get("is_logged_in"):
         return redirect(reverse("login"))
-    user_token = request.session.get('msb_token')
+    user_token = request.session.get("msb_token")
 
     blob = msb_api_service.get_foto(id, user_token, thumbnail)
     return FileResponse(blob)
-    
