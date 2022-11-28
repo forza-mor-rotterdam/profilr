@@ -7,9 +7,6 @@ WORKDIR /app/
 RUN apt-get update && apt-get install -y build-essential python-dev
 RUN pip install --upgrade pip
 
-ARG GITHUB_SHA=no_git_sha
-ENV GIT_SHA=$GITHUB_SHA
-
 COPY . /app/
 
 RUN mkdir -p /media && mkdir -p /static && chown 2000 /media && chown 2000 /static
