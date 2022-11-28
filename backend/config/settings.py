@@ -22,6 +22,7 @@ GIT_SHA = os.environ.get("GITHUB_SHA", "no_git_sha")
 
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
 PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
+ENABLE_PROFILR_API = os.environ.get("ENABLE_PROFILR_API", False)
 
 INSTALLED_APPS = (
     "django.contrib.staticfiles",

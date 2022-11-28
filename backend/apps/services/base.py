@@ -74,6 +74,7 @@ class APIService(BaseAPIService):
                 "timeout": self._timeout,
             }
             response = action(**action_params)
+            print(response.text)
             response.raise_for_status()
 
             if int(response.status_code) >= 200 and int(response.status_code) < 300:

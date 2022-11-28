@@ -41,7 +41,7 @@ def login(request):
             request.session["msb_token"] = user_token
             request.session["is_logged_in"] = True
 
-            return redirect(reverse("filter"))
+            # return redirect(reverse("filter"))
         else:
             request.session["is_logged_in"] = False
             error = "invalid_username_or_password"
@@ -52,7 +52,8 @@ def login(request):
         {
             "last_username": request.POST.get("_username", ""),
             "error": error,
-            "session_var": request.session["session_var"],
+            "token": request.session.get("msb_token"),
+            "logged_in": request.session.get("is_logged_in"),
         },
     )
 
