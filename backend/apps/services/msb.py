@@ -17,7 +17,12 @@ class MSBService(APIService):
             "pwd": password,
         }
         response_data = self.do_request(
-            "login", user_token=None, method=APIService.POST, data=data, no_cache=True
+            "login",
+            user_token=None,
+            method=APIService.POST,
+            data=data,
+            no_cache=True,
+            raw_response=True,
         )
         response_data = response_data.json()
         return bool(response_data.get("success")), response_data.get("result")
