@@ -18,6 +18,8 @@ TIME_ZONE = "Europe/Amsterdam"
 DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
 
+GIT_SHA = os.environ.get("GIT_SHA")
+
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
 PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
 
@@ -73,6 +75,7 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
+                "config.context_processors.general_settings",
             ],
         },
     }
