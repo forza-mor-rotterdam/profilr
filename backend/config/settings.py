@@ -86,7 +86,7 @@ CSRF_COOKIE_SECURE = not DEBUG
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": "/var/tmp/django_cache",
+        "LOCATION": "/srv/web/var/cache",
     }
 }
 
