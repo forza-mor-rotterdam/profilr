@@ -14,6 +14,7 @@ let config = {
       path: path.resolve('./public/build/'),
       filename: "[name]-[hash].js",
       publicPath: "/build/",
+      publicPath: "http://localhost:3000/build/",
       clean: true
     },
     devServer: {
