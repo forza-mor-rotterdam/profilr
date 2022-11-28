@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
-from apps.services.msb import MSBService
-from apps.services.profilr_api import ProfilrApi
+from apps.services import msb_api_service, profilr_api_service
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -24,7 +23,7 @@ def root(request):
     return redirect(reverse("incident_index"))
 
 def logout(request):
-    MSBService.logout()
+    msb_api_service.logout()
     del request.session['msb_token']
     request.session['is_logged_in'] = False
     return redirect(reverse("root"))
@@ -34,7 +33,7 @@ def login(request):
         return redirect(reverse("filter"))
     error = None
     if request.POST:
-        success, user_token = MSBService.login(
+        success, user_token = msb_api_service.login(
             request.POST.get("_username"),
             request.POST.get("_password"),
         )
@@ -63,9 +62,9 @@ def filter(request):
         return redirect(reverse("login"))
 
     user_token = request.session.get('msb_token')
-    areas = MSBService.get_wijken(user_token).get("result", [])
-    departments = MSBService.get_afdelingen(user_token).get("result", [])
-    categories = MSBService.get_onderwerpgroepen(user_token).get("result", [])
+    areas = msb_api_service.get_wijken(user_token)
+    departments = msb_api_service.get_afdelingen(user_token)
+    categories = msb_api_service.get_onderwerpgroepen(user_token)
 
     if request.POST:
         data = {
@@ -75,8 +74,8 @@ def filter(request):
                 "afdelingen": request.POST.get("afdelingen"),
             }
         }
-        if settings.PROFILR_API_URL:
-            ProfilrApi.set_profile(user_token, data)
+        if settings.ENABLE_PROFILR_API:
+            profilr_api_service.set_profile(user_token, data)
         request.session['profile'] = data
         return redirect(reverse("incident_index"))
 
@@ -96,17 +95,17 @@ def incident_index(request):
 
     user_token = request.session.get('msb_token')
     profile = request.session.get("profile", {})
-    if settings.PROFILR_API_URL:
-        profile = ProfilrApi.get_profile(user_token)
-
+    if settings.ENABLE_PROFILR_API:
+        profile = profilr_api_service.get_profile(user_token)
+    print(profile)
     filters = profile.get("filters", {})
-    incidents = MSBService.get_list(user_token, data=filters, no_cache=True).get("result", [])
-
+    incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
+    print(incidents)
     incidents = [{**i, **{
-        "detail": MSBService.get_detail(i.get("id"), user_token).get("result", {})
+        "detail": msb_api_service.get_detail(i.get("id"), user_token)
     }} for i in incidents]
 
-    categories = MSBService.get_onderwerpgroepen(user_token).get("result", [])
+    categories = msb_api_service.get_onderwerpgroepen(user_token)
 
     return render(
         request,
@@ -122,11 +121,11 @@ def incident_detail(request, id):
         return redirect(reverse("login"))
 
     user_token = request.session.get('msb_token')
-    incident = MSBService.get_detail(id, user_token).get("result", {})
-    categories = MSBService.get_onderwerpgroepen(user_token).get("result", [])
+    incident = msb_api_service.get_detail(id, user_token)
+    categories = msb_api_service.get_onderwerpgroepen(user_token)
     sub_cat_ids = {sub_cat.get("id"): cat for cat in categories for sub_cat in cat.get("onderwerpen")}
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
-    areas = MSBService.get_wijken(user_token).get("result", [])
+    areas = msb_api_service.get_wijken(user_token)
 
     return render(
         request,
@@ -149,6 +148,6 @@ def image_full(request, id, thumbnail=False):
         return redirect(reverse("login"))
     user_token = request.session.get('msb_token')
 
-    blob = MSBService.get_foto(id, user_token, thumbnail)
+    blob = msb_api_service.get_foto(id, user_token, thumbnail)
     return FileResponse(blob)
     
