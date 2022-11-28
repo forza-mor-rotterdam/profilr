@@ -1,15 +1,29 @@
-body.show-modal {
+@mixin bodyModal {
     overflow: hidden;
     padding-right: 0;
+}
+
+@mixin modalVisible {
+    opacity: 1;
+    visibility: visible;
+
+    .modal-backdrop {
+        display: block;
+        opacity: 0.5;
+    }
+}
+
+body.show-modal {
+    @include bodyModal();
 
     .modal {
-        opacity: 1;
-        visibility: visible;
+        @include modalVisible()
+    }
+}
 
-        &-backdrop {
-            display: block;
-            opacity: 0.5;
-        }
+body.show-modal--area-filter {
+    .modal--area-filter {
+        @include modalVisible()
     }
 }
 

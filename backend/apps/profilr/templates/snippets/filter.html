@@ -1,7 +1,7 @@
 <div 
     class="full-page-view full-page-view__filters"
     tabindex="0"
-    data-controller="filter"
+    data-controller="filter--filter"
 >
     <div class="full-page-view__main">
         <div class="full-page-view__header">
@@ -11,7 +11,7 @@
                     type="button"
                     class="btn btn-close"
                     aria-label="Sluit"
-                    data-action="click->filter#hideFilters"
+                    data-action="click->filter--filter#hideFilters"
                 ></button>    
             </div>
         </div>
@@ -31,7 +31,7 @@
                                         <li>
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
-                                                data-action="click->filter#removeFilter"    
+                                                data-action="click->filter--filter#removeFilter"    
                                             >
                                                 <span>Inzamelig Zuid</span>
                                             </button>
@@ -40,7 +40,7 @@
                                         <li class="filter--active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
-                                                data-action="click->filter#removeFilter"    
+                                                data-action="click->filter--filter#removeFilter"    
                                             >
                                                 <span>Inzamelig Zuid-AL</span>
                                             </button>
@@ -53,7 +53,7 @@
                                         <li class="filter--active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
-                                                data-action="click->filter#removeFilter"    
+                                                data-action="click->filter--filter#removeFilter"    
                                             >
                                                 <span>Afval</span>
                                             </button>

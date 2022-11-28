@@ -15,8 +15,6 @@ def root(request):
     if not request.session.get("is_logged_in", False):
         return redirect(reverse("login"))
 
-    if request.session.get("profile", None):
-        return redirect(reverse("filter"))
     return redirect(reverse("incident_index"))
 
 
@@ -28,8 +26,8 @@ def logout(request):
 
 
 def login(request):
-    if request.session.get("is_logged_in", False):
-        return redirect(reverse("filter"))
+    if request.session.get('is_logged_in'):
+        return redirect(reverse("incident_index"))
     error = None
     if request.POST:
         success, user_token = msb_api_service.login(
@@ -40,7 +38,7 @@ def login(request):
             request.session["msb_token"] = user_token
             request.session["is_logged_in"] = True
 
-            return redirect(reverse("filter"))
+            return redirect(reverse("incident_index"))
         else:
             request.session["is_logged_in"] = False
             error = "invalid_username_or_password"
@@ -100,6 +98,21 @@ def incident_index(request):
     profile = request.session.get("profile", {})
     if settings.ENABLE_PROFILR_API:
         profile = profilr_api_service.get_profile(user_token)
+    
+    print(request.POST)
+    if request.POST:
+        profile = {
+            "filters": {
+                "wijken": request.POST.getlist("wijken"),
+                "buurten": request.POST.getlist("buurten"),
+                "afdelingen": request.POST.getlist("afdelingen"),
+            }
+        }
+        if settings.ENABLE_PROFILR_API:
+            profilr_api_service.set_profile(user_token, profile)
+        request.session['profile'] = profile
+        return redirect(reverse("incident_index"))
+
     print(profile)
     filters = profile.get("filters", {"radius": 200, "x": 92441, "y": 437718})
     incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
@@ -109,7 +122,11 @@ def incident_index(request):
         for i in incidents
     ]
 
+    # incidents = [{**i, **{
+    #     "detail": MSBService.get_detail(i.get("id"), user_token).get("result", {})
+    # }} for i in incidents]
     categories = msb_api_service.get_onderwerpgroepen(user_token)
+    areas = msb_api_service.get_wijken(user_token)
 
     return render(
         request,
@@ -117,7 +134,9 @@ def incident_index(request):
         {
             "incidents": incidents,
             "groupedSubjects": categories,
-        },
+            "filters": filters,
+            "areas": areas,
+        }
     )
 
 
