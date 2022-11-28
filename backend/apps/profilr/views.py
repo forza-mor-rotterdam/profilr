@@ -12,7 +12,7 @@ def http_response(request):
 
 
 def root(request):
-    if not request.session.get("is_logged_in"):
+    if not request.session.get("is_logged_in", False):
         return redirect(reverse("login"))
 
     if request.session.get("profile", None):
@@ -29,7 +29,7 @@ def logout(request):
 
 def login(request):
     request.session["session_var"] = "session_value"
-    if request.session.get("is_logged_in"):
+    if request.session.get("is_logged_in", False):
         return redirect(reverse("filter"))
     error = None
     if request.POST:
@@ -60,7 +60,7 @@ def login(request):
 
 def filter(request):
 
-    if not request.session.get("is_logged_in"):
+    if not request.session.get("is_logged_in", False):
         return redirect(reverse("login"))
 
     user_token = request.session.get("msb_token")
@@ -93,7 +93,7 @@ def filter(request):
 
 
 def incident_index(request):
-    if not request.session.get("is_logged_in"):
+    if not request.session.get("is_logged_in", False):
         return redirect(reverse("login"))
 
     user_token = request.session.get("msb_token")
