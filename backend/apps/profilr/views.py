@@ -4,6 +4,8 @@ from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+DEFAULT_PROFILE = {"filters": {"radius": 200, "x": 92441, "y": 437718}}
+
 
 def http_response(request):
     return HttpResponse("<h1>Hello HttpResponse</h1>")
@@ -19,7 +21,7 @@ def root(request):
 def logout(request):
     msb_api_service.logout()
     request.session["msb_token"] = None
-    request.session["profile"] = None
+    request.session["profile"] = DEFAULT_PROFILE
     request.session["is_logged_in"] = False
     return redirect(reverse("root"))
 
@@ -94,7 +96,7 @@ def incident_index(request):
         return redirect(reverse("login"))
 
     user_token = request.session.get("msb_token")
-    profile = request.session.get("profile", {})
+    profile = request.session.get("profile", DEFAULT_PROFILE)
     if settings.ENABLE_PROFILR_API:
         profile = profilr_api_service.get_profile(user_token)
 
@@ -113,7 +115,7 @@ def incident_index(request):
         return redirect(reverse("incident_index"))
 
     print(profile)
-    filters = profile.get("filters", {"radius": 200, "x": 92441, "y": 437718})
+    filters = profile.get("filters", DEFAULT_PROFILE.get("filters"))
     incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
     print(incidents)
     incidents = [
