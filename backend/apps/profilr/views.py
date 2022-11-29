@@ -127,6 +127,23 @@ def incident_index(request):
     categories = msb_api_service.get_onderwerpgroepen(user_token)
     areas = msb_api_service.get_wijken(user_token)
 
+    # create key value lookups for filter options
+    afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
+    wijken_dict = {w.get("code"): w.get("omschrijving") for w in areas}
+    buurten_dict = {
+        b.get("code"): b.get("omschrijving")
+        for w in areas
+        for b in w.get("buurten", [])
+    }
+    # add readable filter results like: [[id, name]]
+    filters["wijken"] = [[o, wijken_dict.get(o, o)] for o in filters.get("wijken", [])]
+    filters["buurten"] = [
+        [o, buurten_dict.get(o, o)] for o in filters.get("buurten", [])
+    ]
+    filters["afdelingen"] = [
+        [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
+    ]
+
     return render(
         request,
         "incident/index.html",
