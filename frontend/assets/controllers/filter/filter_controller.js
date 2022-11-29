@@ -2,10 +2,10 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     static values = {
-        departments: String
+        // departments: String
     }
     connect() {
-        console.log('departments', JSON.parse(this.departmentsValue))
+        // console.log('departments', JSON.parse(this.departmentsValue))
     }
 
     showFilters(e) {

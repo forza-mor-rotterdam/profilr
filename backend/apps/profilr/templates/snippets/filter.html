@@ -3,7 +3,7 @@
     class="full-page-view full-page-view__filters"
     tabindex="0"
     data-controller="filter--filter"
-    data-filter--filter-departments-value="{{ departments|json_encode }}"
+    
 >
     <div class="full-page-view__main">
         <div class="full-page-view__header">
@@ -47,6 +47,45 @@
                                     </ul>
                                 </li>
                                 {% endif %}
+
+                                {% if filters.wijken|length > 0 %}
+                                <li>
+                                    <h3 class="h5">Wijken</h3>
+                                    <ul class="list-filters--active">
+                                        {% for wijk in filters.wijken %}
+                                        <li>
+                                            <button
+                                                class="btn btn-secondary btn-filter--active"
+                                                data-action="click->filter--filter#removeFilter"    
+                                            >
+                                                <span>{{ wijk }}</span>
+                                            </button>
+                                            
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endif %}
+
+                                {% if filters.buurten|length > 0 %}
+                                <li>
+                                    <h3 class="h5">Buurten</h3>
+                                    <ul class="list-filters--active">
+                                        {% for buurt in filters.buurten %}
+                                        <li>
+                                            <button
+                                                class="btn btn-secondary btn-filter--active"
+                                                data-action="click->filter--filter#removeFilter"    
+                                            >
+                                                <span>{{ buurt }}</span>
+                                            </button>
+                                            
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endif %}
+
                                 <li>
                                     <h3 class="h5">Groep</h3>
                                     <ul>

@@ -2,6 +2,10 @@
 
 .full-page-view__filters {
 
+    form {
+        padding-bottom: 8rem;
+    }
+
     .show-filters & {
         .full-page-view__main {
             // opacity: 1;
