@@ -18,9 +18,9 @@ def root(request):
 
 def logout(request):
     # msb_api_service.logout()
-    del request.session["msb_token"]
+    # del request.session["msb_token"]
     # del request.session["profile"]
-    # request.session["is_logged_in"] = False
+    request.session["is_logged_in"] = False
     # return redirect(reverse("root"))
     return HttpResponse("<h1>Hello HttpResponse</h1>")
 
