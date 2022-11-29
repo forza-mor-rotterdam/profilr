@@ -1,5 +1,3 @@
-import json
-
 from apps.services import msb_api_service, profilr_api_service
 from django.conf import settings
 from django.http import FileResponse, HttpResponse
@@ -26,7 +24,7 @@ def logout(request):
 
 
 def login(request):
-    if request.session.get('is_logged_in'):
+    if request.session.get("is_logged_in"):
         return redirect(reverse("incident_index"))
     error = None
     if request.POST:
@@ -98,7 +96,7 @@ def incident_index(request):
     profile = request.session.get("profile", {})
     if settings.ENABLE_PROFILR_API:
         profile = profilr_api_service.get_profile(user_token)
-    
+
     print(request.POST)
     if request.POST:
         profile = {
@@ -110,7 +108,7 @@ def incident_index(request):
         }
         if settings.ENABLE_PROFILR_API:
             profilr_api_service.set_profile(user_token, profile)
-        request.session['profile'] = profile
+        request.session["profile"] = profile
         return redirect(reverse("incident_index"))
 
     print(profile)
@@ -133,8 +131,8 @@ def incident_index(request):
             "groupedSubjects": categories,
             "filters": filters,
             "areas": areas,
-            "profile": profile
-        }
+            "profile": profile,
+        },
     )
 
 
