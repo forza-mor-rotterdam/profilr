@@ -100,7 +100,7 @@ def incident_index(request):
     if settings.ENABLE_PROFILR_API:
         profile = profilr_api_service.get_profile(user_token)
     print(profile)
-    filters = profile.get("filters", {})
+    filters = profile.get("filters", {"radius": 200, "x": 92441, "y": 437718})
     incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
     print(incidents)
     incidents = [
