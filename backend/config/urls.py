@@ -1,5 +1,6 @@
 from apps.profilr.views import (
     filter,
+    http_response,
     image_full,
     image_thumbnail,
     incident_detail,
@@ -11,7 +12,7 @@ from apps.profilr.views import (
 from django.urls import include, path
 
 urlpatterns = [
-    path("", root, name="root"),
+    path("", http_response, name="root"),
     path("filter/", filter, name="filter"),
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),
