@@ -123,6 +123,7 @@ def incident_index(request):
         for i in incidents
     ]
 
+    departments = msb_api_service.get_afdelingen(user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)
     areas = msb_api_service.get_wijken(user_token)
 
@@ -135,6 +136,7 @@ def incident_index(request):
             "filters": filters,
             "areas": areas,
             "profile": profile,
+            "departments": departments,
         },
     )
 

@@ -102,7 +102,13 @@ $form-search-indicator-position: left 10px center !default;
 }
 
 .form-check {
+    display: flex;
     margin-bottom: 0.5rem;
+    margin-left: -0.5rem;
+
+    input {
+        margin-right: 0.5rem;
+    }
 }
 
 .form-check-input {
