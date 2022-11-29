@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Dotenv = require('dotenv-webpack');
 
 const devMode = process.env.NODE_ENV !== "production";
 const git_sha = process.env.GITHUB_SHA;
@@ -98,6 +99,7 @@ let config = {
                 }
             ],
         }),
+        new Dotenv(),
         new BundleTracker({filename: './public/build/webpack-stats.json'})
     ],
 
