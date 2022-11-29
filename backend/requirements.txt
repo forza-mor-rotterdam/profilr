@@ -6,3 +6,4 @@ django-webpack-loader==1.7.0
 requests
 debugpy
 django-health-check
+django_redis
