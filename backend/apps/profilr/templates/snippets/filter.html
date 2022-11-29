@@ -17,7 +17,8 @@
         </div>
         <div class="full-page-view__scroll-pane">
             <div class="full-page-view__content">
-                <form>
+                <form action="" method="post" data-testid="incidentFilterAllForm">
+                    {% csrf_token %}
                     <details class="filter filter--active">
                         <summary>
                             <span>Actieve filters</span>
@@ -69,6 +70,15 @@
                             </button>
                         </fieldset>
                     </details>
+                    
+                    <details class="filter">
+                        <summary>
+                            <span>Wijken/buurten</span>
+                            <span>(xx)</span>
+                        </summary>
+                        {% include "snippets/form_areafilter--areas.html" %}
+                    </details>
+
                     <details class="filter">
                         <summary>
                             <span>Afdeling</span>
@@ -91,6 +101,7 @@
                             </ul>
                         </fieldset>
                     </details>
+
                     <details class="filter">
                         <summary>
                             <span>Groep</span>
@@ -113,16 +124,17 @@
                             </ul>
                         </fieldset>
                     </details>
+                    <div class="full-page-view__footer">
+                        <button type="submit" class="btn btn-action">
+                            Toon xx meldingen
+                        </button>
+                        <button type="button" class="btn btn-secondary">
+                            Gekozen filters opslaan
+                        </button>
+                    </div>
                 </form>
             </div>
-        </div>
-        <div class="full-page-view__footer">
-            <button type="button" class="btn btn-action">
-                Toon xx meldingen
-            </button>
-            <button type="button" class="btn btn-secondary">
-                Gekozen filters opslaan
-            </button>
+            
         </div>
     </div>
 </div>
