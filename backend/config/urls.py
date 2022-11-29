@@ -12,7 +12,7 @@ from apps.profilr.views import (
 from django.urls import include, path
 
 urlpatterns = [
-    path("", http_response, name="root"),
+    path("", root, name="root"),
     path("filter/", filter, name="filter"),
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),

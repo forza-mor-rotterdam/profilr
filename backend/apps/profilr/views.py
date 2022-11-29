@@ -28,9 +28,8 @@ def logout(request):
 
 
 def login(request):
-    request.session["session_var"] = "session_value"
-    if request.session.get("is_logged_in", False):
-        return redirect(reverse("filter"))
+    # if request.session.get("is_logged_in", False):
+    #     return redirect(reverse("filter"))
     error = None
     if request.POST:
         success, user_token = msb_api_service.login(
