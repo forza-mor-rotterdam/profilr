@@ -2,8 +2,9 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     static values = {
-        id: String
-      }
+        // id: String
+    }
+
     swipe(e) {
         const li = e.target.tagName.toLowerCase() !== "img" && e.target.closest("li");
         const btn = e.target.closest("button");

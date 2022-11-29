@@ -83,3 +83,114 @@ button[class="icon"] {
   font-size: 1.3rem;                                          // Result in icon size of 24x24px
   margin-left: -6px;                                          // Result in 8px distance between icon and label
 }
+
+.btn {
+    border: 1px solid transparent;
+
+    @extend .btn;
+    display: block;
+    padding: 8px 0;
+    width: 100%;
+    min-height: 48px;
+    line-height: 24px;
+    font-family: 'Bolder', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+
+
+    span {
+        padding: 0 16px;
+    }
+
+    &-action {
+        background-color: $magenta-tint01;
+        border-color: $magenta-tint01;
+        color: $white;
+
+        &:hover,
+        &:focus {
+            color: $white;
+            background-color: $magenta-tint02;
+            border-color: $magenta-tint02;
+        }
+    }
+
+    &-tertiary {
+        background-color: $white;
+        border-color: $gray-tint08;
+        color: $gray-tint11;
+
+        &:hover,
+        &:focus {
+            color: $green-tint01;
+            background-color: $white;
+            border-color: $green-tint01;
+        }
+
+    }
+
+    &-secondary {
+        background-color: $secondary;
+        border-color: $secondary;
+        color: $white;
+
+        &:hover,
+        &:focus {
+            color: $white;
+            background-color: $gray-tint11;
+            border-color: $gray-tint11;
+        }
+    }
+
+    &-close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-color: black;
+        padding: 8px;
+        margin: 0 0 0 auto;
+        box-shadow: none;
+        box-sizing: content-box;
+        min-width: 32px;
+        min-height: 32px;
+        color: white;
+        background: $black url("data:image/svg+xml,%3csvg width=%2732%27 height=%2732%27 viewBox=%270 0 32 32%27 fill=%27black%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M26.6077 6.80752L25.1935 5.39331L16.0011 14.5857L6.80875 5.39331L5.39453 6.80752L14.5869 15.9999L5.39453 25.1923L6.80874 26.6065L16.0011 17.4141L25.1935 26.6065L26.6077 25.1923L17.4153 15.9999L26.6077 6.80752Z%27 fill=%27white%27/%3e%3c/svg%3e") center/32px auto no-repeat;
+        border: 0;
+        border-radius: 0;
+        opacity: 1;
+        cursor: pointer;
+
+        &:hover,
+        &:active {
+            opacity: 0.75;
+        }
+    }
+
+    &-filter {
+        &--active {
+            border-color: $green-tint01;
+            color: $white;
+            font-weight: 700;
+            width: auto;
+            min-height: 0;
+            padding: 6px 40px 6px 8px;
+            background: $green-tint01 url("data:image/svg+xml,%3csvg width=%2732%27 height=%2732%27 viewBox=%270 0 32 32%27 fill=%27black%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M26.6077 6.80752L25.1935 5.39331L16.0011 14.5857L6.80875 5.39331L5.39453 6.80752L14.5869 15.9999L5.39453 25.1923L6.80874 26.6065L16.0011 17.4141L25.1935 26.6065L26.6077 25.1923L17.4153 15.9999L26.6077 6.80752Z%27 fill=%27white%27/%3e%3c/svg%3e") calc(100% - 8px)/28px auto no-repeat;
+
+            &:hover,
+            &:active {
+                background-color: $green-tint02;
+                border-color: $green-tint02;
+            }
+
+            span {
+                padding: 0;
+            }
+        }
+    }
+
+    
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,56 @@
+.full-page-view {
+    &__main {
+        // opacity: 0;
+        background-color: $white;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        left: 0;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        transform: translate3d(100%,0,0);
+        transition: transform .3s ease-in-out, opacity 0.3s ease-in-out;
+        width: 100%;
+        z-index: 11;
+        padding: 0 map-get($container-margin, md) map-get($container-margin, md);
+        box-sizing: border-box;
+    }
+
+    &__header {
+        display: flex;
+        flex: 1 0 0;
+        justify-content: space-between;
+        position: relative;
+        min-height: 48px;
+        height: 48px;
+        align-items: flex-end;
+
+        h2 {
+            margin-bottom: 0;
+        }
+    
+        .btn-close {
+            box-sizing: border-box;
+            width: 48px;
+            height: 48px;
+            right: -(map-get($container-margin, md));
+        }
+    }
+
+    &__scroll-pane {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: $input-padding-x 0;
+    }
+
+    &__content {
+        height: 100%;
+        position: relative;
+    }
+
+    &__footer {
+        z-index: 1;
+    }
+}

@@ -6,76 +6,88 @@
 
 {% block body %}
 
-    <h1>Meldingen ({{ incidents | length }})</h1>
-    <ul 
-        class="list__incidents" 
-        data-testid="incidentsList" 
-        >
-        {% for incident in incidents %}
-        <li
-            data-controller="incident" 
-            data-action="click->incident#swipe"
-            data-incident-id-value="{{ incident.id }}">
-            <div class="wrapper__swipe">
-                <div class="container__flex">
-                    <a href="/incident/{{ incident.id }}">
-                        <div class="container__image">
-                            {% if incident.detail and incident.detail.fotos %}
-                            {% with incident.detail.fotos|first as first_foto %}
-                            <div class="background-image" style="background-image: url('{% url 'image_thumbnail' first_foto.id %}')"></div>
-                            {% endwith %}
-                            {% else %}
-                                <div class="background-image" style="background-image: url('{% webpack_static 'icons/assets/icons/noimage.svg' %}'); background-size: 40%;"></div>
-                            {% endif %}
-                        </div>
-                    </a>
-                    <div class="container__info">
-                    {# TODO add optional huisletter and huisnummer_toevoeging  #}
-                        {# <a href="/incident/{{ incident.id }}/handle"> #}
-                            <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
-                            <span class="incident__category">
-                                {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
-                            </span>
-                            <div class="incident__moment">
-                                <span>{{ incident.id }}</span>
-                                <span>
-                                    {{ incident.datumMelding|to_date|date:"D-M-Y" }} 
-                                    {{ incident.datumMelding|to_date|date:"H:i" }}
-                                </span>
-                            </div>
-                        {# </a> #}
-                    </div>
-                </div>
-            </div>
+    <div
+        class="page-incidents"
+        data-controller="incidents"
+        data-incidents-filters-value="{{ filters|json_encode }}"
+    >
+        <div class="container__header">
+            <h1>Meldingen ({{ incidents | length }})</h1>
             <button
-                class="container__actions"
-                data-id="{{ incident.id }}"
-                data-incident-object-param = "{{ incident|json_encode }}"
-                data-action="click->incident#openModal"
+                type="button"
+                class="btn btn-secondary"
+                data-controller="filter--filter"
+                data-action="click->filter--filter#showFilters"
             >
-                <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
+                <span><img src="{% webpack_static 'icons/assets/icons/filter.svg' %}"/></span>
+                <span>Filter</span>
             </button>
-        </li>
-        {% endfor %}
-    </ul>
-    
-    {% include "snippets/modal_form_handle.html" %}
-    {% comment %} <div class="modal" id="modal-handleForm">
-        <div class="modal-dialog">
-            <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1>
-                        Melding afhandelen<br>
-                        <small data-address>...</small>
-                    </h1>
-                    <button type="button" class="btn-close modal-exit" aria-label="Sluit"></button>    
-                </div>
-                <div class="modal-body">
-                    {% include "snippets/form_handle.html" %}
-                </div>
-            </div>
         </div>
-    </div> {% endcomment %}
+        {{ filters }}
+        <div class="container__list">
+            {% if filters.wijken|length > 0 %}
+                <ul 
+                    class="list__incidents" 
+                    data-testid="incidentsList" 
+                    >
+                    {% for incident in incidents %}
+                    <li
+                        data-controller="incident" 
+                        data-action="click->incident#swipe"
+                        data-incident-id-value="{{ incident.id }}">
+                        <div class="wrapper__swipe">
+                            <div class="container__flex">
+                                <a href="/incident/{{ incident.id }}">
+                                    <div class="container__image">
+                                        {% if incident.detail and incident.detail.fotos %}
+                                        {% with incident.detail.fotos|first as first_foto %}
+                                        <div class="background-image" style="background-image: url('{% url 'image_thumbnail' first_foto.id %}')"></div>
+                                        {% endwith %}
+                                        {% else %}
+                                            <div class="background-image" style="background-image: url('{% webpack_static 'icons/assets/icons/noimage.svg' %}'); background-size: 40%;"></div>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <div class="container__info">
+                                {# TODO add optional huisletter and huisnummer_toevoeging  #}
+                                    {# <a href="/incident/{{ incident.id }}/handle"> #}
+                                        <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
+                                        <span class="incident__category">
+                                            {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
+                                        </span>
+                                        <div class="incident__moment">
+                                            <span>{{ incident.id }}</span>
+                                            <span>
+                                                {{ incident.datumMelding|to_date|date:"D-M-Y" }} 
+                                                {{ incident.datumMelding|to_date|date:"H:i" }}
+                                            </span>
+                                        </div>
+                                    {# </a> #}
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            class="container__actions"
+                            data-id="{{ incident.id }}"
+                            data-incident-object-param = "{{ incident|json_encode }}"
+                            data-action="click->incident#openModal"
+                        >
+                            <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
+                        </button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                Filter minimaal op een wijk.
+
+                {% include "snippets/modal_filter.html" %}
+
+            {% endif %}
+        </div>
+    </div>
+    
+    {% include "snippets/filter.html" %}
+
+    {% include "snippets/modal_form_handle.html" %}
 
 {% endblock %}

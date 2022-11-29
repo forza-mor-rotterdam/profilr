@@ -141,10 +141,14 @@ p {
 
 // LISTS
 
+@mixin list-clean {
+    list-style-type: none;
+    padding: 0;
+}
+
 ul {
     &.list-clean {
-        list-style-type: none;
-        padding: 0;
+        @include list-clean();
     }
 }
 
@@ -159,14 +163,27 @@ dl {
         dt {
             margin-right: .5rem;
         }
-
     }
 }
+
 
 // SECTIONS
 section {
     &.section--seperated {
         padding: 1rem 0 0.75rem;
         border-bottom: 1px solid $gray-tint04;
+    }
+}
+
+// HELPER-CLASSES
+.foldout {
+    height: auto;
+    overflow: hidden;
+    
+
+    &.hidden {
+        height: 0;
+        padding: 0;
+        margin: 0;
     }
 }

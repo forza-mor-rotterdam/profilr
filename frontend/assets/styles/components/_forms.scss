@@ -40,6 +40,14 @@ form label {
   -moz-appearance: none;             // Disable platform-native styling for Firefox in order to apply the In10 design.
   -webkit-appearance: none;          // Disable platform-native styling for Safari in order to apply the In10 design.
 }
+
+fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
 .form-control, .form-select {
   @extend %disable-platform-appearance;
   min-height: 48px;
@@ -93,18 +101,36 @@ $form-search-indicator-position: left 10px center !default;
   }
 }
 
+.form-check {
+    margin-bottom: 0.5rem;
+}
+
 .form-check-input {
   @extend %disable-platform-appearance;
+    width: 1.5em;
+    height: 1.5em;
+    margin-top: 0.125em;
+    vertical-align: top;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 1px solid #7C8B90;
+
+    &:checked[type="checkbox"]{
+        background-color: $green-tint01;
+        background-image: url('data:image/svg+xml, %3csvg width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M9.86006 16.144L19.406 6.59806L20.4667 7.65873L9.86006 18.2653L3.49609 11.9014L4.55675 10.8407L9.86006 16.144Z%27 fill=%27white%27/%3e%3c/svg%3e');
+    }
   &:disabled {
-    background-color: $input-disabled-bg;
+    background-color: $gray-tint01;
     opacity: 1;
     ~ .form-check-label {
-      color: $input-disabled-color;
+      color: $gray-tint08;
     }
   }
   &:disabled:checked {
-    background-color: $disabled-border-color;
-    border-color: $disabled-border-color;
+    background-color: $gray-tint08;
+    border-color: $gray-tint08;
     opacity: 1;
   }
   &:disabled:checked[type="radio"] {
@@ -117,15 +143,20 @@ $form-search-indicator-position: left 10px center !default;
     opacity: 1;
   }
   &:focus:not(checked) {
-    border-color: $focus-border-color;
-    box-shadow: 0 0 0 1px $focus-border-color;
+    border-color: $gray-tint11;
+    box-shadow: 0 0 0 1px $gray-tint11;
     opacity: 1;
   }
   &:hover,
   &:focus {
-    border-color: $hover-border-color;
-    box-shadow: 0 0 0 1px $hover-border-color;
+    border-color: $green-tint01;
+    box-shadow: 0 0 0 1px $green-tint01;
     opacity: 1;
+  }
+
+  ~ .form-check-label {
+    line-height: 1.5rem;
+    font-weight: 400;
   }
 }
 
@@ -145,56 +176,7 @@ $form-search-indicator-position: left 10px center !default;
         line-height: 24px;
     }
 
-    .btn {
-        border: 1px solid transparent;
-
-        @extend .btn;
-        display: block;
-        padding: 8px 0;
-        width: 100%;
-        min-height: 48px;
-        line-height: 24px;
-        font-size: 1rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-
-        &-action {
-            background-color: $magenta-tint01;
-            border-color: $magenta-tint01;
-            color: $white;
-
-            &:hover,
-            &:focus {
-                color: $white;
-                background-color: $magenta-tint02;
-                border-color: $magenta-tint02;
-            }
     
-        }
-
-        &-tertiary {
-            background-color: $white;
-            border-color: $gray-tint08;
-            color: $gray-tint11;
-
-            &:hover,
-            &:focus {
-                color: $green-tint01;
-                background-color: $white;
-                border-color: $green-tint01;
-            }
-    
-        }
-
-        
-        &:not(:disabled) {
-            cursor: pointer;
-        }
-
-        span {
-            padding: 0 16px;
-        }
-    }
 
 
     @media (min-width: map-get($grid-breakpoints, md)) {

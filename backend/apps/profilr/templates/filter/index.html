@@ -1,51 +1,10 @@
 {% extends 'base.html' %}
+{% load json_encode from profilr_tags %}
 
 {% block title %}Filter op wijk en/of buurt{% endblock %}
 
 {% block body %}
 
-    <div class="container__form" 
-        data-controller="incidentFilter"
-        data-incidentFilter-area-list-value='{{ areas }}'
-        data-incidentFilter-department-list-value='{{ departments }}'
-    >
-        <h1>Filter op wijk en/of buurt</h1>
-        <form action="" method="post" data-testid="incidentFilterForm">
-            {% csrf_token %}
-            <div class="form-row">
-                <label for="wijken">Wijk</label>
-                <select
-                    class="form-control form-select"
-                    name="wijken"
-                    id="wijken"
-                    data-incidentFilter-target="areaList"
-                    data-action="change->incidentFilter#setDistrict"
-                ></select>
-            </div>
-
-            <div class="form-row">
-                <label for="buurten">Buurt</label>
-                <select
-                    class="form-control form-select"
-                    name="buurten"
-                    id="buurten"
-                    data-incidentFilter-target="districtList"
-                ></select>
-            </div>
-
-            <div class="form-row">
-                <label for="afdelingen">Afdeling</label>
-                <select
-                    class="form-control form-select"
-                    name="afdelingen"
-                    id="afdelingen"
-                    data-incidentFilter-target="departmentList"
-                ></select>
-            </div>
-            <div class="form-row container__button">
-                <button type="submit" class="btn btn-action"><span>Filter</span></button>
-            </div>
-        </form>
-    </div>
+{% include "snippets/form_areafilter.html" %}
 
 {% endblock %}
