@@ -8,8 +8,8 @@ export default class extends Controller {
     }
 
     connect() {
-        const filterAreaList = JSON.parse(this.filtersValue).wijken
-        const filterDistrictList = JSON.parse(this.filtersValue).buurten
+        const filterAreaList = JSON.parse(this.filtersValue).wijken ?? []
+        const filterDistrictList = JSON.parse(this.filtersValue).buurten ?? []
         const areaCheckList = Array.from(document.getElementsByClassName('filter--area'))
         const countAreasDistricts = 0
         areaCheckList.forEach(check => {
