@@ -5,6 +5,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const devMode = process.env.NODE_ENV !== "production";
+const git_sha = process.env.GITHUB_SHA;
 
 let config = {
     context: __dirname,
