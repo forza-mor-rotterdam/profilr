@@ -13,7 +13,7 @@ export default class extends Controller {
         const areaCheckList = Array.from(document.getElementsByClassName('filter--area'))
         const countAreasDistricts = 0
         areaCheckList.forEach(check => {
-            if(filterAreaList.includes(check.value)) {
+            if(filterAreaList.find(area => area[0] === check.value)) {
                 check.checked = true
                 //open nested districts
                 check.closest('.container__check-area')
@@ -25,7 +25,7 @@ export default class extends Controller {
                     .getElementsByClassName('filter--district'))
                 
                 districtCheckList.forEach(check => {
-                    if(filterDistrictList.includes(check.value)) {
+                    if(filterDistrictList.find(district => district[0] === check.value)) {
                         check.checked = true
                     }
                 })
@@ -34,7 +34,6 @@ export default class extends Controller {
     }
     
     toggleArea(e) {
-        console.log('toggleArea')
         const districts = e.target.closest('li').getElementsByClassName('container__list--districts')[0]
         if(e.target.checked) {
             districts.classList.remove('hidden')

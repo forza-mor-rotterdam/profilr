@@ -1,9 +1,11 @@
 {% load json_encode from profilr_tags %}
 <ul
     class="list-clean"
+    data-controller="filter--departmentFilter"
+    data-filter--departmentFilter-filters-value='{{ profile.filters|json_encode }}'
 >
     {% for department in departments %}
-        <li class="container__check-area">
+        <li class="container__check-department">
             <div class="form-check">
                 <input
                     class="form-check-input filter--department"
