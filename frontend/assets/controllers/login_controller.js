@@ -8,4 +8,8 @@ export default class extends Controller {
         this.inputTarget.setAttribute('type', type);
         this.toggleTarget.classList.toggle('password__toggle-active');
     }
+
+    submitLogin() {
+        document.body.classList.add('show-spinner')
+    }
 }
