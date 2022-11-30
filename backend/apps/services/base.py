@@ -64,8 +64,9 @@ class APIService(BaseAPIService):
         response = cache.get(cache_key)
         action = getattr(requests, method, APIService.GET)
         if not response or no_cache:
-            headers = self._headers
-            if user_token:
+            headers = {}
+            headers.update(self._headers)
+            if user_token is not None:
                 headers.update({"Authorization": f"Bearer {user_token}"})
             action_params = {
                 "url": url,
@@ -79,5 +80,5 @@ class APIService(BaseAPIService):
             if int(response.status_code) >= 200 and int(response.status_code) < 300:
                 cache.set(cache_key, response, cache_timeout)
         else:
-            print(f"fetch from cache: {url}")
+            print(f"fetch from cache: {cache_key}")
         return response if raw_response else self.process_response(response)

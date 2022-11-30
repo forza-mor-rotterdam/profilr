@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 DEFAULT_PROFILE = {"filters": {"radius": 200, "x": 92441, "y": 437718}}
+PAGE_SIZE = 10
 
 
 def http_response(request):
@@ -104,9 +105,9 @@ def incident_index(request):
     if request.POST:
         profile = {
             "filters": {
-                "wijken": request.POST.getlist("wijken"),
-                "buurten": request.POST.getlist("buurten"),
-                "afdelingen": request.POST.getlist("afdelingen"),
+                "wijken": request.POST.getlist("wijken", []),
+                "buurten": request.POST.getlist("buurten", []),
+                "afdelingen": request.POST.getlist("afdelingen", []),
             }
         }
         if settings.ENABLE_PROFILR_API:
@@ -114,14 +115,27 @@ def incident_index(request):
         request.session["profile"] = profile
         return redirect(reverse("incident_index"))
 
-    print(profile)
+    profile["filters"] = {
+        k: v if type(v) == list else [v] if type(v) == str else []
+        for k, v in profile.get("filters", {}).items()
+    }
+
+    print(profile["filters"])
     filters = profile.get("filters", DEFAULT_PROFILE.get("filters"))
     incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
-    print(incidents)
+    # print(incidents)
     incidents = [
-        {**i, **{"detail": msb_api_service.get_detail(i.get("id"), user_token)}}
-        for i in incidents
+        {
+            **incidents[i],
+            **{
+                "detail": msb_api_service.get_detail(incidents[i].get("id"), user_token)
+                if i < PAGE_SIZE
+                else {}
+            },
+        }
+        for i in range(len(incidents))
     ]
+    print(filters)
 
     departments = msb_api_service.get_afdelingen(user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)

@@ -58,7 +58,7 @@
     <section class="section--seperated"  data-testid="detailAbout">
         <div class="container__details">
         {# TODO add optional huisletter and huisnummer_toevoeging  #}
-            <h1 class="h3">{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h1>
+            <h1 class="h3">{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</h1>
             <span>
                 {{ incident.datumMelding|to_date|date:'d-m-Y' }} 
                 {{ incident.datumMelding|to_date|date:'H:i' }}
@@ -105,7 +105,7 @@
         <div class="container__details">
             <h2 class="h5">Locatie</h2>
             <p>
-                <a href="#" class="link--location">{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</a>
+                <a href="#" class="link--location">{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</a>
             </p>
             <dl>
                 <div>
