@@ -4,7 +4,8 @@ from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-DEFAULT_PROFILE = {"filters": {"radius": 200, "x": 92441, "y": 437718}}
+DEFAULT_FILTERS = {"radius": 200, "x": 92441, "y": 437718}
+DEFAULT_PROFILE = {"filters": DEFAULT_FILTERS}
 PAGE_SIZE = 10
 
 
@@ -18,6 +19,8 @@ def get_profile(request) -> tuple[tuple[bool, dict], tuple[bool, str]]:
                 else:
                     profile = msb_api_service.get_user_info(user_token)
                     profile = request.session.get("profile", DEFAULT_PROFILE)
+                if not profile.get("filters"):
+                    profile["filters"] = DEFAULT_FILTERS
                 return profile, user_token
             except Exception:
                 pass
