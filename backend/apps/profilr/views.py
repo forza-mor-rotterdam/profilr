@@ -8,6 +8,49 @@ DEFAULT_PROFILE = {"filters": {"radius": 200, "x": 92441, "y": 437718}}
 PAGE_SIZE = 10
 
 
+def get_profile(request) -> tuple[tuple[bool, dict], tuple[bool, str]]:
+    if request.session.get("is_logged_in", False):
+        user_token = request.session.get("msb_token", False)
+        if user_token:
+            try:
+                if settings.ENABLE_PROFILR_API:
+                    profile = profilr_api_service.get_profile(user_token)
+                else:
+                    profile = msb_api_service.get_user_info(user_token)
+                    profile = request.session.get("profile", DEFAULT_PROFILE)
+                return profile, user_token
+            except Exception:
+                pass
+
+    msb_api_service.logout()
+    request.session["msb_token"] = None
+    request.session["profile"] = DEFAULT_PROFILE
+    request.session["is_logged_in"] = False
+    return False, False
+
+
+def set_profile(profile: dict, user_token: str, request) -> dict:
+    if settings.ENABLE_PROFILR_API:
+        profile = profilr_api_service.set_profile(user_token, profile)
+    else:
+        request.session["profile"] = profile
+    return profile
+
+
+def http_404(request):
+    return render(
+        request,
+        "404.html",
+    )
+
+
+def http_500(request):
+    return render(
+        request,
+        "500.html",
+    )
+
+
 def http_response(request):
     return HttpResponse("<h1>Hello HttpResponse</h1>")
 
@@ -30,6 +73,7 @@ def logout(request):
 def login(request):
     if request.session.get("is_logged_in"):
         return redirect(reverse("incident_index"))
+
     error = None
     if request.POST:
         success, user_token = msb_api_service.login(
@@ -51,18 +95,15 @@ def login(request):
         {
             "last_username": request.POST.get("_username", ""),
             "error": error,
-            "token": request.session.get("msb_token"),
-            "logged_in": request.session.get("is_logged_in"),
         },
     )
 
 
 def filter(request):
-
-    if not request.session.get("is_logged_in", False):
+    profile, user_token = get_profile(request)
+    if not user_token:
         return redirect(reverse("login"))
 
-    user_token = request.session.get("msb_token")
     areas = msb_api_service.get_wijken(user_token)
     departments = msb_api_service.get_afdelingen(user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)
@@ -76,9 +117,7 @@ def filter(request):
                 "afdelingen": request.POST.getlist("afdelingen"),
             }
         }
-        if settings.ENABLE_PROFILR_API:
-            profilr_api_service.set_profile(user_token, data)
-        request.session["profile"] = data
+        set_profile(data, user_token, request)
         return redirect(reverse("incident_index"))
 
     return render(
@@ -93,37 +132,33 @@ def filter(request):
 
 
 def incident_index(request):
-    if not request.session.get("is_logged_in", False):
+    profile, user_token = get_profile(request)
+    if not user_token:
         return redirect(reverse("login"))
 
-    user_token = request.session.get("msb_token")
-    profile = request.session.get("profile", DEFAULT_PROFILE)
-    if settings.ENABLE_PROFILR_API:
-        profile = profilr_api_service.get_profile(user_token)
+    print(profile)
+
+    # profile = request.session.get("profile", DEFAULT_PROFILE)
+    # if settings.ENABLE_PROFILR_API:
+    #     profile = profilr_api_service.get_profile(user_token)
 
     print(request.POST)
     if request.POST:
+        filter_options = ("wijken", "buurten", "afdelingen", "groepen", "onderwerpen")
         profile = {
-            "filters": {
-                "wijken": request.POST.getlist("wijken", []),
-                "buurten": request.POST.getlist("buurten", []),
-                "afdelingen": request.POST.getlist("afdelingen", []),
-            }
+            "filters": {f: request.POST.getlist(f, []) for f in filter_options},
         }
-        if settings.ENABLE_PROFILR_API:
-            profilr_api_service.set_profile(user_token, profile)
-        request.session["profile"] = profile
-        return redirect(reverse("incident_index"))
+        profile = set_profile(profile, user_token, request)
 
+    # clean filters
     profile["filters"] = {
         k: v if type(v) == list else [v] if type(v) in [str, int, float] else []
         for k, v in profile.get("filters", {}).items()
     }
-
-    print(profile["filters"])
+    print(profile)
     filters = profile.get("filters", DEFAULT_PROFILE.get("filters"))
     incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
-    # print(incidents)
+
     incidents = [
         {
             **incidents[i],
@@ -135,13 +170,12 @@ def incident_index(request):
         }
         for i in range(len(incidents))
     ]
-    print(filters)
 
     departments = msb_api_service.get_afdelingen(user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)
     areas = msb_api_service.get_wijken(user_token)
 
-    # create key value lookups for filter options
+    # create lookups for filter options
     afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
     wijken_dict = {w.get("code"): w.get("omschrijving") for w in areas}
     buurten_dict = {
@@ -173,7 +207,8 @@ def incident_index(request):
 
 
 def incident_detail(request, id):
-    if not request.session.get("is_logged_in"):
+    profile, user_token = get_profile(request)
+    if not user_token:
         return redirect(reverse("login"))
 
     user_token = request.session.get("msb_token")
@@ -195,6 +230,7 @@ def incident_detail(request, id):
             "incident": incident,
             "groupedSubjects": categories,
             "areas": areas,
+            "profile": profile,
         },
     )
 

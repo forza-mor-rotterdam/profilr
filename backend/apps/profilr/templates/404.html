@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load webpack_static from profilr_tags %}
+{% block title %}404 Pagina niet gevonden{% endblock %}
+
+{% block stylesheets %}
+    {{block.super}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+        crossorigin=""/>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+<div>
+    <section class="section--seperated">
+        <div class="container__details">
+            <h1>De pagina is niet gevonden</h1>
+            <strong>404</strong>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
