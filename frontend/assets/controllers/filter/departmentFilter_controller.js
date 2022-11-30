@@ -9,10 +9,15 @@ export default class extends Controller {
     connect() {
         const filterDepartmentList = JSON.parse(this.filtersValue).afdelingen ?? []
         const departmentCheckList = Array.from(document.getElementsByClassName('filter--department'))
+
         departmentCheckList.forEach(check => {
             if(filterDepartmentList.find(department => department[0] === check.value)) {
                 check.checked = true
             }
         })
+    }
+
+    submitFilter() {
+        document.body.classList.add('show-spinner')
     }
 }

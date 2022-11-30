@@ -13,7 +13,7 @@
                     type="button"
                     class="btn btn-close"
                     aria-label="Sluit"
-                    data-action="click->filter--filter#hideFilters"
+                    data-action="filter--filter#hideFilters"
                 ></button>    
             </div>
         </div>
@@ -117,7 +117,11 @@
                     </details>
 
                     <div class="full-page-view__footer">
-                        <button type="submit" class="btn btn-action">
+                        <button
+                            type="submit"
+                            class="btn btn-action"
+                            data-action="filter--filter#submitFilter"
+                        >
                             Toon meldingen
                         </button>
                         <button type="button" class="btn btn-secondary">

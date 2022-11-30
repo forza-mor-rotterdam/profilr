@@ -18,8 +18,13 @@ export default class extends Controller {
 
     removeFilter(e) {
         e.preventDefault()
+        document.body.classList.add('show-spinner')
         const input = document.querySelector(`[name="${e.params.description}"][value="${e.params.code}"]`);
         input.checked = false;
         document.getElementById('incidentFilterAllForm').submit()
+    }
+
+    submitFilter() {
+        document.body.classList.add('show-spinner')
     }
 }

@@ -1,6 +1,13 @@
-<div class="container__form" 
->
-    <form action="" method="post" data-testid="incidentFilterForm">
+{% load json_encode from profilr_tags %}
+
+<div class="container__form">
+    <form
+        action=""
+        method="post"
+        data-testid="incidentFilterForm"
+        data-controller="filter--departmentFilter"
+        data-filter--departmentFilter-filters-value='{{ profile.filters|json_encode }}'
+    >
         {% csrf_token %}
         <div
             class="form-row"
@@ -8,7 +15,13 @@
             {% include "snippets/form_departmentfilter--departments.html" %}
         </div>
         <div class="form-row container__button">
-            <button type="submit" class="btn btn-action"><span>Filter</span></button>
+            <button
+                type="submit"
+                class="btn btn-action"
+                data-action="filter--departmentFilter#submitFilter"
+            >
+                <span>Filter</span>
+            </button>
         </div>
     </form>
 </div>
