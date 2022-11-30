@@ -116,7 +116,7 @@ def incident_index(request):
         return redirect(reverse("incident_index"))
 
     profile["filters"] = {
-        k: v if type(v) == list else [v] if type(v) == str else []
+        k: v if type(v) == list else [v] if type(v) in [str, int, float] else []
         for k, v in profile.get("filters", {}).items()
     }
 

@@ -15,12 +15,13 @@
             <h1>Meldingen ({{ incidents | length }})</h1>
             <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-secondary btn-filter--small"
                 data-controller="filter--filter"
                 data-action="click->filter--filter#showFilters"
             >
                 <span><img src="{% webpack_static 'icons/assets/icons/filter.svg' %}"/></span>
                 <span>Filter</span>
+                <span class="count count--filter" data-filter--filter-target="countActiveFilter"><span>
             </button>
         </div>
         <div class="container__list">
@@ -84,9 +85,7 @@
             {% endif %}
         </div>
     </div>
-    
     {% include "snippets/filter.html" %}
-
     {% include "snippets/modal_form_handle.html" %}
 
 {% endblock %}

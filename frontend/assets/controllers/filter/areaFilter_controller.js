@@ -11,7 +11,6 @@ export default class extends Controller {
         const filterAreaList = JSON.parse(this.filtersValue).wijken ?? []
         const filterDistrictList = JSON.parse(this.filtersValue).buurten ?? []
         const areaCheckList = Array.from(document.getElementsByClassName('filter--area'))
-        const countAreasDistricts = 0
         areaCheckList.forEach(check => {
             if(filterAreaList.find(area => area[0] === check.value)) {
                 check.checked = true

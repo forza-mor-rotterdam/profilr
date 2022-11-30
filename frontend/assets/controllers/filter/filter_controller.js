@@ -1,11 +1,11 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static values = {
-        // departments: String
-    }
-    connect() {
-        // console.log('departments', JSON.parse(this.departmentsValue))
+    
+    static targets =['countActiveFilter']
+
+    initialize() {
+        this.countActiveFilterTarget.textContent=document.getElementsByClassName('js-filter-active').length
     }
 
     showFilters(e) {
@@ -22,5 +22,4 @@ export default class extends Controller {
         e.preventDefault()
         console.log('removeFIlter')
     }
-
 }

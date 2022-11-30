@@ -24,7 +24,7 @@
                     <details class="filter filter--active">
                         <summary>
                             <span>Actieve filters</span>
-                            <span>(xx)</span>
+                            <span class="count count--filter" data-filter--filter-target="countActiveFilter"><span>
                         </summary>
                         <fieldset>
                             <ul>
@@ -33,7 +33,7 @@
                                     <h3 class="h5">Afdeling</h3>
                                     <ul class="list-filters--active">
                                         {% for department in filters.afdelingen %}
-                                        <li>
+                                        <li class="js-filter-active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
                                                 data-action="click->filter--filter#removeFilter"    
@@ -52,7 +52,7 @@
                                     <h3 class="h5">Wijken</h3>
                                     <ul class="list-filters--active">
                                         {% for wijk in filters.wijken %}
-                                        <li>
+                                        <li class="js-filter-active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
                                                 data-action="click->filter--filter#removeFilter"    
@@ -71,7 +71,7 @@
                                     <h3 class="h5">Buurten</h3>
                                     <ul class="list-filters--active">
                                         {% for buurt in filters.buurten %}
-                                        <li>
+                                        <li class="js-filter-active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
                                                 data-action="click->filter--filter#removeFilter"    
@@ -84,20 +84,6 @@
                                     </ul>
                                 </li>
                                 {% endif %}
-
-                                <li>
-                                    <h3 class="h5">Groep</h3>
-                                    <ul>
-                                        <li class="filter--active">
-                                            <button
-                                                class="btn btn-secondary btn-filter--active"
-                                                data-action="click->filter--filter#removeFilter"    
-                                            >
-                                                <span>Afval</span>
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </li>
                             </ul>
                             <button type="button" class="btn btn-secondary">
                                 Actieve filters opslaan
@@ -111,7 +97,7 @@
                     <details class="filter">
                         <summary>
                             <span>Afdelingen</span>
-                            <span>(xx)</span>
+                            <span>({{ filters.afdelingen|length }})</span>
                         </summary>
                         {% include "snippets/form_departmentfilter--departments.html" %}
                     </details>
@@ -119,36 +105,14 @@
                     <details class="filter">
                         <summary>
                             <span>Wijken/buurten</span>
-                            <span>(xx)</span>
+                            <span>({{ filters.wijken|add:filters.buurten|length }})</span>
                         </summary>
                         {% include "snippets/form_areafilter--areas.html" %}
                     </details>
 
-                    <details class="filter">
-                        <summary>
-                            <span>Groep</span>
-                            <span>(xx)</span>
-                        </summary>
-                        <fieldset>
-                            <ul>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkThree">
-                                        <label class="form-check-label" for="checkThree">Schone Stad inzameling Zuid</label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="checkFour">
-                                        <label class="form-check-label" for="checkFour">Schone Stad inzameling Zuid-AL</label>
-                                    </div>
-                                </li>
-                            </ul>
-                        </fieldset>
-                    </details>
                     <div class="full-page-view__footer">
                         <button type="submit" class="btn btn-action">
-                            Toon xx meldingen
+                            Toon meldingen
                         </button>
                         <button type="button" class="btn btn-secondary">
                             Gekozen filters opslaan
