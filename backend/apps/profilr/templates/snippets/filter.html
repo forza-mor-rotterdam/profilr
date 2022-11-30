@@ -19,7 +19,7 @@
         </div>
         <div class="full-page-view__scroll-pane">
             <div class="full-page-view__content">
-                <form action="" method="post" data-testid="incidentFilterAllForm">
+                <form action="" method="post" id="incidentFilterAllForm" data-testid="incidentFilterAllForm">
                     {% csrf_token %}
                     <details class="filter filter--active">
                         <summary>
@@ -36,7 +36,9 @@
                                         <li class="js-filter-active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
-                                                data-action="click->filter--filter#removeFilter"    
+                                                data-action="filter--filter#removeFilter"  
+                                                data-filter--filter-code-param="{{ department.0 }}"
+                                                data-filter--filter-description-param="afdelingen"
                                             >
                                                 <span>{{ department.1 }}</span>
                                             </button>
@@ -55,7 +57,9 @@
                                         <li class="js-filter-active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
-                                                data-action="click->filter--filter#removeFilter"    
+                                                data-action="filter--filter#removeFilter"  
+                                                data-filter--filter-code-param="{{ wijk.0 }}"
+                                                data-filter--filter-description-param="wijken"  
                                             >
                                                 <span>{{ wijk.1 }}</span>
                                             </button>
@@ -74,7 +78,9 @@
                                         <li class="js-filter-active">
                                             <button
                                                 class="btn btn-secondary btn-filter--active"
-                                                data-action="click->filter--filter#removeFilter"    
+                                                data-action="filter--filter#removeFilter"  
+                                                data-filter--filter-code-param="{{ buurt.0 }}"
+                                                data-filter--filter-description-param="buurten"   
                                             >
                                                 <span>{{ buurt.1 }}</span>
                                             </button>
