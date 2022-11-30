@@ -19,6 +19,7 @@
         </div>
         <div class="full-page-view__scroll-pane">
             <div class="full-page-view__content">
+                <turbo-frame id="incidents_filters">
                 <form action="" method="post" id="incidentFilterAllForm" data-testid="incidentFilterAllForm">
                     {% csrf_token %}
                     <details class="filter filter--active">
@@ -129,6 +130,7 @@
                         </button>
                     </div>
                 </form>
+                </turbo-frame>
             </div>
             
         </div>

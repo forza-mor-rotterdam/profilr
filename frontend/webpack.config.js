@@ -28,6 +28,7 @@ let config = {
             'frontend',
             'localhost',
             'host.docker.internal',
+            '.profilr.forzamor.local',
         ],
         headers: {
           "Access-Control-Allow-Origin": "*",

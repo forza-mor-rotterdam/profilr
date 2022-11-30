@@ -5,7 +5,9 @@
     data-getGroups-group-selected-value = "{}"
     data-getGroups-group-list-value =  "..."
 >
+    <turbo-frame id="melding_afhandelen">
     <form action="" method="post" data-testid="handleIncidentForm">
+        {% csrf_token %}
         <div class="form-row">
             <label htmlFor="group">Groep</label>
             <select
@@ -55,4 +57,5 @@
             <button type="reset" class="btn btn-action"><span>Afhandelen</span></button>
         </div>
     </form>
+    </turbo-frame>
 </div>
