@@ -14,6 +14,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 USE_TZ = True
 TIME_ZONE = "Europe/Amsterdam"
+USE_L10N = True
+LANGUAGE_CODE = "nl-NL"
 
 DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
@@ -42,6 +44,7 @@ MIDDLEWARE = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )

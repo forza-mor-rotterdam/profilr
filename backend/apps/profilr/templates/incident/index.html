@@ -50,14 +50,14 @@
                                 <div class="container__info">
                                 {# TODO add optional huisletter and huisnummer_toevoeging  #}
                                     {# <a href="/incident/{{ incident.id }}/handle"> #}
-                                        <h2>{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }}</h2>
+                                        <h2>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</h2>
                                         <span class="incident__category">
                                             {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
                                         </span>
                                         <div class="incident__moment">
                                             <span>{{ incident.id }}</span>
                                             <span>
-                                                {{ incident.datumMelding|to_date|date:"D-M-Y" }} 
+                                                {{ incident.datumMelding|to_date|date:"d-M-Y" }} 
                                                 {{ incident.datumMelding|to_date|date:"H:i" }}
                                             </span>
                                         </div>
