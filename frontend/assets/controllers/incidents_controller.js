@@ -6,9 +6,9 @@ export default class extends Controller {
     }
 
     initialize() {
-        const areas = JSON.parse(this.filtersValue).wijken
+        const departments = JSON.parse(this.filtersValue).afdelingen
 
-        if(areas?.length > 0) {
+        if(departments?.length > 0) {
             //show incidents
         } else {
             this.openFilterModal()
@@ -16,10 +16,10 @@ export default class extends Controller {
     }
 
     openFilterModal() {
-        const modal = document.getElementById('modal-filter--area');
+        const modal = document.getElementById('modal-filter--first');
         const modalBackdrop = document.getElementById('modal-backdrop');
-            
-        document.body.classList.add('show-modal--area-filter');
+
+        document.body.classList.add('show-modal--first-filter');
         const exits = modal.querySelectorAll('.modal-exit');
         exits.forEach(function (exit) {
 
@@ -27,7 +27,7 @@ export default class extends Controller {
                 event.preventDefault();
                 modal.classList.remove('show');
                 modalBackdrop.classList.remove('show');
-                document.body.classList.remove('show-modal--area-filter');
+                document.body.classList.remove('show-modal--first-filter');
             });
         });
     }

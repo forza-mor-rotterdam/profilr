@@ -1,21 +1,14 @@
-{% load json_encode from profilr_tags %}
-<ul
-    class="list-clean"
-    data-controller="filter--departmentFilter"
-    data-filter--departmentFilter-filters-value='{{ profile.filters|json_encode }}'
+<div class="container__form" 
 >
-    {% for department in departments %}
-        <li class="container__check-department">
-            <div class="form-check">
-                <input
-                    class="form-check-input filter--department"
-                    type="checkbox"
-                    value="{{ department.code }}"
-                    name="afdelingen"
-                    id="department_{{ department.code }}"
-                >
-                <label class="form-check-label" for="department_{{ department.code }}">{{ department.omschrijving }}</label>
-            </div>
-        </li>
-    {% endfor %}
-    </ul>
+    <form action="" method="post" data-testid="incidentFilterForm">
+        {% csrf_token %}
+        <div
+            class="form-row"
+        >
+            {% include "snippets/form_departmentfilter--departments.html" %}
+        </div>
+        <div class="form-row container__button">
+            <button type="submit" class="btn btn-action"><span>Filter</span></button>
+        </div>
+    </form>
+</div>

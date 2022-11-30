@@ -24,7 +24,7 @@
             </button>
         </div>
         <div class="container__list">
-            {% if filters.wijken|length > 0 %}
+            {% if filters.afdelingen|length > 0 %}
                 <ul 
                     class="list__incidents" 
                     data-testid="incidentsList" 
@@ -77,7 +77,7 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                Filter minimaal op een wijk.
+                Filter minimaal op een afdeling.
 
                 {% include "snippets/modal_filter.html" %}
 

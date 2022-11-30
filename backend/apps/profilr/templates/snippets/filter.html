@@ -19,7 +19,6 @@
         </div>
         <div class="full-page-view__scroll-pane">
             <div class="full-page-view__content">
-                {{ filters }}
                 <form action="" method="post" data-testid="incidentFilterAllForm">
                     {% csrf_token %}
                     <details class="filter filter--active">
@@ -114,7 +113,7 @@
                             <span>Afdelingen</span>
                             <span>(xx)</span>
                         </summary>
-                        {% include "snippets/form_departmentfilter.html" %}
+                        {% include "snippets/form_departmentfilter--departments.html" %}
                     </details>
 
                     <details class="filter">

@@ -21,8 +21,8 @@ body.show-modal {
     }
 }
 
-body.show-modal--area-filter {
-    .modal--area-filter {
+body.show-modal--first-filter {
+    .modal--first-filter {
         @include modalVisible()
     }
 }
