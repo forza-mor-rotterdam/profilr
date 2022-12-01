@@ -117,16 +117,17 @@ a {
             left: -22px;
         }
     }
-}
-
-&.link--bin {
-    @include has-icon();
-    &:before {
-        content: url('../icons/bin.svg');
-        top: 0;
-        left: -22px;
+    &.link--bin {
+        @include has-icon();
+        &:before {
+            content: url('../icons/bin.svg');
+            top: 0;
+            left: -22px;
+        }
     }
 }
+
+
 
 
 p {
