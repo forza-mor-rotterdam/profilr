@@ -1,0 +1,26 @@
+.alert{
+    position: relative;
+    padding: 1.25em 1.25em;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0;
+    display: flex;
+
+    img {
+        padding-right: $input-padding-x;
+    }
+
+    &--info {
+        color: #00689E;
+        background-color: rgba(23, 145, 212, 0.1);
+        // 3. border-color: rgba(23, 145, 212, 0.25);
+        // 4. padding-top: 12px;
+        // 5. padding-right: 16px;
+        // 6. padding-bottom: 12px;
+        // 7. padding-left: 8px;
+
+        a {
+            color: inherit;
+        }
+    }
+}

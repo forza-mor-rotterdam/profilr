@@ -12,20 +12,20 @@
         data-incidents-filters-value="{{ filters|json_encode }}"
     >
         <div class="container__header">
-            <h1>Meldingen ({{ incidents | length }})</h1>
+            <h1>Meldingen {% if filters_count and incidents %}({{ incidents | length }}){% endif %}</h1>
             <button
                 type="button"
                 class="btn btn-secondary btn-filter--small"
                 data-controller="filter--filter"
-                data-action="click->filter--filter#showFilters"
+                data-action="filter--filter#showFilters"
             >
                 <span><img src="{% webpack_static 'icons/assets/icons/filter.svg' %}"/></span>
                 <span>Filter</span>
                 <span class="count count--filter" data-filter--filter-target="countActiveFilter"><span>
             </button>
         </div>
-        <div class="container__list">
-            {% if filters.afdelingen|length > 0 %}
+        <div class="container__list seperated">
+            {% if filters_count and incidents %}
                 <ul 
                     class="list__incidents" 
                     data-testid="incidentsList" 
@@ -70,7 +70,7 @@
                             class="container__actions"
                             data-id="{{ incident.id }}"
                             data-incident-object-param = "{{ incident|json_encode }}"
-                            data-action="click->incident#openModal"
+                            data-action="incident#openModal"
                         >
                             <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
                         </button>
@@ -78,9 +78,18 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                Filter minimaal op een afdeling.
+                
+                <div class="alert alert--info">
+                    
+                    <span><img src="{% webpack_static 'icons/assets/icons/info.svg' %}"/></span>
+                    <div>
+                        <a
+                            data-controller="filter--filter"
+                            data-action="filter--filter#showFilters"
+                        >Stel de filters</a> in om de juiste meldingen te kunnen bekijken.
+                    </div>
+                </div>
 
-                {% include "snippets/modal_filter.html" %}
 
             {% endif %}
         </div>

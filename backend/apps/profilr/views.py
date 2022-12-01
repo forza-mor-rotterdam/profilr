@@ -172,7 +172,9 @@ def incident_index(request):
     areas = msb_api_service.get_wijken(user_token)
 
     # create lookups for filter options
+    print(departments)
     afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
+    print(afdelingen_dict)
     wijken_dict = {w.get("code"): w.get("omschrijving") for w in areas}
     buurten_dict = {
         b.get("code"): b.get("omschrijving")

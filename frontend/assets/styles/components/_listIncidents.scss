@@ -24,10 +24,18 @@
     }
 }
 
+.container__list {
+
+    &.seperated {
+        border-top: 1px solid $gray-tint04;
+        padding-top: $input-padding-x;
+    }
+}
+
 .list__incidents {
     list-style: none;
     padding: 0;
-    border-top: 1px solid $gray-tint04;
+    margin: 0;
     overflow: hidden;
 
     li {
