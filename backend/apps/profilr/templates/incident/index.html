@@ -12,7 +12,7 @@
         data-incidents-filters-value="{{ filters|json_encode }}"
     >
         <div class="container__header">
-            <h1>Meldingen {% if filters_count and incidents %}({{ incidents | length }}){% endif %}</h1>
+            <h1>Meldingen {% if filters_count > 0 %}({{ incidents | length }}){% endif %}</h1>
             <button
                 type="button"
                 class="btn btn-secondary btn-filter--small"
@@ -25,7 +25,7 @@
             </button>
         </div>
         <div class="container__list seperated">
-            {% if filters_count and incidents %}
+            {% if filters_count %}
                 <ul 
                     class="list__incidents" 
                     data-testid="incidentsList" 
