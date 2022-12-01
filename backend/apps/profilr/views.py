@@ -4,8 +4,15 @@ from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-DEFAULT_FILTERS = {"radius": 200, "x": 92441, "y": 437718}
+DEFAULT_FILTERS = {
+    "wijken": [],
+    "buurten": [],
+    "afdelingen": [],
+    "groepen": [],
+    "onderwerpen": [],
+}
 DEFAULT_PROFILE = {"filters": DEFAULT_FILTERS}
+VALID_FILTERS = ("wijken", "buurten", "afdelingen", "groepen", "onderwerpen")
 PAGE_SIZE = 10
 
 
@@ -142,9 +149,8 @@ def incident_index(request):
     print(profile)
     print(request.POST)
     if request.POST:
-        filter_options = ("wijken", "buurten", "afdelingen", "groepen", "onderwerpen")
         profile = {
-            "filters": {f: request.POST.getlist(f, []) for f in filter_options},
+            "filters": {f: request.POST.getlist(f, []) for f in VALID_FILTERS},
         }
         profile = set_profile(profile, user_token, request)
 
@@ -152,22 +158,14 @@ def incident_index(request):
     profile["filters"] = {
         k: v if type(v) == list else [v] if type(v) in [str, int, float] else []
         for k, v in profile.get("filters", {}).items()
+        if k in VALID_FILTERS
     }
+    for k in VALID_FILTERS:
+        if not profile["filters"].get(k):
+            profile["filters"][k] = []
+
     print(profile)
     filters = profile.get("filters", DEFAULT_PROFILE.get("filters"))
-    incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
-
-    incidents = [
-        {
-            **incidents[i],
-            **{
-                "detail": msb_api_service.get_detail(incidents[i].get("id"), user_token)
-                if i < PAGE_SIZE
-                else {}
-            },
-        }
-        for i in range(len(incidents))
-    ]
 
     departments = msb_api_service.get_afdelingen(user_token)
     categories = msb_api_service.get_onderwerpgroepen(user_token)
@@ -189,7 +187,27 @@ def incident_index(request):
     filters["afdelingen"] = [
         [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
     ]
-    filters_coount = len([vv for k, v in filters for vv in v])
+    print(filters)
+    filters_count = len([vv for k, v in filters.items() for vv in v])
+
+    # get incidents if we have filters
+    incidents = []
+    if filters_count > 0:
+        incidents = msb_api_service.get_list(user_token, data=filters, no_cache=True)
+
+        incidents = [
+            {
+                **incidents[i],
+                **{
+                    "detail": msb_api_service.get_detail(
+                        incidents[i].get("id"), user_token
+                    )
+                    if i < PAGE_SIZE
+                    else {}
+                },
+            }
+            for i in range(len(incidents))
+        ]
 
     return render(
         request,
@@ -201,7 +219,7 @@ def incident_index(request):
             "areas": areas,
             "profile": profile,
             "departments": departments,
-            "filters_coount": filters_coount,
+            "filters_count": filters_count,
         },
     )
 
