@@ -140,11 +140,6 @@ def incident_index(request):
         return redirect(reverse("login"))
 
     print(profile)
-
-    # profile = request.session.get("profile", DEFAULT_PROFILE)
-    # if settings.ENABLE_PROFILR_API:
-    #     profile = profilr_api_service.get_profile(user_token)
-
     print(request.POST)
     if request.POST:
         filter_options = ("wijken", "buurten", "afdelingen", "groepen", "onderwerpen")
@@ -194,6 +189,7 @@ def incident_index(request):
     filters["afdelingen"] = [
         [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
     ]
+    filters_coount = len([vv for k, v in filters for vv in v])
 
     return render(
         request,
@@ -205,6 +201,7 @@ def incident_index(request):
             "areas": areas,
             "profile": profile,
             "departments": departments,
+            "filters_coount": filters_coount,
         },
     )
 

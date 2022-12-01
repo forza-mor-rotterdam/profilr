@@ -9,4 +9,4 @@ application.load(definitionsFromContext(context))
 console.log("git hash: " + GITHUB_SHA);
 window.Stimulus = application
 
-TurboStart()
+// TurboStart()
