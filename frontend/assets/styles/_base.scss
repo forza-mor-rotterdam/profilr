@@ -128,8 +128,6 @@ a {
 }
 
 
-
-
 p {
     &.text--person {
         @include has-icon();
@@ -145,6 +143,17 @@ p {
             content: url('../icons/close.svg');
             top: 2px;
             left: -23px;
+        }
+    }
+}
+
+.icon {
+    @include has-icon();
+
+    &--warning {
+        &:before {
+            content: url('../icons/warning.svg');
+            top: -1px;
         }
     }
 }

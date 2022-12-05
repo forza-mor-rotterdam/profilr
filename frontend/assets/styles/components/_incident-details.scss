@@ -151,3 +151,12 @@
     margin-bottom: 50px;
 }
 
+.incident__header {
+    display: flex;
+    justify-content: space-between;
+
+    .icon {
+        display: inline-block;
+    }
+}
+

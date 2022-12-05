@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block body %}
-
+{{ incident }}
 <div 
     data-controller="detail"
     data-detail-incident-x-value="{{ incident.locatie.x }}"
@@ -59,10 +59,13 @@
         <div class="container__details">
         {# TODO add optional huisletter and huisnummer_toevoeging  #}
             <h1 class="h3">{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</h1>
-            <span>
-                {{ incident.datumMelding|to_date|date:'d-m-Y' }} 
-                {{ incident.datumMelding|to_date|date:'H:i' }}
-            </span>
+            <div class="incident__header">
+                <span>
+                    {{ incident.datumMelding|to_date|date:'d-m-Y' }} 
+                    {{ incident.datumMelding|to_date|date:'H:i' }}
+                </span>
+                {% if incident.spoed %}<span><span class="icon icon--warning"> Spoed</span></span>{% endif %}
+            </div>
 
             <h2 class="h5">Omschrijving</h2>
             <p>
