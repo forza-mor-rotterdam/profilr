@@ -37,17 +37,23 @@ INSTALLED_APPS = (
     # Apps
     "apps.profilr",
     "apps.health",
+    "apps.auth",
 )
+
+LOGIN_URL = "/login/"
 
 MIDDLEWARE = (
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "apps.auth.middleware.AuthenticationMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
+
+AUTHENTICATION_BACKENDS = ["apps.auth.backends.MSBAuthenticationBackend"]
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.normpath(join(os.path.dirname(BASE_DIR), "static"))
