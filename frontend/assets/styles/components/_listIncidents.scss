@@ -77,7 +77,6 @@
         }
 
         .container__info {
-            font-size: $h6-font-size;
             flex: 1;
 
             a {
@@ -108,7 +107,7 @@
 
             .incident__moment {
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-end;
 
                 span {
                     display: inline-block;
