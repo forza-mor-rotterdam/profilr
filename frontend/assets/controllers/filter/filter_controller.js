@@ -5,7 +5,7 @@ export default class extends Controller {
     static targets =['countActiveFilter']
 
     initialize() {
-        this.countActiveFilterTarget.textContent=document.getElementsByClassName('js-filter-active').length
+        // this.countActiveFilterTarget.textContent=document.getElementsByClassName('js-filter-active').length
     }
 
     showFilters(e) {
@@ -23,8 +23,13 @@ export default class extends Controller {
         input.checked = false;
         document.getElementById('incidentFilterAllForm').submit()
     }
-
+    toggleActiveFilter(e) {
+        e.preventDefault()
+        const input = document.querySelector(`[name=active_filter_open]`);
+        console.log(e.target.hasAttribute("open"))
+        input.value = e.target.hasAttribute("open")
+    }
     submitFilter() {
-        document.body.classList.add('show-spinner')
+        // document.body.classList.add('show-spinner')
     }
 }

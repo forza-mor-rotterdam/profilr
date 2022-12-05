@@ -11,28 +11,25 @@ export default class extends Controller {
         const filterAreaList = JSON.parse(this.filtersValue).wijken ?? []
         const filterDistrictList = JSON.parse(this.filtersValue).buurten ?? []
         const areaCheckList = Array.from(document.getElementsByClassName('filter--area'))
-        
-        areaCheckList.forEach(check => {
-            console.log('check', check)
-            if(filterAreaList.find(area => area[0] === check.value)) {
-                console.log('area', area)
-                check.checked = true
-                //open nested districts
-                check.closest('.container__check-area')
-                    .getElementsByClassName('container__list--districts')[0]
-                    .classList.remove('hidden')
+        // areaCheckList.forEach(check => {
+        //     if(filterAreaList.find(area => area[0] === check.value)) {
+        //         check.checked = true
+        //         //open nested districts
+        //         check.closest('.container__check-area')
+        //             .getElementsByClassName('container__list--districts')[0]
+        //             .classList.remove('hidden')
 
-                // check districts
-                const districtCheckList = Array.from(check.closest('.container__check-area')
-                    .getElementsByClassName('filter--district'))
+        //         // check districts
+        //         const districtCheckList = Array.from(check.closest('.container__check-area')
+        //             .getElementsByClassName('filter--district'))
                 
-                districtCheckList.forEach(check => {
-                    if(filterDistrictList.find(district => district[0] === check.value)) {
-                        check.checked = true
-                    }
-                })
-            }
-        })
+        //         districtCheckList.forEach(check => {
+        //             if(filterDistrictList.find(district => district[0] === check.value)) {
+        //                 check.checked = true
+        //             }
+        //         })
+        //     }
+        // })
     }
     
     toggleArea(e) {
@@ -48,8 +45,8 @@ export default class extends Controller {
         }
     }
 
-    selectAreaFromDistrict(e) {
-        const area = e.target.closest('.container__check-area').getElementsByTagName('input')[0]
-        area.checked = true;
-    }
+    // selectAreaFromDistrict(e) {
+    //     const area = e.target.closest('.container__check-area').getElementsByTagName('input')[0]
+    //     area.checked = true;
+    // }
 }

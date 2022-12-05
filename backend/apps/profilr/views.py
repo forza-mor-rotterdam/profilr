@@ -67,10 +67,51 @@ def login(request):
 
 @login_required
 def filter(request):
+    profile = request.user.profile
+    user_token = request.user.token
+    if request.POST:
+        profile = {
+            "filters": {f: request.POST.getlist(f, []) for f in VALID_FILTERS},
+        }
+        profile = request.user.set_profile(profile)
+
+    valid_filters = msb_api_service.validate_filters(profile.get("filters"))
+    filters = copy.deepcopy(valid_filters)
+
+    departments = msb_api_service.get_afdelingen(user_token)
+    msb_api_service.get_onderwerpgroepen(user_token)
+    areas = msb_api_service.get_wijken(user_token)
+
+    # create lookups for filter options
+    afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
+    wijken_dict = {w.get("code"): w.get("omschrijving") for w in areas}
+    buurten_dict = {
+        b.get("code"): b.get("omschrijving")
+        for w in areas
+        for b in w.get("buurten", [])
+    }
+    # add readable filter results like: [[id, name]]
+    filters["wijken"] = [[o, wijken_dict.get(o, o)] for o in filters.get("wijken", [])]
+    filters["buurten"] = [
+        [o, buurten_dict.get(o, o)] for o in filters.get("buurten", [])
+    ]
+    filters["afdelingen"] = [
+        [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
+    ]
+    filters_count = len([vv for k, v in filters.items() for vv in v])
+
     return render(
         request,
-        "filter/index.html",
-        {},
+        "filters/form.html",
+        {
+            "filters": filters,
+            "valid_filters": valid_filters,
+            "areas": areas,
+            "profile": profile,
+            "departments": departments,
+            "filters_count": filters_count,
+            "active_filter_open": request.POST.get("active_filter_open", "false"),
+        },
     )
 
 
@@ -149,6 +190,7 @@ def incident_index(request):
             "incidents": incidents,
             "groupedSubjects": categories,
             "filters": filters,
+            "valid_filters": valid_filters,
             "areas": areas,
             "profile": profile,
             "departments": departments,

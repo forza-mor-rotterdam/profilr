@@ -14,6 +14,7 @@
                     type="checkbox"
                     value="{{ area.code }}"
                     name="wijken"
+                    {% if area.code in valid_filters.wijken %}checked{% endif %}
                     id="area_{{ area.code }}"
                     data-action="change->filter--areaFilter#toggleArea"
                 >
@@ -30,6 +31,7 @@
                                 class="form-check-input filter--district"
                                 type="checkbox"
                                 value="{{ district.code }}"
+                                {% if district.code in valid_filters.buurten %}checked{% endif %}
                                 name="buurten"
                                 id="district_{{ district.code }}"
                                 data-action="change->incidentFilter#selectAreaFromDistrict"
