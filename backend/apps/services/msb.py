@@ -1,9 +1,33 @@
+import copy
+
 from apps.services.base import APIService
 from django.conf import settings
 from requests import Response
 
+DEFAULT_FILTERS = {
+    "wijken": [],
+    "buurten": [],
+    "afdelingen": [],
+    "groepen": [],
+    "onderwerpen": [],
+}
+DEFAULT_PROFILE = {"filters": DEFAULT_FILTERS}
+VALID_FILTERS = ("wijken", "buurten", "afdelingen", "groepen", "onderwerpen")
+
 
 class MSBService(APIService):
+    def validate_filters(self, filters: dict) -> dict:
+        filters = copy.deepcopy(filters)
+        {
+            k: v if type(v) == list else [v] if type(v) in [str, int, float] else []
+            for k, v in filters.items()
+            if k in VALID_FILTERS
+        }
+        for k in VALID_FILTERS:
+            if not filters.get(k):
+                filters[k] = []
+        return filters
+
     def process_response(self, response: Response) -> tuple[list, dict]:
         response = response.json()
         return response.get("result")
@@ -50,7 +74,11 @@ class MSBService(APIService):
         if thumbnail:
             data.update({"thumbnail": thumbnail})
         return self.do_request(
-            f"msb/melding/foto/{foto_id}", user_token, data=data, raw_response=True
+            f"msb/melding/foto/{foto_id}",
+            user_token,
+            data=data,
+            raw_response=True,
+            cache_timeout=60 * 60,
         )
 
     def get_wijken(self, user_token):
