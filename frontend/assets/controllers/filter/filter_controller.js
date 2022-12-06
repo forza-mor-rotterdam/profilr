@@ -17,16 +17,15 @@ export default class extends Controller {
     }
 
     removeFilter(e) {
-        e.preventDefault()
-        document.body.classList.add('show-spinner')
+        // e.preventDefault()
+        // document.body.classList.add('show-spinner')
         const input = document.querySelector(`[name="${e.params.description}"][value="${e.params.code}"]`);
         input.checked = false;
-        document.getElementById('incidentFilterAllForm').submit()
+        document.getElementById('incidentFilterAllForm').requestSubmit()
     }
     toggleActiveFilter(e) {
         e.preventDefault()
         const input = document.querySelector(`[name=active_filter_open]`);
-        console.log(e.target.hasAttribute("open"))
         input.value = e.target.hasAttribute("open")
     }
     submitFilter() {
