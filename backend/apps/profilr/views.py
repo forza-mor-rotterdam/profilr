@@ -180,9 +180,5 @@ def image_thumbnail(request, id):
 
 @login_required
 def image_full(request, id, thumbnail=False):
-    if not request.session.get("is_logged_in"):
-        return redirect(reverse("login"))
-    user_token = request.session.get("msb_token")
-
-    blob = msb_api_service.get_foto(id, user_token, thumbnail)
+    blob = msb_api_service.get_foto(id, request.user.token, thumbnail)
     return FileResponse(blob)
