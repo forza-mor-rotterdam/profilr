@@ -20,4 +20,4 @@ jobs:
     - name: Start images
       run: docker compose -f docker-compose.test.yaml up -d
     - name: Run Tests
-      run: docker compose exec -T backend python manage.py test
+      run: docker compose -f docker-compose.test.yaml exec -T backend python manage.py test
