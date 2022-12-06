@@ -1,5 +1,5 @@
 <turbo-frame id="incidents_filters">
-                <form action="/filter/" method="post" id="incidentFilterAllForm" data-testid="incidentFilterAllForm">
+                <form action="{% url 'filter_part' %}" method="post" id="incidentFilterAllForm" data-testid="incidentFilterAllForm">
                     {% csrf_token %}
                     <details data-controller="filter--filter" class="filter filter--active" data-action="filter--filter#toggleActiveFilter" {% if active_filter_open == "true" %}open{% endif %}>
                         <input type="hidden" name="active_filter_open" value="{{active_filter_open}}">
