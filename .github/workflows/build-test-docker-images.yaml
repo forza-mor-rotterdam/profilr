@@ -10,7 +10,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3.1.2
       with:
-        python-version: 3.9.7
+        python-version: 3.9.15
     - name: Linting
       run: bash bin/cleanup_pre_commit.sh
     - name: Build Docker images
