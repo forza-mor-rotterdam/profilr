@@ -93,6 +93,12 @@ def incident_index(request):
 
     # create lookups for filter options
     afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
+    groepen_dict = {w.get("code"): w.get("omschrijving") for w in categories}
+    onderwerpen_dict = {
+        o.get("code"): o.get("omschrijving")
+        for w in categories
+        for o in w.get("onderwerpen", [])
+    }
     wijken_dict = {w.get("code"): w.get("omschrijving") for w in areas}
     buurten_dict = {
         b.get("code"): b.get("omschrijving")
@@ -106,6 +112,12 @@ def incident_index(request):
     ]
     filters["afdelingen"] = [
         [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
+    ]
+    filters["groepen"] = [
+        [o, groepen_dict.get(o, o)] for o in filters.get("groepen", [])
+    ]
+    filters["onderwerpen"] = [
+        [o, onderwerpen_dict.get(o, o)] for o in filters.get("onderwerpen", [])
     ]
     filters_count = len([vv for k, v in filters.items() for vv in v])
 
