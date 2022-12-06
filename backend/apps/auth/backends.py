@@ -1,13 +1,27 @@
-# from django.contrib.auth.backends import RemoteUserBackend
+import copy
+
 from apps.services import msb_api_service, profilr_api_service
+from apps.services.msb import DEFAULT_PROFILE
+from django.conf import settings
 
 
 class MSBUser:
     _token = None
     _profile = None
+    _request = None
 
-    def __init__(self, token, *args, **kwargs):
-        profile = profilr_api_service.get_profile(token)
+    def __init__(self, request, *args, **kwargs):
+        self._request = request
+        token = request.session.get("token")
+        if settings.ENABLE_PROFILR_API:
+            profile = profilr_api_service.get_profile(token)
+        else:
+            # try:
+            msb_api_service.get_user_info(token)
+            profile = request.session.get("profile", copy.deepcopy(DEFAULT_PROFILE))
+            # except:
+            # raise
+
         if token:
             self._token = token
             self._profile = profile
@@ -17,7 +31,11 @@ class MSBUser:
         return self._profile
 
     def set_profile(self, profile):
-        profile = profilr_api_service.set_profile(self._token, profile)
+        try:
+            profile = profilr_api_service.set_profile(self._token, profile)
+        except Exception:
+            self._request.session["profile"] = profile
+
         self._profile = profile
         return self._profile
 
@@ -40,7 +58,7 @@ class MSBAuthenticationBackend:
             password,
         )
         request.session["token"] = token
-        return MSBUser(token) if success else None
+        return MSBUser(request) if success else None
 
 
 authenticate = MSBAuthenticationBackend().authenticate
