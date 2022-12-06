@@ -4,6 +4,7 @@
     data-controller="filter--areaFilter"
     data-filter--areaFilter-areas-value='{{ areas|json_encode }}'
     data-filter--areaFilter-filters-value='{{ profile.filters|json_encode }}'
+    data-testid="incidentFilterArea"
 >
     {% for area in areas %}
         <li class="container__check-area">
