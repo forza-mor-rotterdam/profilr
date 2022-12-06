@@ -10,14 +10,14 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3.1.2
       with:
-        python-version: 3.9.15
+        python-version: 3.9.7
     - name: Linting
       run: bash bin/cleanup_pre_commit.sh
     - name: Build Docker images
-      run: docker compose --env-file ./.env build
+      run: docker compose -f docker-compose.test.yaml build
     - name: Create Docker network
       run: docker network create profilr_network
     - name: Start images
-      run: docker compose --env-file ./.env up -d
+      run: docker compose -f docker-compose.test.yaml up -d
     - name: Run Tests
       run: docker compose exec -T backend python manage.py test
