@@ -116,51 +116,12 @@ def filter(request):
 
 
 @login_required
-def incident_index(request):
+def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
-    if request.POST:
-        profile = {
-            "filters": {f: request.POST.getlist(f, []) for f in VALID_FILTERS},
-        }
-        profile = request.user.set_profile(profile)
-
     valid_filters = msb_api_service.validate_filters(profile.get("filters"))
-    filters = copy.deepcopy(valid_filters)
 
-    departments = msb_api_service.get_afdelingen(user_token)
-    categories = msb_api_service.get_onderwerpgroepen(user_token)
-    areas = msb_api_service.get_wijken(user_token)
-
-    # create lookups for filter options
-    afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
-    groepen_dict = {w.get("code"): w.get("omschrijving") for w in categories}
-    onderwerpen_dict = {
-        o.get("code"): o.get("omschrijving")
-        for w in categories
-        for o in w.get("onderwerpen", [])
-    }
-    wijken_dict = {w.get("code"): w.get("omschrijving") for w in areas}
-    buurten_dict = {
-        b.get("code"): b.get("omschrijving")
-        for w in areas
-        for b in w.get("buurten", [])
-    }
-    # add readable filter results like: [[id, name]]
-    filters["wijken"] = [[o, wijken_dict.get(o, o)] for o in filters.get("wijken", [])]
-    filters["buurten"] = [
-        [o, buurten_dict.get(o, o)] for o in filters.get("buurten", [])
-    ]
-    filters["afdelingen"] = [
-        [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
-    ]
-    filters["groepen"] = [
-        [o, groepen_dict.get(o, o)] for o in filters.get("groepen", [])
-    ]
-    filters["onderwerpen"] = [
-        [o, onderwerpen_dict.get(o, o)] for o in filters.get("onderwerpen", [])
-    ]
-    filters_count = len([vv for k, v in filters.items() for vv in v])
+    filters_count = len([vv for k, v in valid_filters.items() for vv in v])
 
     # get incidents if we have filters
     incidents = []
@@ -185,16 +146,23 @@ def incident_index(request):
 
     return render(
         request,
-        "incident/index.html",
+        "incident/list.html",
         {
             "incidents": incidents,
-            "groupedSubjects": categories,
-            "filters": filters,
-            "valid_filters": valid_filters,
-            "areas": areas,
-            "profile": profile,
-            "departments": departments,
             "filters_count": filters_count,
+            "filters": valid_filters,
+        },
+    )
+
+
+@login_required
+def incident_index(request):
+    return render(
+        request,
+        "incident/index.html",
+        {
+            "main_view": reverse("incident_list_part"),
+            "fullpage_view": reverse("filter_part"),
         },
     )
 
