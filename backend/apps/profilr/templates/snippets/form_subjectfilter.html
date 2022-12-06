@@ -1,5 +1,5 @@
 {% load json_encode from profilr_tags %}
-
+{{ filters }}
 <ul
     class="list-clean"
     data-controller="filter--subjectFilter"
@@ -21,7 +21,7 @@
                 <label class="form-check-label" for="group_{{ group.code }}">{{ group.omschrijving }}</label>
             </div>
             {% if group.onderwerpen %}
-            <div class="container__list--subject foldout hidden">
+            <div class="container__list--subjects foldout hidden">
                 <h3 class="h5">Onderwerpen</h3>
                 <ul class="list-clean">
                     {% for subject in group.onderwerpen %}

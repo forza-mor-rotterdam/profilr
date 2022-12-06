@@ -6,6 +6,7 @@
     data-filter--filter-filters-value="{{ filters|json_encode }}"
     data-testid="incidentFilterAll"
 >
+{{ filters }}
     <div class="full-page-view__main">
         <div class="full-page-view__header">
             <div class="full-page-view__action_container">
@@ -63,7 +64,7 @@
                                                 data-filter--filter-code-param="{{ groep.0 }}"
                                                 data-filter--filter-description-param="groepen"  
                                             >
-                                                <span>{{ groep.omschrijving }}</span>
+                                                <span>{{ groep.1 }}</span>
                                             </button>
                                         </li>
                                         {% endfor %}
@@ -83,7 +84,7 @@
                                                 data-filter--filter-code-param="{{ subject.0 }}"
                                                 data-filter--filter-description-param="onderwerpen"  
                                             >
-                                                <span>{{ groep.omschrijving }}</span>
+                                                <span>{{ subject.1 }}</span>
                                             </button>
                                         </li>
                                         {% endfor %}
