@@ -63,7 +63,6 @@
         padding: 24px $input-padding-x;
         border-top: 1px solid $gray-tint04;
 
-
         &:last-child{
             border-bottom: 1px solid $gray-tint04;
         }
@@ -78,6 +77,7 @@
             justify-content: space-between;
             padding-left: 20px;
             position: relative;
+            cursor: pointer;
 
             &::before {
                 content: url('../icons/arrow-right.svg');
@@ -112,7 +112,8 @@
     }
 }
 
-.container__list--districts {
+.container__list--districts,
+.container__list--subjects {
     background-color: $gray-tint01;
     margin: 0 -8px 16px;
     padding: 16px;

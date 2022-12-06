@@ -11,8 +11,11 @@ export default class extends Controller {
         const filterAreaList = JSON.parse(this.filtersValue).wijken ?? []
         const filterDistrictList = JSON.parse(this.filtersValue).buurten ?? []
         const areaCheckList = Array.from(document.getElementsByClassName('filter--area'))
+        
         areaCheckList.forEach(check => {
+            console.log('check', check)
             if(filterAreaList.find(area => area[0] === check.value)) {
+                console.log('area', area)
                 check.checked = true
                 //open nested districts
                 check.closest('.container__check-area')
