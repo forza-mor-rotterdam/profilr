@@ -12,4 +12,4 @@ class AuthenticationMiddleware(MiddlewareMixin):
             "'django.contrib.sessions.middleware.SessionMiddleware' before "
             "'django.contrib.auth.middleware.AuthenticationMiddleware'."
         ) % ("_CLASSES" if settings.MIDDLEWARE is None else "")
-        request.user = SimpleLazyObject(lambda: MSBUser(request.session.get("token")))
+        request.user = SimpleLazyObject(lambda: MSBUser(request))
