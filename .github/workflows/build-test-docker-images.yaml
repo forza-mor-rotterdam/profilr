@@ -14,10 +14,10 @@ jobs:
     - name: Linting
       run: bash bin/cleanup_pre_commit.sh
     - name: Build Docker images
-      run: docker compose build
+      run: docker compose --env-file ./.env build
     - name: Create Docker network
       run: docker network create profilr_network
     - name: Start images
-      run: docker compose -f docker-compose.test.yaml up -d
+      run: docker compose --env-file ./.env up -d
     - name: Run Tests
       run: docker compose exec -T backend python manage.py test
