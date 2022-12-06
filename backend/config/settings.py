@@ -113,4 +113,4 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 MSB_API_URL = os.getenv("MSB_API_URL", "https://diensten.rotterdam.nl")
 PROFILR_API_URL = os.getenv("PROFILR_API_URL", "https://api.profilr.forzamor.nl")
-PROFILR_HEALTH_URL = f"{PROFILR_API_URL}/health"
+PROFILR_API_HEALTH_URL = f"{PROFILR_API_URL}/health"
