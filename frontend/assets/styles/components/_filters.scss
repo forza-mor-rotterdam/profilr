@@ -112,7 +112,8 @@
     }
 }
 
-.container__list--districts {
+.container__list--district,
+.container__list--subject {
     background-color: $gray-tint01;
     margin: 0 -8px 16px;
     padding: 16px;

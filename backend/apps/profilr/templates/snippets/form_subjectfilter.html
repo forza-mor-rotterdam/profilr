@@ -1,0 +1,47 @@
+{% load json_encode from profilr_tags %}
+
+<ul
+    class="list-clean"
+    data-controller="filter--subjectFilter"
+    data-filter--subjectFilter-value='{{ groupedSubjects|json_encode }}'
+    data-filter--subjectFilter-filters-value='{{ profile.filters|json_encode }}'
+    data-testid="incidentFilterSubject"
+>
+    {% for group in groupedSubjects %}
+        <li class="container__check-group">
+            <div class="form-check">
+                <input
+                    class="form-check-input filter--group"
+                    type="checkbox"
+                    value="{{ group.code }}"
+                    name="groepen"
+                    id="group_{{ group.code }}"
+                    data-action="change->filter--subjectFilter#toggleGroup"
+                >
+                <label class="form-check-label" for="group_{{ group.code }}">{{ group.omschrijving }}</label>
+            </div>
+            {% if group.onderwerpen %}
+            <div class="container__list--subject foldout hidden">
+                <h3 class="h5">Onderwerpen</h3>
+                <ul class="list-clean">
+                    {% for subject in group.onderwerpen %}
+                    <li>
+                        <div class="form-check">
+                            <input 
+                                class="form-check-input filter--subject"
+                                type="checkbox"
+                                value="{{ subject.code }}"
+                                name="onderwerpen"
+                                id="subject_{{ subject.code }}"
+                                data-action="change->incidentFilter#selectGroupFromSubject"
+                            >
+                            <label class="form-check-label" for="subject_{{ subject.code }}">{{ subject.omschrijving }}</label>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>

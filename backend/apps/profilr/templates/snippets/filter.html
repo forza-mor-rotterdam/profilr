@@ -51,6 +51,46 @@
                                 </li>
                                 {% endif %}
 
+                                {% if filters.groepen|length > 0 %}
+                                <li>
+                                    <h3 class="h5">Groepen</h3>
+                                    <ul class="list-filters--active">
+                                        {% for groep in filters.groepen %}
+                                        <li class="js-filter-active">
+                                            <button
+                                                class="btn btn-secondary btn-filter--active"
+                                                data-action="filter--filter#removeFilter"  
+                                                data-filter--filter-code-param="{{ groep.0 }}"
+                                                data-filter--filter-description-param="groepen"  
+                                            >
+                                                <span>{{ groep.omschrijving }}</span>
+                                            </button>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endif %}
+
+                                {% if filters.onderwerpen|length > 0 %}
+                                <li>
+                                    <h3 class="h5">Onderwerpen</h3>
+                                    <ul class="list-filters--active">
+                                        {% for subject in filters.onderwerpen %}
+                                        <li class="js-filter-active">
+                                            <button
+                                                class="btn btn-secondary btn-filter--active"
+                                                data-action="filter--filter#removeFilter"  
+                                                data-filter--filter-code-param="{{ subject.0 }}"
+                                                data-filter--filter-description-param="onderwerpen"  
+                                            >
+                                                <span>{{ groep.omschrijving }}</span>
+                                            </button>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endif %}
+
                                 {% if filters.wijken|length > 0 %}
                                 <li>
                                     <h3 class="h5">Wijken</h3>
@@ -103,6 +143,14 @@
                             <span>({{ filters.afdelingen|length }})</span>
                         </summary>
                         {% include "snippets/form_departmentfilter--departments.html" %}
+                    </details>
+
+                    <details class="filter">
+                        <summary>
+                            <span>Onderwerpen</span>
+                            <span>({{ filters.onderwerpen|length }})</span>
+                        </summary>
+                        {% include "snippets/form_subjectfilter.html" %}
                     </details>
 
                     <details class="filter">
