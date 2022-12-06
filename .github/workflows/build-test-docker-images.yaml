@@ -18,6 +18,6 @@ jobs:
     - name: Create Docker network
       run: docker network create profilr_network
     - name: Start images
-      run: docker-compose up -d
+      run: docker-compose  --env-file ./.env up -d
     - name: Run Tests
       run: docker-compose exec -T backend python manage.py test
