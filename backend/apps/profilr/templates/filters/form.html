@@ -81,7 +81,7 @@
                             <span>Afdelingen</span>
                             <span>({{ filters.afdelingen|length }})</span>
                         </summary>
-                        {% include "snippets/form_departmentfilter--departments.html" %}
+                        {% include "snippets/form_departmentfilter.html" %}
                     </details>
 
                     <details class="filter">
@@ -89,7 +89,7 @@
                             <span>Wijken/buurten</span>
                             <span>({{ filters.wijken|add:filters.buurten|length }})</span>
                         </summary>
-                        {% include "snippets/form_areafilter--areas.html" %}
+                        {% include "snippets/form_areafilter.html" %}
                     </details>
 
                     <div class="full-page-view__footer">

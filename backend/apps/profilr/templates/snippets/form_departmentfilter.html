@@ -1,29 +1,23 @@
 {% load json_encode from profilr_tags %}
-
-<div class="container__form">
-    <turbo-frame id="departments_filter">
-    <form
-        action=""
-        method="post"
-        data-testid="incidentFilterForm"
-        data-controller="filter--departmentFilter"
-        data-filter--departmentFilter-filters-value='{{ profile.filters|json_encode }}'
-    >
-        {% csrf_token %}
-        <div
-            class="form-row"
-        >
-            {% include "snippets/form_departmentfilter--departments.html" %}
-        </div>
-        <div class="form-row container__button">
-            <button
-                type="submit"
-                class="btn btn-action"
-                data-action="filter--departmentFilter#submitFilter"
-            >
-                <span>Filter</span>
-            </button>
-        </div>
-    </form>
-    </turbo-frame>
-</div>
+<ul
+    class="list-clean"
+    {% comment %} data-controller="filter--departmentFilter" {% endcomment %}
+    data-filter--departmentFilter-filters-value='{{ profile.filters|json_encode }}'
+    data-test-id="incidentFilterDepartment"
+>
+    {% for department in departments %}
+        <li class="container__check-department">
+            <div class="form-check">
+                <input
+                    class="form-check-input filter--department"
+                    type="checkbox"
+                    value="{{ department.code }}"
+                    {% if department.code in valid_filters.afdelingen %}checked{% endif %}
+                    name="afdelingen"
+                    id="department_{{ department.code }}"
+                >
+                <label class="form-check-label" for="department_{{ department.code }}">{{ department.omschrijving }}</label>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
