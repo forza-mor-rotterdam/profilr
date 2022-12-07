@@ -114,3 +114,8 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 MSB_API_URL = os.getenv("MSB_API_URL", "https://diensten.rotterdam.nl")
 PROFILR_API_URL = os.getenv("PROFILR_API_URL", "https://api.profilr.forzamor.nl")
 PROFILR_API_HEALTH_URL = f"{PROFILR_API_URL}/health"
+
+ENABLE_MELDING_AFHANDELEN = os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
+
+if MSB_API_URL.startswith("https://diensten.rotterdam.nl"):
+    ENABLE_MELDING_AFHANDELEN = False
