@@ -13,15 +13,16 @@ class MSBUser:
     def __init__(self, request, *args, **kwargs):
         self._request = request
         token = request.session.get("token")
+        print(token)
         profile = request.session.get("profile", copy.deepcopy(DEFAULT_PROFILE))
-        try:
-            if settings.ENABLE_PROFILR_API:
-                profile = profilr_api_service.get_profile(token)
-            else:
-                msb_api_service.get_user_info(token)
-        except Exception:
-            request.session.flush()
-
+        print(profile)
+        if settings.ENABLE_PROFILR_API:
+            print("try get profile")
+            profile = profilr_api_service.get_profile(token)
+        else:
+            msb_api_service.get_user_info(token)
+        print("profile")
+        print(profile)
         if token:
             self._profile = profile
 
@@ -31,11 +32,8 @@ class MSBUser:
 
     def set_profile(self, profile):
         self._request.session["profile"] = profile
-        try:
-            if settings.ENABLE_PROFILR_API:
-                profile = profilr_api_service.set_profile(self.token, profile)
-        except Exception:
-            self._request.session.flush()
+        if settings.ENABLE_PROFILR_API:
+            profile = profilr_api_service.set_profile(self.token, profile)
 
         self._profile = profile
         return self._profile
