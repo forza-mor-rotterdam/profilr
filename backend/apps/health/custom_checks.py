@@ -8,7 +8,7 @@ class ProfilRAPIHealthCheck(BaseHealthCheckBackend):
     critical_service = False
 
     def check_status(self):
-        health_check_response = requests.get(f"{settings.PROFILR_API_URL}/health")
+        health_check_response = requests.get(settings.PROFILR_API_HEALTH_URL)
 
         if health_check_response.status_code != 200:
             raise HealthCheckException(
