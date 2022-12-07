@@ -1,7 +1,7 @@
 {% load json_encode from profilr_tags %}
 <ul
     class="list-clean"
-    {% comment %} data-controller="filter--departmentFilter" {% endcomment %}
+    data-controller="filter--departmentFilter"
     data-filter--departmentFilter-filters-value='{{ profile.filters|json_encode }}'
     data-test-id="incidentFilterDepartment"
 >
@@ -15,6 +15,7 @@
                     {% if department.code in valid_filters.afdelingen %}checked{% endif %}
                     name="afdelingen"
                     id="department_{{ department.code }}"
+                    data-action="filter--departmentFilter#submitFilter"
                 >
                 <label class="form-check-label" for="department_{{ department.code }}">{{ department.omschrijving }}</label>
             </div>
