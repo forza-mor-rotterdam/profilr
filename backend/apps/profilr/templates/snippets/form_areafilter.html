@@ -34,7 +34,7 @@
                                 {% if district.code in valid_filters.buurten %}checked{% endif %}
                                 name="buurten"
                                 id="district_{{ district.code }}"
-                                data-action="change->incidentFilter#selectAreaFromDistrict"
+                                data-action="change->filter--areaFilter#submitFilter"
                             >
                             <label class="form-check-label" for="district_{{ district.code }}">{{ district.omschrijving }}</label>
                         </div>

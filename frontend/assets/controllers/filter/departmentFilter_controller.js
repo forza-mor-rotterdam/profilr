@@ -11,13 +11,6 @@ export default class extends Controller {
     }
 
     submitFilter() {
-        document.getElementById('incidentFilterAllForm').requestSubmit()
-        const frame = document.querySelector('turbo-frame#incidents_list')
-        
-        //als data binnen is, reload frame        
-        setTimeout(() => {
-            frame.reload()
-        }, 1000)
-        
+        document.getElementById('incidentFilterAllForm').requestSubmit()    
     }
 }
