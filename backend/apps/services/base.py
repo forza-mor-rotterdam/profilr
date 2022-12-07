@@ -2,7 +2,6 @@ from urllib.parse import urlencode
 
 import requests
 from django.core.cache import cache
-from django.core.exceptions import PermissionDenied
 from requests import Response
 
 
@@ -76,8 +75,7 @@ class APIService(BaseAPIService):
                 "timeout": self._timeout,
             }
             response = action(**action_params)
-            if response.status_code == 401:
-                raise PermissionDenied()
+            response.raise_for_status()
 
             if int(response.status_code) >= 200 and int(response.status_code) < 300:
                 cache.set(cache_key, response, cache_timeout)

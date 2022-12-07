@@ -10,6 +10,8 @@ export default class extends Controller {
 
     connect() {
         const groupOptions = JSON.parse(this.groupListValue)
+        console.log(this.formIsSubmitted)
+        console.log(!!this.formIsSubmitted)
         
         for(let i = 0; i < groupOptions.length; i++) {
             const opt = groupOptions[i];
