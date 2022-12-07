@@ -1,9 +1,9 @@
 import copy
 
 from apps.auth.backends import authenticate
+from apps.auth.decorators import login_required
 from apps.services import msb_api_service
 from apps.services.msb import VALID_FILTERS
-from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
