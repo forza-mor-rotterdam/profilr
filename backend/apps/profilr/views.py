@@ -2,6 +2,7 @@ import copy
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
+from apps.profilr.forms import HANDLE_OPTIONS, HandleForm
 from apps.services import msb_api_service
 from apps.services.msb import VALID_FILTERS
 from django.http import FileResponse, HttpResponse
@@ -30,9 +31,9 @@ def http_response(request):
 
 
 def root(request):
-    if not request.session.get("is_logged_in", False):
-        return redirect(reverse("login"))
-    return redirect(reverse("incident_index"))
+    if request.user and request.user.is_authenticated:
+        return redirect(reverse("incident_index"))
+    return redirect(reverse("login"))
 
 
 def logout(request):
@@ -42,19 +43,22 @@ def logout(request):
 
 
 def login(request):
+    if request.user and request.user.is_authenticated:
+        return redirect(reverse("incident_index"))
+
     error = None
     if request.POST:
-        user = authenticate(
+        success, result = authenticate(
             request=request,
             username=request.POST.get("_username"),
             password=request.POST.get("_password"),
         )
-        if user.is_authenticated:
+        print(result)
+        if success:
             return redirect(reverse("incident_index"))
         else:
-            request.session["is_logged_in"] = False
-            error = "invalid_username_or_password"
-
+            error = result
+    print("render")
     return render(
         request,
         "login/index.html",
@@ -99,7 +103,12 @@ def filter(request):
         [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
     ]
     filters_count = len([vv for k, v in filters.items() for vv in v])
-
+    incident_count = 0
+    if filters_count > 0:
+        incidents = msb_api_service.get_list(
+            user_token, data=valid_filters, no_cache=True
+        )
+        incident_count = len(incidents)
     return render(
         request,
         "filters/form.html",
@@ -110,6 +119,7 @@ def filter(request):
             "profile": profile,
             "departments": departments,
             "filters_count": filters_count,
+            "incident_count": incident_count,
             "active_filter_open": request.POST.get("active_filter_open", "false"),
         },
     )
@@ -191,6 +201,54 @@ def incident_detail(request, id):
             "groupedSubjects": categories,
             "areas": areas,
             "profile": profile,
+        },
+    )
+
+
+@login_required
+def incident_handle(request, id=None):
+    profile = request.user.profile
+    user_token = request.user.token
+    incident = msb_api_service.get_detail(id, user_token)
+
+    form = HandleForm()
+
+    if request.POST:
+        print(request.POST)
+        form = HandleForm(request.POST)
+        if form.is_valid():
+            choice = form.cleaned_data.get("handle_choice", 1)
+            choice_type = {
+                x: HANDLE_OPTIONS[x][0] for x in range(len(HANDLE_OPTIONS))
+            }.get(int(choice), choice)
+            choice_value = {
+                x: HANDLE_OPTIONS[x][1] for x in range(len(HANDLE_OPTIONS))
+            }.get(int(choice), choice)
+            data = {
+                "meldingId": incident.get("id"),
+                "behandelaar": request.user.name,
+                "meldingType": choice_type,
+                "afhandelOpmerking": choice_value,
+                "straat": incident.get("locatie", {})
+                .get("adres", {})
+                .get("straatNummer"),
+                "huisnummer": incident.get("locatie", {})
+                .get("adres", {})
+                .get("huisnummer"),
+            }
+            print(data)
+            result = msb_api_service.afhandelen(incident.get("id"), user_token, data)
+            print(result)
+            form = None
+
+    return render(
+        request,
+        "incident/handle.html",
+        {
+            "id": id,
+            "incident": incident,
+            "profile": profile,
+            "form": form,
         },
     )
 

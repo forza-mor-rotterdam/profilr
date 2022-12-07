@@ -38,7 +38,12 @@ export default class extends Controller {
         modal.setAttribute('data-id', data.id);
         modal.setAttribute('data-subjectId', data.onderwerp.id);
         modal.querySelector('[data-address]').textContent= `${data.locatie.adres.straatNaam}${' '}${data.locatie.adres.huisnummer} `;
-                    
+        
+        let turboFrame = modal.querySelector('turbo-frame');
+        console.log(turboFrame);
+        console.log(turboFrame.setAttribute('src', turboFrame.getAttribute('src') + "/" + data.id));
+
+
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
         document.body.classList.add('show-modal');
