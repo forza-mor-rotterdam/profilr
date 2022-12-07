@@ -6,6 +6,7 @@
         data-testid="incidentFilterAllForm"
     >
         {% csrf_token %}
+
         <details data-controller="filter--filter" class="filter filter--active" data-action="filter--filter#toggleActiveFilter" {% if active_filter_open == "true" %}open{% endif %}>
             <input type="hidden" name="active_filter_open" value="{{active_filter_open}}">
             <summary>
@@ -96,5 +97,34 @@
             </summary>
             {% include "snippets/form_areafilter.html" %}
         </details>
+
+        <div class="full-page-view__footer">
+            {% if incident_count == 0 %}
+                <button
+                    type="button"
+                    class="btn btn-action"
+                    data-action="filter--filter#hideFilters"
+                    disabled="disabled"
+                >
+                    Er zijn geen meldingen, pas filter aan
+                </button>
+            {% elseif incident_count == 1 %}
+                <button
+                    type="submit"
+                    class="btn btn-action"
+                    data-action="filter--filter#submitFilter"
+                >
+                    Toon 1 melding
+                </button>
+            {% else %}
+                <button
+                    type="submit"
+                    class="btn btn-action"
+                    data-action="filter--filter#submitFilter"
+                >
+                    Toon {{ incident_count }} meldingen
+                </button>
+            {% endif %}
+        </div>
     </form>
 </turbo-frame>

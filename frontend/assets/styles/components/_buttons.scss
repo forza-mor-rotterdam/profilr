@@ -114,6 +114,10 @@ button[class="icon"] {
             background-color: $magenta-tint02;
             border-color: $magenta-tint02;
         }
+        &[disabled] {
+            background-color: $gray-tint04;
+            border-color: $gray-tint04;
+        }
     }
 
     &-tertiary {

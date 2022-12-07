@@ -2,11 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     
-    static targets =['countActiveFilter']
-
-    initialize() {
-        // this.countActiveFilterTarget.textContent=document.getElementsByClassName('js-filter-active').length
-    }
+    // static targets =['countActiveFilter']
 
     showFilters(e) {
         document.body.classList.add('show-filters')
@@ -29,6 +25,8 @@ export default class extends Controller {
         input.value = e.target.hasAttribute("open")
     }
     submitFilter() {
-        // document.body.classList.add('show-spinner')
+        const frame = document.getElementById('incidents_list');
+        frame.reload()
+        this.hideFilters()
     }
 }
