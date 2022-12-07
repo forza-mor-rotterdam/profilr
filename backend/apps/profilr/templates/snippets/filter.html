@@ -6,6 +6,7 @@
     data-filter--filter-filters-value="{{ filters|json_encode }}"
     data-testid="incidentFilterAll"
 >
+
     <div class="full-page-view__main">
         <div class="full-page-view__header">
             <div class="full-page-view__action_container">
@@ -15,7 +16,7 @@
                     class="btn btn-close"
                     aria-label="Sluit"
                     data-action="filter--filter#hideFilters"
-                ></button>    
+                ></button> 
             </div>
         </div>
         <div class="full-page-view__scroll-pane">
@@ -23,7 +24,15 @@
                 <turbo-frame id="incidents_filters" src="{{ fullpage_view }}">
                 </turbo-frame>
             </div>
-            
+        </div>
+        <div class="full-page-view__footer">
+            <button
+                type="button"
+                class="btn btn-action"
+                data-action="filter--filter#hideFilters"
+            >
+                Toon meldingen
+            </button>
         </div>
     </div>
 </div>
