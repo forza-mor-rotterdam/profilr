@@ -212,6 +212,9 @@ def incident_handle(request, id=None):
     incident = msb_api_service.get_detail(id, user_token)
 
     form = HandleForm()
+    warnings = None
+    errors = None
+    messages = None
 
     if request.POST:
         print(request.POST)
@@ -235,10 +238,19 @@ def incident_handle(request, id=None):
                 "huisnummer": incident.get("locatie", {})
                 .get("adres", {})
                 .get("huisnummer"),
+                "plaatsbepaling": incident.get("locatie", {}).get("plaatsbepaling", 0),
+                "x": incident.get("locatie", {}).get("x", 0),
+                "y": incident.get("locatie", {}).get("y", 0),
             }
             print(data)
             result = msb_api_service.afhandelen(incident.get("id"), user_token, data)
             print(result)
+            if result.get("warnings"):
+                warnings = result.get("warnings")
+            if result.get("errors"):
+                errors = result.get("errors")
+            if result.get("messages"):
+                messages = result.get("messages")
             form = None
 
     return render(
@@ -249,6 +261,9 @@ def incident_handle(request, id=None):
             "incident": incident,
             "profile": profile,
             "form": form,
+            "errors": errors,
+            "warnings": warnings,
+            "messages": messages,
         },
     )
 

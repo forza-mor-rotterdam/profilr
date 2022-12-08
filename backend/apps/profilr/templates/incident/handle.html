@@ -65,7 +65,18 @@
         </div>
     </form>
     {% else %}
-
+        {% if warnings %}
+        <h3>Waarschuwing!</h3>
+        {% for e in warnings %}
+        {{ e }}
+        {% endfor %}
+        {% endif %}
+        {% if errors %}
+        <h3>Er is een fout opgetreden!</h3>
+        {% for e in errors %}
+        {{ e }}
+        {% endfor %}
+        {% endif %}
     {% endif %}
 </div>
 </turbo-frame>
