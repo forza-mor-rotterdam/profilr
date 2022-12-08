@@ -36,6 +36,7 @@
                     </li>
                     {% endif %}
 
+{% comment %}
                     {% if filters.wijken|length > 0 %}
                     <li>
                         <h3 class="h5">Wijken</h3>
@@ -56,7 +57,7 @@
                         </ul>
                     </li>
                     {% endif %}
-
+{% endcomment %}
                     {% if filters.buurten|length > 0 %}
                     <li>
                         <h3 class="h5">Buurten</h3>
@@ -78,7 +79,6 @@
                     </li>
                     {% endif %}
                 </ul>
-                <a class="link--bin">Wis alle filters</a>
             </fieldset>
         </details>
         
