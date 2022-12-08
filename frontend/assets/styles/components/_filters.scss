@@ -59,13 +59,9 @@
         }
     }
 
-    .filter {
-        padding: 24px $input-padding-x;
-        border-top: 1px solid $gray-tint04;
-
-        &:last-child{
-            border-bottom: 1px solid $gray-tint04;
-        }
+    details {
+        
+        
 
         &--active {
             background-color: $gray-tint01;
@@ -75,14 +71,15 @@
         summary {
             display: flex;
             justify-content: space-between;
-            padding-left: 20px;
+            padding: 24px 0 24px 24px;
             position: relative;
             cursor: pointer;
+            border-top: 1px solid $gray-tint04;
 
             &::before {
                 content: url('../icons/arrow-right.svg');
                 position: absolute;
-                top: 0;
+                top: calc(50% - 10px);
                 left: 0;
                 transform: rotate(90deg);
             }
@@ -90,7 +87,7 @@
         }
 
         &[open] {
-            summary {
+            > summary {
                 &::before {
                     transform: rotate(-90deg);
                     left: 3px;
@@ -100,6 +97,7 @@
         
         ul {
             @include list-clean();
+            margin-top: 0;
 
             &.list-filters--active {
                 li {
@@ -108,6 +106,42 @@
                 }
             }
 
+            .container__check {
+                margin: 0 -16px;
+            }
+        }
+
+        details {
+            summary {
+                background-color: $gray-tint01;
+                margin: 0 -16px;
+                padding: 24px $input-padding-x 24px 80px;
+                
+                &::before {
+                    left: 57px;
+                }
+            }
+
+            .form-check {
+                margin-left: -4px;
+            }
+
+            &[open] {
+                > summary {
+                    &::before {
+                        left: 60px;
+                    }
+                }
+            }
+        }
+    }
+
+    > details {
+        padding: 0 $input-padding-x;
+        &:first-child{
+            > summary {
+                border-top: 1px solid $gray-tint04;
+            }
         }
     }
 }
@@ -116,9 +150,13 @@
 .container__list--subjects {
     background-color: $gray-tint01;
     margin: 0 -8px 16px;
-    padding: 16px;
+    padding: 16px 0 16px 48px;
 
     > *:first-child {
         margin-top: 0;
     }
+}
+
+.container__list--districts {
+    background-color: transparent;
 }
