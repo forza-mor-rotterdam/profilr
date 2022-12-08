@@ -24,7 +24,12 @@ export default class extends Controller {
         const input = document.querySelector(`[name=active_filter_open]`);
         input.value = e.target.hasAttribute("open")
     }
-    submitFilter() {
+
+    onChangeFilter() {
+        document.getElementById('incidentFilterAllForm').requestSubmit()    
+    }
+
+    onSubmitFilter() {
         const frame = document.getElementById('incidents_list');
         frame.reload()
         this.hideFilters()

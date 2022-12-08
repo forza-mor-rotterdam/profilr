@@ -1,9 +1,7 @@
 {% load json_encode from profilr_tags %}
 <ul
     class="list-clean"
-    data-controller="filter--areaFilter"
-    data-filter--areaFilter-areas-value='{{ areas|json_encode }}'
-    data-filter--areaFilter-filters-value='{{ profile.filters|json_encode }}'
+    data-controller="filter--filter"
     data-testid="incidentFilterArea"
 >
     {% for area in areas %}
@@ -26,7 +24,7 @@
                                     {% if district.code in valid_filters.buurten %}checked{% endif %}
                                     name="buurten"
                                     id="district_{{ district.code }}"
-                                    data-action="change->filter--areaFilter#submitFilter"
+                                    data-action="change->filter--filter#onChangeFilter"
                                 >
                                 <label class="form-check-label" for="district_{{ district.code }}">{{ district.omschrijving }}</label>
                             </div>
