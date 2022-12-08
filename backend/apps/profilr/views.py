@@ -86,6 +86,7 @@ def filter(request):
     departments = msb_api_service.get_afdelingen(user_token)
     msb_api_service.get_onderwerpgroepen(user_token)
     areas = msb_api_service.get_wijken(user_token)
+    categories = msb_api_service.get_onderwerpgroepen(user_token)
 
     # create lookups for filter options
     afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
@@ -95,6 +96,12 @@ def filter(request):
         for w in areas
         for b in w.get("buurten", [])
     }
+    groepen_dict = {w.get("code"): w.get("omschrijving") for w in categories}
+    onderwerpen_dict = {
+        b.get("code"): b.get("omschrijving")
+        for w in categories
+        for b in w.get("onderwerpen", [])
+    }
     # add readable filter results like: [[id, name]]
     filters["wijken"] = [[o, wijken_dict.get(o, o)] for o in filters.get("wijken", [])]
     filters["buurten"] = [
@@ -102,6 +109,13 @@ def filter(request):
     ]
     filters["afdelingen"] = [
         [o, afdelingen_dict.get(o, o)] for o in filters.get("afdelingen", [])
+    ]
+    filters["groepen"] = [
+        [o, groepen_dict.get(o, o)] for o in filters.get("groepen", [])
+    ]
+
+    filters["onderwerpen"] = [
+        [o, onderwerpen_dict.get(o, o)] for o in filters.get("onderwerpen", [])
     ]
     filters_count = len([vv for k, v in filters.items() for vv in v])
     incident_count = 0
@@ -119,6 +133,7 @@ def filter(request):
             "areas": areas,
             "profile": profile,
             "departments": departments,
+            "groupedSubjects": categories,
             "filters_count": filters_count,
             "incident_count": incident_count,
             "active_filter_open": request.POST.get("active_filter_open", "false"),
