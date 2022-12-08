@@ -11,4 +11,5 @@ def general_settings(context):
     return {
         "git_sha": settings.GIT_SHA,
         "PROFILR_API_AVAILABLE": PROFILR_API_AVAILABLE,
+        "ENABLE_MELDING_AFHANDELEN": settings.ENABLE_MELDING_AFHANDELEN,
     }

@@ -1,8 +1,18 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
+    static targets = [ "root" ]
     static values = {
-        // id: String
+        isSubmitted: String
+    }
+    connect() {
+
+        const frame = this.rootTarget.closest("turbo-frame");
+        if (this.isSubmittedValue == "True"){
+            setTimeout(function (){
+                frame.reload()
+            }, 4000)
+        }
     }
 
     swipe(e) {
@@ -31,17 +41,16 @@ export default class extends Controller {
     }
 
     openModal(e) {
-        const data = e.params.object
-        const modal = document.getElementById('modal-handleForm');
-        const modalBackdrop = document.getElementById('modal-backdrop');
+        const data = e.params.object;
+        const frame = e.target.closest('turbo-frame');
+        const modal = frame.querySelector('.modal');
+        const modalBackdrop = frame.querySelector('.modal-backdrop');
+
+        console.log(modal)
 
         modal.setAttribute('data-id', data.id);
         modal.setAttribute('data-subjectId', data.onderwerp.id);
-        modal.querySelector('[data-address]').textContent= `${data.locatie.adres.straatNaam}${' '}${data.locatie.adres.huisnummer} `;
-        
-        let turboFrame = modal.querySelector('turbo-frame');
-        console.log(turboFrame);
-        console.log(turboFrame.setAttribute('src', turboFrame.getAttribute('data-src') + "/" + data.id));
+        // modal.querySelector('[data-address]').textContent= `${data.locatie.adres.straatNaam}${' '}${data.locatie.adres.huisnummer} `;
 
 
         modal.classList.add('show');

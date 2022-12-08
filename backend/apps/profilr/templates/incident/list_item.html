@@ -3,10 +3,14 @@
 {% load json_encode from profilr_tags %}
 
 <turbo-frame id="incident_list_item">
-<li
+<div
+    class="list-item{% if form_submitted %} form-is-submitted{% endif %}{% if errors and warnings %} has-errors{% endif %}"
     data-controller="incident" 
     data-action="click->incident#swipe"
+    data-incident-target="root"
+    data-incident-is-submitted-value="{{ form_submitted }}"
     data-incident-id-value="{{ incident.id }}">
+    {% if not form_submitted %}
     <div class="wrapper__swipe">
         <div class="container__flex">
             <a href="/incident/{{ incident.id }}">
@@ -48,5 +52,65 @@
     >
         <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
     </button>
-</li>
+    <div class="modal" id="modal-handleForm_{{incident.id}}">
+        <div class="modal-dialog">
+            <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1>
+                        Melding afhandelen<br>
+                        <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
+                    </h1>
+                    <button type="button" class="btn-close modal-exit" aria-label="Sluit"></button>    
+                </div>
+                <div class="modal-body">
+                    <div class="container__form" 
+                        data-controller="getGroups"
+                        data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode }}"
+                        data-getGroups-group-selected-value = "{}"
+                        data-getGroups-group-list-value =  "..."
+                        data-getGroups-form-is-submitted =  {% if form %}false{% else %}true{% endif %}
+                    >
+                        {% if form %}
+                        <form action="{% if incident.id %}{% url 'incident_list_item_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm">
+                            {% csrf_token %}
+                            
+                            {{ form.handle_choice }}
+                            
+                            <div class="form-row container__button">
+                                <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
+                                {# TODO make it a submit button when we are not testing on production #}
+                                <button type="submit" class="btn btn-action"><span>Afhandelen</span></button>
+                            </div>
+                        </form>
+                        {% else %}
+
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        {% if not ENABLE_MELDING_AFHANDELEN %}
+            <span>In deze omgeving kun je geen meldingen afhandelen.</span>
+        {% endif %}
+            <span>De melding is afgehandeld.</span>
+        {% else %}
+
+        {% if warnings %}
+            <h3>Waarschuwing!</h3>
+            {% for e in warnings %}
+            {{ e }}
+            {% endfor %}
+        {% endif %}
+        {% if errors %}
+            <h3>Er is een fout opgetreden!</h3>
+            {% for e in errors %}
+            {{ e }}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+</div>
 </turbo-frame>
