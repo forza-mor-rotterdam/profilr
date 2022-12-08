@@ -35,6 +35,10 @@
         padding-bottom: 8rem;
     }
 
+    fieldset {
+        margin: 0 $input-padding-x;
+    }
+
     .show-filters & {
         .full-page-view__main {
             // opacity: 1;
@@ -60,18 +64,18 @@
     }
 
     details {
-        
-        
-
-        &--active {
-            background-color: $gray-tint01;
-            border: 0;
+        &.filter {
+            &--active {
+                background-color: $gray-tint01;
+                border: 0;
+                margin-bottom: $input-padding-x;
+            }
         }
-
+        
         summary {
             display: flex;
             justify-content: space-between;
-            padding: 24px 0 24px 24px;
+            padding: 24px 16px 24px 40px;
             position: relative;
             cursor: pointer;
             border-top: 1px solid $gray-tint04;
@@ -80,7 +84,7 @@
                 content: url('../icons/arrow-right.svg');
                 position: absolute;
                 top: calc(50% - 10px);
-                left: 0;
+                left: 16px;
                 transform: rotate(90deg);
             }
             
@@ -90,14 +94,14 @@
             > summary {
                 &::before {
                     transform: rotate(-90deg);
-                    left: 3px;
+                    left: 19px;
                 }
             }
         }
         
         ul {
             @include list-clean();
-            margin-top: 0;
+            margin: 0 $input-padding-x;
 
             &.list-filters--active {
                 li {
@@ -122,6 +126,10 @@
                 }
             }
 
+            ul {
+                margin: 0;
+            }
+
             .form-check {
                 margin-left: -4px;
             }
@@ -136,11 +144,13 @@
         }
     }
 
-    > details {
-        padding: 0 $input-padding-x;
-        &:first-child{
+    .filter {
+    //     padding: 0 $input-padding-x;
+    //     background-color: $gray-tint01;
+        &:first-of-type{
             > summary {
                 border-top: 1px solid $gray-tint04;
+                
             }
         }
     }
