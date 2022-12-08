@@ -21,8 +21,18 @@ export default class extends Controller {
     }
     toggleActiveFilter(e) {
         e.preventDefault()
-        const input = document.querySelector(`[name=active_filter_open]`);
-        input.value = e.target.hasAttribute("open")
+        const input = document.querySelector(`[name=foldout_states]`);
+        let idArray = JSON.parse(input.value)
+        const idAttr = e.target.getAttribute("id")
+        const isOpen = e.target.hasAttribute("open")
+        let index = idArray.indexOf(idAttr)
+        if (index > -1) {
+            idArray.splice(index, 1); 
+        }
+        if (isOpen){
+            idArray.push(idAttr);
+        }
+        input.value = JSON.stringify(idArray)
     }
 
     onChangeFilter() {

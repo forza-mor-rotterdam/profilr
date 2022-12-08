@@ -6,7 +6,7 @@
 >
     {% for group in groupedSubjects %}
         <li class="container__check">
-            <details class="">
+            <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__groep_{{group.code}}"{% if "foldout__groep_"|add:group.code in foldout_states %} open{% endif %}>
                 <summary>
                     {{ group.omschrijving }}
                 </summary>

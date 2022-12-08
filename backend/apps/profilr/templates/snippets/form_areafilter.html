@@ -1,12 +1,11 @@
 {% load json_encode from profilr_tags %}
 <ul
     class="list-clean"
-    data-controller="filter--filter"
     data-testid="incidentFilterArea"
 >
     {% for area in areas %}
         <li class="container__check">
-            <details class="">
+            <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__wijk_{{area.code}}"{% if "foldout__wijk_"|add:area.code in foldout_states %} open{% endif %}>
                 <summary>
                     {{ area.omschrijving }}
                 </summary>

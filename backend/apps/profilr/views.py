@@ -137,6 +137,7 @@ def filter(request):
             "filters_count": filters_count,
             "incident_count": incident_count,
             "active_filter_open": request.POST.get("active_filter_open", "false"),
+            "foldout_states": request.POST.get("foldout_states", []),
         },
     )
 
