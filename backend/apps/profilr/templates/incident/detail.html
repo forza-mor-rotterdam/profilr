@@ -211,6 +211,46 @@
         </div>
     </section>
 </div>
-    {% include "snippets/modal_form_handle.html" %}
+
+<div class="modal" id="modal-handleForm_{{incident.id}}">
+    <div class="modal-dialog">
+        <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>
+                    Melding afhandelen<br>
+                    <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
+                </h1>
+                <button type="button" class="btn-close modal-exit" aria-label="Sluit"></button>    
+            </div>
+            <div class="modal-body">
+                <div class="container__form" 
+                    data-controller="getGroups"
+                    data-getGroups-group-list-value =  "{{ groupedSubjects|json_encode }}"
+                    data-getGroups-group-selected-value = "{}"
+                    data-getGroups-group-list-value =  "..."
+                    data-getGroups-form-is-submitted =  {% if form %}false{% else %}true{% endif %}
+                >
+                    {% if form %}
+                    <form action="{% if incident.id %}{% url 'incident_list_item_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm">
+                        {% csrf_token %}
+                        
+                        {{ form.handle_choice }}
+                        
+                        <div class="form-row container__button">
+                            <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
+                            {# TODO make it a submit button when we are not testing on production #}
+                            <button type="submit" class="btn btn-action"><span>Afhandelen</span></button>
+                        </div>
+                    </form>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

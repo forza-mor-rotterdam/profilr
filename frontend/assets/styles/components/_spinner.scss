@@ -32,6 +32,25 @@ turbo-frame {
             z-index: 2001;
         }
     }
+
+    
+    .list__incidents & {
+        &[busy] {
+            &::before {
+                position: absolute;
+            }
+            &::after {
+                border: 4px solid $green-tint01;
+                border-top: 4px solid rgba(0, 129, 31, 0.5);
+                width: 30px;
+                height: 30px;
+                left: calc(50% - 15px);
+                top: calc(50% - 15px);
+                position: absolute;
+            }
+        }
+    }
+    
 }
   
 @keyframes spin {
