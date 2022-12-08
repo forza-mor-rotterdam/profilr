@@ -1,3 +1,5 @@
+{% load json_encode from profilr_tags %}
+
 <turbo-frame id="incidents_filters">
     <form 
         action="{% url 'filter_part' %}"
@@ -6,9 +8,8 @@
         data-testid="incidentFilterAllForm"
     >
         {% csrf_token %}
-
-        <details data-controller="filter--filter" class="filter filter--active" data-action="filter--filter#toggleActiveFilter" {% if active_filter_open == "true" %}open{% endif %}>
-            <input type="hidden" name="active_filter_open" value="{{active_filter_open}}">
+        <details data-controller="filter--filter" class="filter filter--active" data-action="filter--filter#toggleActiveFilter" id="foldout_active_filters"{% if "foldout_active_filters" in foldout_states %} open{% endif %}>
+            <input type="hidden" value="{{ foldout_states }}" name="foldout_states">
             <summary>
                 <span>Actieve filters</span>
                 <span class="count count--filter" data-filter--filter-target="countActiveFilter">{{ filters_count }}<span>
@@ -81,7 +82,7 @@
             </fieldset>
         </details>
         
-        <details class="filter">
+        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_departments"{% if "foldout_departments" in foldout_states %} open{% endif %}>
             <summary>
                 <span>Afdelingen</span>
                 <span>({{ filters.afdelingen|length }})</span>
@@ -89,7 +90,7 @@
             {% include "snippets/form_departmentfilter.html" %}
         </details>
 
-        <details class="filter">
+        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_categories"{% if "foldout_categories" in foldout_states %} open{% endif %}>
             <summary>
                 <span>Groepen/onderwerpen</span>
                 <span>({{ filters.onderwerpen|length }})</span>
@@ -97,7 +98,7 @@
             {% include "snippets/form_subjectfilter.html" %}
         </details>
 
-        <details class="filter">
+        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_areas"{% if "foldout_areas" in foldout_states %} open{% endif %}>
             <summary>
                 <span>Wijken/buurten</span>
                 <span>({{ filters.wijken|add:filters.buurten|length }})</span>
