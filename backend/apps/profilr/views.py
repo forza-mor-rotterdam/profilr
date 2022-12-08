@@ -210,32 +210,17 @@ def incident_list_item(request, id):
     user_token = request.user.token
     incident = msb_api_service.get_detail(id, user_token)
     spoed_cache_key = f"incident_{incident.get('id')}_spoed"
+    form = HandleForm()
+    warnings = None
+    errors = None
+    messages = None
     incident = {
         **incident,
         **{
             "spoed": cache.get(spoed_cache_key, False),
         },
     }
-
-    return render(
-        request,
-        "incident/list_item.html",
-        {
-            "incident": incident,
-        },
-    )
-
-
-@login_required
-def incident_handle(request, id=None):
-    profile = request.user.profile
-    user_token = request.user.token
-    incident = msb_api_service.get_detail(id, user_token)
-
-    form = HandleForm()
-    warnings = None
-    errors = None
-    messages = None
+    form_submitted = False
 
     if request.POST:
         print(request.POST)
@@ -273,15 +258,15 @@ def incident_handle(request, id=None):
             if result.get("messages"):
                 messages = result.get("messages")
             form = None
+            form_submitted = True
 
     return render(
         request,
-        "incident/handle.html",
+        "incident/list_item.html",
         {
-            "id": id,
             "incident": incident,
-            "profile": profile,
             "form": form,
+            "form_submitted": form_submitted,
             "errors": errors,
             "warnings": warnings,
             "messages": messages,
