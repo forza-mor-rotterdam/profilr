@@ -9,6 +9,7 @@ from apps.profilr.views import (
     incident_handle,
     incident_index,
     incident_list,
+    incident_list_item,
     login,
     logout,
     root,
@@ -29,6 +30,11 @@ urlpatterns = [
     path("part/incident-handle/<int:id>", incident_handle, name="incident_handle"),
     path("part/filter/", filter, name="filter_part"),
     path("part/incident-list/", incident_list, name="incident_list_part"),
+    path(
+        "part/incident-list-item//<int:id>",
+        incident_list_item,
+        name="incident_list_item_part",
+    ),
 ]
 
 if settings.DEBUG:

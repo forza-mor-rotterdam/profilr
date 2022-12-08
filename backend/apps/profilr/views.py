@@ -5,6 +5,7 @@ from apps.auth.decorators import login_required
 from apps.profilr.forms import HANDLE_OPTIONS, HandleForm
 from apps.services import msb_api_service
 from apps.services.msb import VALID_FILTERS
+from django.core.cache import cache
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -140,19 +141,10 @@ def incident_list(request):
             user_token, data=valid_filters, no_cache=True
         )
 
-        incidents = [
-            {
-                **incidents[i],
-                **{
-                    "detail": msb_api_service.get_detail(
-                        incidents[i].get("id"), user_token
-                    )
-                    if i < PAGE_SIZE
-                    else {}
-                },
-            }
-            for i in range(len(incidents))
-        ]
+        # temp: spoed key only available in list items, set cache for it
+        for i in incidents:
+            cache_key = f"incident_{i.get('id')}_spoed"
+            cache.set(cache_key, bool(i.get("spoed")), 60 * 60 * 24)
 
     return render(
         request,
@@ -190,7 +182,15 @@ def incident_detail(request, id):
         for sub_cat in cat.get("onderwerpen")
     }
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
+    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
     areas = msb_api_service.get_wijken(user_token)
+
+    incident = {
+        **incident,
+        **{
+            "spoed": cache.get(spoed_cache_key, False),
+        },
+    }
 
     return render(
         request,
@@ -201,6 +201,27 @@ def incident_detail(request, id):
             "groupedSubjects": categories,
             "areas": areas,
             "profile": profile,
+        },
+    )
+
+
+@login_required
+def incident_list_item(request, id):
+    user_token = request.user.token
+    incident = msb_api_service.get_detail(id, user_token)
+    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
+    incident = {
+        **incident,
+        **{
+            "spoed": cache.get(spoed_cache_key, False),
+        },
+    }
+
+    return render(
+        request,
+        "incident/list_item.html",
+        {
+            "incident": incident,
         },
     )
 

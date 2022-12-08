@@ -28,52 +28,7 @@
                     data-testid="incidentsList" 
                     >
                     {% for incident in incidents %}
-                    <li
-                        data-controller="incident" 
-                        data-action="click->incident#swipe"
-                        data-incident-id-value="{{ incident.id }}">
-                        <div class="wrapper__swipe">
-                            <div class="container__flex">
-                                <a href="/incident/{{ incident.id }}">
-                                    <div class="container__image">
-                                        {% if incident.detail and incident.detail.fotos %}
-                                        {% with incident.detail.fotos|first as first_foto %}
-                                        <div class="background-image" style="background-image: url('{% url 'image_thumbnail' first_foto.id %}')"></div>
-                                        {% endwith %}
-                                        {% else %}
-                                            <div class="background-image" style="background-image: url('{% webpack_static 'icons/assets/icons/noimage.svg' %}'); background-size: 40%;"></div>
-                                        {% endif %}
-                                    </div>
-                                </a>
-                                <div class="container__info">
-                                    {# <a href="/incident/{{ incident.id }}/handle"> #}
-                                        <div class="incident__header">
-                                            <h2>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</h2>
-                                            {% if incident.spoed %}<span class="icon icon--warning">{% endif %}</span>
-                                        </div>
-
-                                        <span class="incident__category">
-                                            {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
-                                        </span>
-                                        <div class="incident__moment">
-                                            <span>
-                                                {{ incident.datumMelding|to_date|date:"d-M-Y" }} 
-                                                {{ incident.datumMelding|to_date|date:"H:i" }}
-                                            </span>
-                                        </div>
-                                    {# </a> #}
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            class="container__actions"
-                            data-id="{{ incident.id }}"
-                            data-incident-object-param = "{{ incident|json_encode }}"
-                            data-action="incident#openModal"
-                        >
-                            <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
-                        </button>
-                    </li>
+                    <turbo-frame id="incident_list_item" src="{% url 'incident_list_item_part' incident.id %}"></turbo-frame>
                     {% endfor %}
                 </ul>
             {% else %}
