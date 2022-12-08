@@ -41,7 +41,7 @@ export default class extends Controller {
         
         let turboFrame = modal.querySelector('turbo-frame');
         console.log(turboFrame);
-        console.log(turboFrame.setAttribute('src', turboFrame.getAttribute('src') + "/" + data.id));
+        console.log(turboFrame.setAttribute('src', turboFrame.getAttribute('data-src') + "/" + data.id));
 
 
         modal.classList.add('show');

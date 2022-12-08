@@ -119,13 +119,15 @@ class MSBService(APIService):
         }
         """
         if settings.ENABLE_MELDING_AFHANDELEN:
-            return self.do_request(
+            response = self.do_request(
                 f"msb/melding/{melding_id}/afhandelen",
                 user_token,
                 data=data,
                 method=APIService.POST,
                 no_cache=True,
+                raw_response=True,
             )
+            return response.json()
         return self.get_detail(melding_id, user_token)
 
 
