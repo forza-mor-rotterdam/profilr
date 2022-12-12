@@ -44,4 +44,13 @@ export default class extends Controller {
         frame.reload()
         this.hideFilters()
     }
+
+    selectAll(e) {
+        const checkList = Array.from(e.target.closest('details').querySelectorAll('.form-check-input'))
+        const checkedAll = checkList.length === e.target.closest('details').querySelectorAll('.form-check-input:checked').length
+        
+        checkList.forEach(element => {
+            element.checked = !checkedAll
+        });
+    }
 }
