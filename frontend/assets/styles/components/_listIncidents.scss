@@ -41,11 +41,12 @@
         transition: all .3s ease-in-out;
         min-height: 100px;
         border-bottom: 1px solid $gray-tint04;
-        scroll-snap-type: x mandatory;
-        overflow-x: auto;
+        // scroll-snap-type: x mandatory;
+        // overflow-x: auto;
         scrollbar-width: none;
         cursor: grab;
         display: flex;
+        user-select: none;
         &::-webkit-scrollbar {
             display: none;
         }
@@ -56,9 +57,6 @@
             height:0;
         }
 
-        > * {
-            scroll-snap-align: start;
-        }
         .wrapper__swipe {
             flex: 2 0 100%;
             background-color: $white;

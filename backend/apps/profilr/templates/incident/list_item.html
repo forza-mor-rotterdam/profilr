@@ -7,6 +7,7 @@
         class="list-item{% if form_submitted %} form-is-submitted{% endif %}{% if errors and warnings %} has-errors{% endif %}"
         data-controller="incident" 
         data-action="click->incident#swipe formHandleIsConnected->incident#formHandleIsConnectedHandler"
+        data-incident-target="root"
         data-incident-id-value="{{ incident.id }}">
         <div class="wrapper__swipe">
             <div class="container__flex">
