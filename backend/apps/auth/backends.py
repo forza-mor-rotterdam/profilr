@@ -25,8 +25,7 @@ class MSBUser:
                 msb_api_service.get_user_info(token)
         except Exception:
             self._is_authenticated = False
-        print("profile")
-        print(profile)
+
         self._name = profile.get("user", {}).get("name", "No name")
         if token:
             self._profile = profile

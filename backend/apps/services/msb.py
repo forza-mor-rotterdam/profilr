@@ -9,10 +9,10 @@ DEFAULT_FILTERS = {
     "buurten": [],
     "afdelingen": [],
     "groepen": [],
-    "onderwerpen": [],
+    "onderwerpItems": [],
 }
 DEFAULT_PROFILE = {"filters": DEFAULT_FILTERS}
-VALID_FILTERS = ("wijken", "buurten", "afdelingen", "groepen", "onderwerpen")
+VALID_FILTERS = ("wijken", "buurten", "afdelingen", "groepen", "onderwerpItems")
 
 
 class MSBService(APIService):

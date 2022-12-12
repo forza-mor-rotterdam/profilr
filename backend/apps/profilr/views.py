@@ -1,4 +1,5 @@
 import copy
+from collections import Counter
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
@@ -114,16 +115,77 @@ def filter(request):
         [o, groepen_dict.get(o, o)] for o in filters.get("groepen", [])
     ]
 
-    filters["onderwerpen"] = [
-        [o, onderwerpen_dict.get(o, o)] for o in filters.get("onderwerpen", [])
+    filters["onderwerpItems"] = [
+        [o, onderwerpen_dict.get(o, o)] for o in filters.get("onderwerpItems", [])
     ]
+
+    # add filters count for nested filter sets
+    areas = [
+        {
+            **w,
+            "filters": [
+                b
+                for b in filters["buurten"]
+                if b[0] in [bb.get("code") for bb in w.get("buurten", [])]
+            ],
+        }
+        for w in areas
+    ]
+
+    categories = [
+        {
+            **w,
+            "filters": [
+                b
+                for b in filters["onderwerpItems"]
+                if b[0] in [bb.get("code") for bb in w.get("onderwerpen", [])]
+            ],
+        }
+        for w in categories
+    ]
+
     filters_count = len([vv for k, v in filters.items() for vv in v])
     incident_count = 0
+    found_afdelingen = {}
     if filters_count > 0:
         incidents = msb_api_service.get_list(
             user_token, data=valid_filters, no_cache=True
         )
         incident_count = len(incidents)
+
+        # START: Calculate melding count for each filter
+        found_afdelingen = Counter([i.get("afdeling", {}).get("id") for i in incidents])
+        found_onderwerpen = Counter(
+            [i.get("onderwerp", {}).get("id") for i in incidents]
+        )
+
+        filters["afdelingen"] = [
+            [o[0], o[1], found_afdelingen.get(o[0])]
+            for o in filters.get("afdelingen", [])
+        ]
+        departments = [
+            {
+                **d,
+                "meldingen_count": found_afdelingen.get(d.get("code"), 0),
+            }
+            for d in departments
+        ]
+
+        categories = [
+            {
+                **d,
+                "onderwerpen": [
+                    {
+                        **o,
+                        "meldingen_count": found_onderwerpen.get(o.get("code"), 0),
+                    }
+                    for o in d.get("onderwerpen")
+                ],
+            }
+            for d in categories
+        ]
+        # END: Calculate melding count for each filter
+
     return render(
         request,
         "filters/form.html",
