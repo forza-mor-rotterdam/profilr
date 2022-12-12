@@ -178,10 +178,7 @@ export default class extends Controller {
     
         this.initialTouchPos = this.getGesturePointFromEvent(evt);
     
-    
-        // console.log('swipert', swiper)
-        console.log('this.swipert', this.rootTarget.querySelector('.wrapper__swipe'))
-        this.rootTarget.querySelector('.wrapper__swipe').style.transition = 'initial';
+        // this.rootTarget.style.transition = 'initial';
     }
 
     // Handle end gestures
@@ -191,8 +188,7 @@ export default class extends Controller {
         if (evt.touches && evt.touches.length > 0) {
             return;
         }
-    
-        // this.rafPending = false;
+        this.rafPending = false;
     
         // Remove Event Listeners
         if (window.PointerEvent) {
@@ -203,7 +199,7 @@ export default class extends Controller {
             document.removeEventListener('mouseup', this.handleGestureEnd, true);
         }
     
-        // updateSwipeRestPosition();
+        this.updateSwipeRestPosition();
     
         this.initialTouchPos = null;
     }
@@ -226,19 +222,21 @@ export default class extends Controller {
 
     handleGestureMove(evt) {
         evt.preventDefault();
-        // console.log('handleGestureMove 1', this.rafPending)
+        console.log('handleGestureMove 1', this.rafPending)
       
         if (!this.initialTouchPos) {
           return;
         }
       
         this.lastTouchPos = this.getGesturePointFromEvent(evt);
+
+        console.log(this.initialTouchPos, '---', this.lastTouchPos)
       
-        // if (this.rafPending) {
-        //   return;
-        // }
+        if (this.rafPending) {
+          return;
+        }
       
-        // this.rafPending = true;
+        this.rafPending = true;
       
         // console.log('handleGestureMove 2', this.rafPending)
 
@@ -247,25 +245,45 @@ export default class extends Controller {
     }
 
     onAnimFrame() {
-        console.log('onAnimFrame')
         
-        // if (!this.rafPending) {
-        //     console.log('return')
-        //   return;
-        // }
+        if (!this.rafPending) {
+            console.log('return')
+          return;
+        }
       
         var differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
         var newXTransform = (0 - differenceInX)+'px';
         var transformStyle = 'translateX('+newXTransform+')';
       
-        this.rootTarget.querySelector('.wrapper__swipe').style.webkitTransform = transformStyle;
-        this.rootTarget.querySelector('.wrapper__swipe').style.MozTransform = transformStyle;
-        this.rootTarget.querySelector('.wrapper__swipe').style.msTransform = transformStyle;
-        this.rootTarget.querySelector('.wrapper__swipe').style.transform = transformStyle;
-      
+        if(differenceInX > -100 && differenceInX < 100) {
+            this.rootTarget.style.webkitTransform = transformStyle;
+            this.rootTarget.style.MozTransform = transformStyle;
+            this.rootTarget.style.msTransform = transformStyle;
+            this.rootTarget.style.transform = transformStyle;
+        } else if (differenceInX <= -100) {
+            this.rootTarget.style.transform = 'translateX(101%)';
+            console.log('Niet afgehandeld')
+        } else {
+            this.rootTarget.style.transform = 'translateX(-101%)';
+            console.log('Afgehandeld')
+
+        }
+
         this.rafPending = false;
-        console.log('onAnimFrame, transformStyle', transformStyle)
-        
+        console.log('onAnimFrame, differenceInX', differenceInX)
+    }
+
+    updateSwipeRestPosition() {
+        let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
+        console.log('updateSwipeRestPosition, differenceInX', differenceInX)
+            
+        if(differenceInX > -100 && differenceInX < 100) {
+            let transformStyle = 'translateX(0)';
+            this.rootTarget.style.webkitTransform = transformStyle;
+            this.rootTarget.style.MozTransform = transformStyle;
+            this.rootTarget.style.msTransform = transformStyle;
+            this.rootTarget.style.transform = transformStyle;
+        }
     }
 
     swipe(e) {
