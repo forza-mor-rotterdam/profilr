@@ -147,6 +147,11 @@
             justify-content: space-between;
             align-items: center;
 
+            > div {
+                display: flex;
+                flex: 1;
+                justify-content: flex-end;
+            }
             .btn {
                 flex: 0 1 25%;
                 white-space: nowrap;
