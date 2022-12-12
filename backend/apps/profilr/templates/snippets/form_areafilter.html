@@ -11,7 +11,15 @@
                 </summary>
                 {% if area.buurten %}
                 <div class="container__list--districts foldout">
-                    <h3 class="h5">Buurten in deze wijk</h3>
+                    <div class="container__list--header">
+                        <h3 class="h5">Buurten</h3>
+                        <button 
+                            class="btn btn-textlink"
+                            data-action="filter--filter#selectAll"
+                        >
+                            (De)selecteer alles
+                        </button>
+                    </div>
                     <ul class="list-clean">
                         {% for district in area.buurten %}
                         <li>

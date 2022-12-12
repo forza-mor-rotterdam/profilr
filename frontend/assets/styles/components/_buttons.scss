@@ -193,6 +193,18 @@ button[class="icon"] {
         }
     }
 
+    &-textlink {
+        background-color: transparent;
+        border: 0;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        text-decoration: underline;
+        max-width: none;
+        color: $green-tint01;
+        font-weight: 300;
+    }
+
     
     &:not(:disabled) {
         cursor: pointer;
