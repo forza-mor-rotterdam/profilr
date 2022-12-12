@@ -10,18 +10,20 @@ export default class extends Controller {
 
     connect() {
         const groupOptions = JSON.parse(this.groupListValue)
+        // console.log(this.formIsSubmitted)
+        // console.log(!!this.formIsSubmitted)
         
-        for(let i = 0; i < groupOptions.length; i++) {
-            const opt = groupOptions[i];
-            const el = document.createElement("option");
-            if(opt.value === this.groupSelectedValue) {
-                el.selected = true;
-            }
-            el.textContent = opt.omschrijving;
-            el.value = opt.code;
-            this.groupListTarget.appendChild(el);
-        }
-        this.setSubjects()
+        // for(let i = 0; i < groupOptions.length; i++) {
+        //     const opt = groupOptions[i];
+        //     const el = document.createElement("option");
+        //     if(opt.value === this.groupSelectedValue) {
+        //         el.selected = true;
+        //     }
+        //     el.textContent = opt.omschrijving;
+        //     el.value = opt.code;
+        //     this.groupListTarget.appendChild(el);
+        // }
+        // this.setSubjects()
     }
 
     initialize() {

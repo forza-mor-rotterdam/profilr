@@ -1,47 +1,58 @@
 {% load json_encode from profilr_tags %}
-{{ filters }}
 <ul
     class="list-clean"
-    data-controller="filter--subjectFilter"
-    data-filter--subjectFilter-value='{{ groupedSubjects|json_encode }}'
-    data-filter--subjectFilter-filters-value='{{ profile.filters|json_encode }}'
+    data-controller="filter--filter"
     data-testid="incidentFilterSubject"
 >
     {% for group in groupedSubjects %}
-        <li class="container__check-group">
-            <div class="form-check">
-                <input
-                    class="form-check-input filter--group"
-                    type="checkbox"
-                    value="{{ group.code }}"
-                    name="groepen"
-                    id="group_{{ group.code }}"
-                    data-action="change->filter--subjectFilter#toggleGroup"
-                >
-                <label class="form-check-label" for="group_{{ group.code }}">{{ group.omschrijving }}</label>
-            </div>
-            {% if group.onderwerpen %}
-            <div class="container__list--subjects foldout hidden">
-                <h3 class="h5">Onderwerpen</h3>
-                <ul class="list-clean">
-                    {% for subject in group.onderwerpen %}
-                    <li>
-                        <div class="form-check">
-                            <input 
-                                class="form-check-input filter--subject"
-                                type="checkbox"
-                                value="{{ subject.code }}"
-                                name="onderwerpen"
-                                id="subject_{{ subject.code }}"
-                                data-action="change->incidentFilter#selectGroupFromSubject"
-                            >
-                            <label class="form-check-label" for="subject_{{ subject.code }}">{{ subject.omschrijving }}</label>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
+        <li class="container__check">
+            <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__groep_{{group.code}}"{% if "foldout__groep_"|add:group.code in foldout_states %} open{% endif %}>
+                <summary>
+                    {{ group.omschrijving }} ({{group.filters|length}})
+                </summary>
+                {% if group.onderwerpen %}
+                <div class="container__list--subjects foldout">
+                    <div class="container__list--header">
+                        <h3 class="h5">Onderwerpen</h3>
+                        {% if group.onderwerpen|length > 1 %}
+                            <div>
+                                <button 
+                                    class="btn btn-textlink"
+                                    data-action="filter--filter#selectAll"
+                                    data-filter--filter-filter-type-param="all"
+                                >
+                                    Selecteer alles
+                                </button>
+                                <button 
+                                    class="btn btn-textlink"
+                                    data-action="filter--filter#selectAll"
+                                >
+                                    / niets
+                                </button>
+                            </div>
+                            {% endif %}
+                    </div>
+                    <ul class="list-clean">
+                        {% for subject in group.onderwerpen %}
+                        <li>
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input filter--subject"
+                                    type="checkbox"
+                                    value="{{ subject.code }}"
+                                    {% if subject.code in valid_filters.onderwerpItems %}checked{% endif %}
+                                    name="onderwerpItems"
+                                    id="subject_{{ subject.code }}"
+                                    data-action="filter--filter#onChangeFilter"
+                                >
+                                <label class="form-check-label" for="subject_{{ subject.code }}">{{ subject.omschrijving }}</label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </details>
         </li>
     {% endfor %}
     </ul>

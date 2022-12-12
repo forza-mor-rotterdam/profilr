@@ -1,0 +1,138 @@
+{% load json_encode from profilr_tags %}
+
+<turbo-frame id="incidents_filters">
+    <form 
+        action="{% url 'filter_part' %}"
+        method="post"
+        id="incidentFilterAllForm"
+        data-testid="incidentFilterAllForm"
+    >
+        {% csrf_token %}
+        <details data-controller="filter--filter" class="filter filter--active" data-action="filter--filter#toggleActiveFilter" id="foldout_active_filters"{% if "foldout_active_filters" in foldout_states %} open{% endif %}>
+            <input type="hidden" value="{{ foldout_states }}" name="foldout_states">
+            <summary>
+                <span>Actieve filters</span>
+                <span class="count count--filter" data-filter--filter-target="countActiveFilter">{{ filters_count }}<span>
+            </summary>
+            <fieldset>
+                <ul>
+                    {% if filters.afdelingen|length > 0 %}
+                    <li>
+                        <h3 class="h5">Afdeling</h3>
+                        <ul class="list-filters--active">
+                            {% for department in filters.afdelingen %}
+                            <li class="js-filter-active">
+                                <button
+                                    class="btn btn-secondary btn-filter--active"
+                                    data-action="filter--filter#removeFilter"  
+                                    data-filter--filter-code-param="{{ department.0 }}"
+                                    data-filter--filter-description-param="afdelingen"
+                                >
+                                    <span>{{ department.1 }}</span>
+                                </button>
+                                
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    {% if filters.onderwerpen|length > 0 %}
+                    <li>
+                        <h3 class="h5">Onderwerpen</h3>
+                        <ul class="list-filters--active">
+                            {% for onderwerp in filters.onderwerpen %}
+                            <li class="js-filter-active">
+                                <button
+                                    class="btn btn-secondary btn-filter--active"
+                                    data-action="filter--filter#removeFilter"  
+                                    data-filter--filter-code-param="{{ onderwerp.0 }}"
+                                    data-filter--filter-description-param="onderwerpen"  
+                                >
+                                    <span>{{ onderwerp.1 }}</span>
+                                </button>
+                                
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    {% if filters.buurten|length > 0 %}
+                    <li>
+                        <h3 class="h5">Buurten</h3>
+                        <ul class="list-filters--active">
+                            {% for buurt in filters.buurten %}
+                            <li class="js-filter-active">
+                                <button
+                                    class="btn btn-secondary btn-filter--active"
+                                    data-action="filter--filter#removeFilter"  
+                                    data-filter--filter-code-param="{{ buurt.0 }}"
+                                    data-filter--filter-description-param="buurten"   
+                                >
+                                    <span>{{ buurt.1 }}</span>
+                                </button>
+                                
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </fieldset>
+        </details>
+        
+        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_departments"{% if "foldout_departments" in foldout_states %} open{% endif %}>
+            <summary>
+                <span>Afdelingen</span>
+                <span>({{ filters.afdelingen|length }})</span>
+            </summary>
+            {% include "snippets/form_departmentfilter.html" %}
+        </details>
+
+        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_categories"{% if "foldout_categories" in foldout_states %} open{% endif %}>
+            <summary>
+                <span>Groepen/onderwerpen</span>
+                <span>({{ filters.onderwerpen|length }})</span>
+            </summary>
+            {% include "snippets/form_subjectfilter.html" %}
+        </details>
+
+        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_areas"{% if "foldout_areas" in foldout_states %} open{% endif %}>
+            <summary>
+                <span>Wijken/buurten</span>
+                <span>({{ filters.wijken|add:filters.buurten|length }})</span>
+            </summary>
+            {% include "snippets/form_areafilter.html" %}
+        </details>
+
+        <div class="full-page-view__footer">
+            {% if incident_count == 0 %}
+                <button
+                    type="button"
+                    class="btn btn-action"
+                    data-action="filter--filter#hideFilters"
+                    disabled="disabled"
+                >
+                    Er zijn geen meldingen, pas filter aan
+                </button>
+            {% elif incident_count == 1 %}
+                <button
+                    type="submit"
+                    class="btn btn-action"
+                    data-action="filter--filter#onSubmitFilter"
+                >
+                    Toon 1 melding
+                </button>
+            {% else %}
+                <button
+                    type="submit"
+                    class="btn btn-action"
+                    data-action="filter--filter#onSubmitFilter"
+                >
+                    Toon {{ incident_count }} meldingen
+                </button>
+            {% endif %}
+        </div>
+    </form>
+</turbo-frame>

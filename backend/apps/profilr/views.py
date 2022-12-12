@@ -1,9 +1,12 @@
 import copy
+from collections import Counter
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
+from apps.profilr.forms import HANDLE_OPTIONS, HandleForm
 from apps.services import msb_api_service
 from apps.services.msb import VALID_FILTERS
+from django.core.cache import cache
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -30,9 +33,9 @@ def http_response(request):
 
 
 def root(request):
-    if not request.session.get("is_logged_in", False):
-        return redirect(reverse("login"))
-    return redirect(reverse("incident_index"))
+    if request.user and request.user.is_authenticated:
+        return redirect(reverse("incident_index"))
+    return redirect(reverse("login"))
 
 
 def logout(request):
@@ -42,19 +45,22 @@ def logout(request):
 
 
 def login(request):
+    if request.user and request.user.is_authenticated:
+        return redirect(reverse("incident_index"))
+
     error = None
     if request.POST:
-        user = authenticate(
+        success, result = authenticate(
             request=request,
             username=request.POST.get("_username"),
             password=request.POST.get("_password"),
         )
-        if user.is_authenticated:
+        print(result)
+        if success:
             return redirect(reverse("incident_index"))
         else:
-            request.session["is_logged_in"] = False
-            error = "invalid_username_or_password"
-
+            error = result
+    print("render")
     return render(
         request,
         "login/index.html",
@@ -67,15 +73,6 @@ def login(request):
 
 @login_required
 def filter(request):
-    return render(
-        request,
-        "filter/index.html",
-        {},
-    )
-
-
-@login_required
-def incident_index(request):
     profile = request.user.profile
     user_token = request.user.token
     if request.POST:
@@ -88,22 +85,23 @@ def incident_index(request):
     filters = copy.deepcopy(valid_filters)
 
     departments = msb_api_service.get_afdelingen(user_token)
-    categories = msb_api_service.get_onderwerpgroepen(user_token)
+    msb_api_service.get_onderwerpgroepen(user_token)
     areas = msb_api_service.get_wijken(user_token)
+    categories = msb_api_service.get_onderwerpgroepen(user_token)
 
     # create lookups for filter options
     afdelingen_dict = {d.get("code"): d.get("omschrijving") for d in departments}
-    groepen_dict = {w.get("code"): w.get("omschrijving") for w in categories}
-    onderwerpen_dict = {
-        o.get("code"): o.get("omschrijving")
-        for w in categories
-        for o in w.get("onderwerpen", [])
-    }
     wijken_dict = {w.get("code"): w.get("omschrijving") for w in areas}
     buurten_dict = {
         b.get("code"): b.get("omschrijving")
         for w in areas
         for b in w.get("buurten", [])
+    }
+    groepen_dict = {w.get("code"): w.get("omschrijving") for w in categories}
+    onderwerpen_dict = {
+        b.get("code"): b.get("omschrijving")
+        for w in categories
+        for b in w.get("onderwerpen", [])
     }
     # add readable filter results like: [[id, name]]
     filters["wijken"] = [[o, wijken_dict.get(o, o)] for o in filters.get("wijken", [])]
@@ -116,10 +114,103 @@ def incident_index(request):
     filters["groepen"] = [
         [o, groepen_dict.get(o, o)] for o in filters.get("groepen", [])
     ]
-    filters["onderwerpen"] = [
-        [o, onderwerpen_dict.get(o, o)] for o in filters.get("onderwerpen", [])
+
+    filters["onderwerpItems"] = [
+        [o, onderwerpen_dict.get(o, o)] for o in filters.get("onderwerpItems", [])
     ]
+
+    # add filters count for nested filter sets
+    areas = [
+        {
+            **w,
+            "filters": [
+                b
+                for b in filters["buurten"]
+                if b[0] in [bb.get("code") for bb in w.get("buurten", [])]
+            ],
+        }
+        for w in areas
+    ]
+
+    categories = [
+        {
+            **w,
+            "filters": [
+                b
+                for b in filters["onderwerpItems"]
+                if b[0] in [bb.get("code") for bb in w.get("onderwerpen", [])]
+            ],
+        }
+        for w in categories
+    ]
+
     filters_count = len([vv for k, v in filters.items() for vv in v])
+    incident_count = 0
+    found_afdelingen = {}
+    if filters_count > 0:
+        incidents = msb_api_service.get_list(
+            user_token, data=valid_filters, no_cache=True
+        )
+        incident_count = len(incidents)
+
+        # START: Calculate melding count for each filter
+        found_afdelingen = Counter([i.get("afdeling", {}).get("id") for i in incidents])
+        found_onderwerpen = Counter(
+            [i.get("onderwerp", {}).get("id") for i in incidents]
+        )
+
+        filters["afdelingen"] = [
+            [o[0], o[1], found_afdelingen.get(o[0])]
+            for o in filters.get("afdelingen", [])
+        ]
+        departments = [
+            {
+                **d,
+                "meldingen_count": found_afdelingen.get(d.get("code"), 0),
+            }
+            for d in departments
+        ]
+
+        categories = [
+            {
+                **d,
+                "onderwerpen": [
+                    {
+                        **o,
+                        "meldingen_count": found_onderwerpen.get(o.get("code"), 0),
+                    }
+                    for o in d.get("onderwerpen")
+                ],
+            }
+            for d in categories
+        ]
+        # END: Calculate melding count for each filter
+
+    return render(
+        request,
+        "filters/form.html",
+        {
+            "filters": filters,
+            "valid_filters": valid_filters,
+            "areas": areas,
+            "profile": profile,
+            "departments": departments,
+            "groupedSubjects": categories,
+            "filters_count": filters_count,
+            "incident_count": incident_count,
+            "active_filter_open": request.POST.get("active_filter_open", "false"),
+            "foldout_states": request.POST.get("foldout_states", []),
+        },
+    )
+
+
+@login_required
+def incident_list(request):
+    profile = request.user.profile
+    user_token = request.user.token
+    valid_filters = msb_api_service.validate_filters(profile.get("filters"))
+
+    filters_count = len([vv for k, v in valid_filters.items() for vv in v])
 
     # get incidents if we have filters
     incidents = []
@@ -128,31 +219,30 @@ def incident_index(request):
             user_token, data=valid_filters, no_cache=True
         )
 
-        incidents = [
-            {
-                **incidents[i],
-                **{
-                    "detail": msb_api_service.get_detail(
-                        incidents[i].get("id"), user_token
-                    )
-                    if i < PAGE_SIZE
-                    else {}
-                },
-            }
-            for i in range(len(incidents))
-        ]
+        # temp: spoed key only available in list items, set cache for it
+        for i in incidents:
+            cache_key = f"incident_{i.get('id')}_spoed"
+            cache.set(cache_key, bool(i.get("spoed")), 60 * 60 * 24)
 
+    return render(
+        request,
+        "incident/list.html",
+        {
+            "incidents": incidents,
+            "filters_count": filters_count,
+            "filters": valid_filters,
+        },
+    )
+
+
+@login_required
+def incident_index(request):
     return render(
         request,
         "incident/index.html",
         {
-            "incidents": incidents,
-            "groupedSubjects": categories,
-            "filters": filters,
-            "areas": areas,
-            "profile": profile,
-            "departments": departments,
-            "filters_count": filters_count,
+            "main_view": reverse("incident_list_part"),
+            "fullpage_view": reverse("filter_part"),
         },
     )
 
@@ -170,7 +260,15 @@ def incident_detail(request, id):
         for sub_cat in cat.get("onderwerpen")
     }
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
+    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
     areas = msb_api_service.get_wijken(user_token)
+
+    incident = {
+        **incident,
+        **{
+            "spoed": cache.get(spoed_cache_key, False),
+        },
+    }
 
     return render(
         request,
@@ -181,6 +279,75 @@ def incident_detail(request, id):
             "groupedSubjects": categories,
             "areas": areas,
             "profile": profile,
+        },
+    )
+
+
+@login_required
+def incident_list_item(request, id):
+    user_token = request.user.token
+    incident = msb_api_service.get_detail(id, user_token)
+    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
+    form = HandleForm()
+    warnings = None
+    errors = None
+    messages = None
+    incident = {
+        **incident,
+        **{
+            "spoed": cache.get(spoed_cache_key, False),
+        },
+    }
+    form_submitted = False
+
+    if request.POST:
+        print(request.POST)
+        form = HandleForm(request.POST)
+        if form.is_valid():
+            choice = form.cleaned_data.get("handle_choice", 1)
+            choice_type = {
+                x: HANDLE_OPTIONS[x][0] for x in range(len(HANDLE_OPTIONS))
+            }.get(int(choice), choice)
+            choice_value = {
+                x: HANDLE_OPTIONS[x][1] for x in range(len(HANDLE_OPTIONS))
+            }.get(int(choice), choice)
+            data = {
+                "meldingId": incident.get("id"),
+                "behandelaar": request.user.name,
+                "meldingType": choice_type,
+                "afhandelOpmerking": choice_value,
+                "straat": incident.get("locatie", {})
+                .get("adres", {})
+                .get("straatNummer"),
+                "huisnummer": incident.get("locatie", {})
+                .get("adres", {})
+                .get("huisnummer"),
+                "plaatsbepaling": incident.get("locatie", {}).get("plaatsbepaling", 0),
+                "x": incident.get("locatie", {}).get("x", 0),
+                "y": incident.get("locatie", {}).get("y", 0),
+            }
+            print(data)
+            result = msb_api_service.afhandelen(incident.get("id"), user_token, data)
+            print(result)
+            if result.get("warnings"):
+                warnings = result.get("warnings")
+            if result.get("errors"):
+                errors = result.get("errors")
+            if result.get("messages"):
+                messages = result.get("messages")
+            form = None
+            form_submitted = True
+
+    return render(
+        request,
+        "incident/list_item.html",
+        {
+            "incident": incident,
+            "form": form,
+            "form_submitted": form_submitted,
+            "errors": errors,
+            "warnings": warnings,
+            "messages": messages,
         },
     )
 

@@ -114,6 +114,10 @@ button[class="icon"] {
             background-color: $magenta-tint02;
             border-color: $magenta-tint02;
         }
+        &[disabled] {
+            background-color: $gray-tint04;
+            border-color: $gray-tint04;
+        }
     }
 
     &-tertiary {
@@ -187,6 +191,18 @@ button[class="icon"] {
                 padding: 0;
             }
         }
+    }
+
+    &-textlink {
+        background-color: transparent;
+        border: 0;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        text-decoration: underline;
+        max-width: none;
+        color: $green-tint01;
+        font-weight: 300;
     }
 
     

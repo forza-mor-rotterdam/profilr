@@ -16,7 +16,7 @@
 body.show-modal {
     @include bodyModal();
 
-    .modal {
+    .modal.show {
         @include modalVisible()
     }
 }

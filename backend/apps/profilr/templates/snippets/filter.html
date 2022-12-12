@@ -7,6 +7,7 @@
     data-testid="incidentFilterAll"
 >
 {{ filters }}
+{{ filters_count }}
     <div class="full-page-view__main">
         <div class="full-page-view__header">
             <div class="full-page-view__action_container">
@@ -16,165 +17,14 @@
                     class="btn btn-close"
                     aria-label="Sluit"
                     data-action="filter--filter#hideFilters"
-                ></button>    
+                ></button> 
             </div>
         </div>
         <div class="full-page-view__scroll-pane">
             <div class="full-page-view__content">
-                <turbo-frame id="incidents_filters">
-                <form action="" method="post" id="incidentFilterAllForm" data-testid="incidentFilterAllForm">
-                    {% csrf_token %}
-                    <details class="filter filter--active">
-                        <summary>
-                            <span>Actieve filters</span>
-                            <span class="count count--filter" data-filter--filter-target="countActiveFilter"><span>
-                        </summary>
-                        <fieldset>
-                            <ul>
-                                {% if filters.afdelingen|length > 0 %}
-                                <li>
-                                    <h3 class="h5">Afdeling</h3>
-                                    <ul class="list-filters--active">
-                                        {% for department in filters.afdelingen %}
-                                        <li class="js-filter-active">
-                                            <button
-                                                class="btn btn-secondary btn-filter--active"
-                                                data-action="filter--filter#removeFilter"  
-                                                data-filter--filter-code-param="{{ department.0 }}"
-                                                data-filter--filter-description-param="afdelingen"
-                                            >
-                                                <span>{{ department.1 }}</span>
-                                            </button>
-                                            
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                {% endif %}
-
-                                {% if filters.groepen|length > 0 %}
-                                <li>
-                                    <h3 class="h5">Groepen</h3>
-                                    <ul class="list-filters--active">
-                                        {% for groep in filters.groepen %}
-                                        <li class="js-filter-active">
-                                            <button
-                                                class="btn btn-secondary btn-filter--active"
-                                                data-action="filter--filter#removeFilter"  
-                                                data-filter--filter-code-param="{{ groep.0 }}"
-                                                data-filter--filter-description-param="groepen"  
-                                            >
-                                                <span>{{ groep.1 }}</span>
-                                            </button>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                {% endif %}
-
-                                {% if filters.onderwerpen|length > 0 %}
-                                <li>
-                                    <h3 class="h5">Onderwerpen</h3>
-                                    <ul class="list-filters--active">
-                                        {% for subject in filters.onderwerpen %}
-                                        <li class="js-filter-active">
-                                            <button
-                                                class="btn btn-secondary btn-filter--active"
-                                                data-action="filter--filter#removeFilter"  
-                                                data-filter--filter-code-param="{{ subject.0 }}"
-                                                data-filter--filter-description-param="onderwerpen"  
-                                            >
-                                                <span>{{ subject.1 }}</span>
-                                            </button>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                {% endif %}
-
-                                {% if filters.wijken|length > 0 %}
-                                <li>
-                                    <h3 class="h5">Wijken</h3>
-                                    <ul class="list-filters--active">
-                                        {% for wijk in filters.wijken %}
-                                        <li class="js-filter-active">
-                                            <button
-                                                class="btn btn-secondary btn-filter--active"
-                                                data-action="filter--filter#removeFilter"  
-                                                data-filter--filter-code-param="{{ wijk.0 }}"
-                                                data-filter--filter-description-param="wijken"  
-                                            >
-                                                <span>{{ wijk.1 }}</span>
-                                            </button>
-                                            
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                {% endif %}
-
-                                {% if filters.buurten|length > 0 %}
-                                <li>
-                                    <h3 class="h5">Buurten</h3>
-                                    <ul class="list-filters--active">
-                                        {% for buurt in filters.buurten %}
-                                        <li class="js-filter-active">
-                                            <button
-                                                class="btn btn-secondary btn-filter--active"
-                                                data-action="filter--filter#removeFilter"  
-                                                data-filter--filter-code-param="{{ buurt.0 }}"
-                                                data-filter--filter-description-param="buurten"   
-                                            >
-                                                <span>{{ buurt.1 }}</span>
-                                            </button>
-                                            
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                                {% endif %}
-                            </ul>
-                            <a class="link--bin">Wis alle filters</a>
-                        </fieldset>
-                    </details>
-                    
-                    <details class="filter">
-                        <summary>
-                            <span>Afdelingen</span>
-                            <span>({{ filters.afdelingen|length }})</span>
-                        </summary>
-                        {% include "snippets/form_departmentfilter--departments.html" %}
-                    </details>
-
-                    <details class="filter">
-                        <summary>
-                            <span>Onderwerpen</span>
-                            <span>({{ filters.onderwerpen|length }})</span>
-                        </summary>
-                        {% include "snippets/form_subjectfilter.html" %}
-                    </details>
-
-                    <details class="filter">
-                        <summary>
-                            <span>Wijken/buurten</span>
-                            <span>({{ filters.wijken|add:filters.buurten|length }})</span>
-                        </summary>
-                        {% include "snippets/form_areafilter--areas.html" %}
-                    </details>
-
-                    <div class="full-page-view__footer">
-                        <button
-                            type="submit"
-                            class="btn btn-action"
-                            data-action="filter--filter#submitFilter"
-                        >
-                            Toon meldingen
-                        </button>
-                    </div>
-                </form>
+                <turbo-frame id="incidents_filters" src="{{ fullpage_view }}">
                 </turbo-frame>
             </div>
-            
         </div>
     </div>
 </div>
