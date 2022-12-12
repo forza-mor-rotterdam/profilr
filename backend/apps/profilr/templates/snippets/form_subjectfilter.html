@@ -8,7 +8,7 @@
         <li class="container__check">
             <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__groep_{{group.code}}"{% if "foldout__groep_"|add:group.code in foldout_states %} open{% endif %}>
                 <summary>
-                    {{ group.omschrijving }}
+                    {{ group.omschrijving }} ({{group.filters|length}})
                 </summary>
                 {% if group.onderwerpen %}
                 <div class="container__list--subjects foldout">
@@ -21,8 +21,8 @@
                                     class="form-check-input filter--subject"
                                     type="checkbox"
                                     value="{{ subject.code }}"
-                                    {% if subject.code in valid_filters.onderwerpen %}checked{% endif %}
-                                    name="onderwerpen"
+                                    {% if subject.code in valid_filters.onderwerpItems %}checked{% endif %}
+                                    name="onderwerpItems"
                                     id="subject_{{ subject.code }}"
                                     data-action="filter--filter#onChangeFilter"
                                 >
