@@ -250,13 +250,14 @@ export default class extends Controller {
             this.rootTarget.style.msTransform = transformStyle;
             this.rootTarget.style.transform = transformStyle;
         } else if (differenceInX <= -100) {
-            this.rootTarget.style.transform = 'translateX(101%)';
+            this.element.style.transform = 'translateX(101%)';
             this.finished = true;
             console.log('Niet afgehandeld')
         } else {
-            this.rootTarget.style.transform = 'translateX(-101%)';
+            this.element.style.transform = 'translateX(-101%)';
             console.log('Afgehandeld')
             this.finished = true;
+            this.openModal()
         }
 
         this.rafPending = false;
@@ -267,10 +268,10 @@ export default class extends Controller {
             
         if(differenceInX > -100 && differenceInX < 100) {
             let transformStyle = 'translateX(0)';
-            this.rootTarget.style.webkitTransform = transformStyle;
-            this.rootTarget.style.MozTransform = transformStyle;
-            this.rootTarget.style.msTransform = transformStyle;
-            this.rootTarget.style.transform = transformStyle;
+            this.element.style.webkitTransform = transformStyle;
+            this.element.style.MozTransform = transformStyle;
+            this.element.style.msTransform = transformStyle;
+            this.element.style.transform = transformStyle;
         }
     }
 
