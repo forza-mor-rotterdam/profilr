@@ -41,6 +41,9 @@
         transition: height .3s ease-in-out, transform .5s ease-out;
         min-height: 100px;
         border-bottom: 1px solid $gray-tint04;
+        // scroll-snap-type: x mandatory;
+        // overflow-x: auto;
+        touch-action: pan-y pinch-zoom;
         scrollbar-width: none;
         cursor: grab;
         display: flex;
