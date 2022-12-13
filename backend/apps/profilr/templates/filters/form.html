@@ -37,17 +37,17 @@
                     </li>
                     {% endif %}
 
-                    {% if filters.onderwerpen|length > 0 %}
+                    {% if filters.onderwerpItems|length > 0 %}
                     <li>
                         <h3 class="h5">Onderwerpen</h3>
                         <ul class="list-filters--active">
-                            {% for onderwerp in filters.onderwerpen %}
+                            {% for onderwerp in filters.onderwerpItems %}
                             <li class="js-filter-active">
                                 <button
                                     class="btn btn-secondary btn-filter--active"
                                     data-action="filter--filter#removeFilter"  
                                     data-filter--filter-code-param="{{ onderwerp.0 }}"
-                                    data-filter--filter-description-param="onderwerpen"  
+                                    data-filter--filter-description-param="onderwerpItems"  
                                 >
                                     <span>{{ onderwerp.1 }}</span>
                                 </button>
@@ -90,21 +90,26 @@
             {% include "snippets/form_departmentfilter.html" %}
         </details>
 
+        {% if filters.afdelingen|length > 0 or not ENABLE_AFDELING_RELATIES_ENDPOINT %}
+        {% if categories %}
         <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_categories"{% if "foldout_categories" in foldout_states %} open{% endif %}>
             <summary>
                 <span>Groepen/onderwerpen</span>
-                <span>({{ filters.onderwerpen|length }})</span>
+                <span>({{ filters.onderwerpItems|length }})</span>
             </summary>
             {% include "snippets/form_subjectfilter.html" %}
         </details>
-
+        {% endif %}
+        {% if areas %}
         <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_areas"{% if "foldout_areas" in foldout_states %} open{% endif %}>
             <summary>
                 <span>Wijken/buurten</span>
-                <span>({{ filters.wijken|add:filters.buurten|length }})</span>
+                <span>({{ filters.buurten|length }})</span>
             </summary>
             {% include "snippets/form_areafilter.html" %}
         </details>
+        {% endif %}
+        {% endif %}
 
         <div class="full-page-view__footer">
             {% if incident_count == 0 %}

@@ -4,7 +4,7 @@
     data-controller="filter--filter"
     data-testid="incidentFilterSubject"
 >
-    {% for group in groupedSubjects %}
+    {% for group in categories %}
         <li class="container__check">
             <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__groep_{{group.code}}"{% if "foldout__groep_"|add:group.code in foldout_states %} open{% endif %}>
                 <summary>
