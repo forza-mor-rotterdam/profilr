@@ -1,0 +1,44 @@
+{% extends 'snippets/modal_context.html' %}
+{% load webpack_static from profilr_tags %}
+{% load to_date from profilr_tags %}
+{% load json_encode from profilr_tags %}
+
+
+{% block start_turbo_frame %}
+<turbo-frame id="incident_modal_handle">
+{% endblock %}
+{% block modal_header %}
+<h1>
+    Melding afhandelen<br>
+    <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
+</h1>
+<button type="button" class="btn-close modal-exit" aria-label="Sluit"></button> 
+{% endblock %}
+
+
+{% block modal_body %}
+<div class="container__form" 
+    data-controller="incidentHandleForm"
+    data-incidentHandleForm-parent-context-value =  "{{ parent_context|json_encode }}"
+    data-incidentHandleForm-form-is-submitted-value =  {% if form_submitted %}true{% else %}false{% endif %}
+>
+    {% if form %}
+    <form action="{% if incident.id %}{% url 'incident_modal_handle_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm">
+        {% csrf_token %}
+        
+        {{ form.handle_choice }}
+        
+        <div class="form-row container__button">
+            <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
+            <button type="submit" class="btn btn-action"><span>Afhandelen</span></button>
+        </div>
+    </form>
+    {% else %}
+
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block end_turbo_frame %}
+</turbo-frame>
+{% endblock %}

@@ -6,6 +6,7 @@ from apps.auth.decorators import login_required
 from apps.profilr.forms import HANDLE_OPTIONS, HandleForm
 from apps.services import msb_api_service
 from apps.services.msb import VALID_FILTERS
+from django.conf import settings
 from django.core.cache import cache
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
@@ -288,20 +289,34 @@ def incident_list_item(request, id):
     user_token = request.user.token
     incident = msb_api_service.get_detail(id, user_token)
     spoed_cache_key = f"incident_{incident.get('id')}_spoed"
-    form = HandleForm()
-    warnings = None
-    errors = None
-    messages = None
     incident = {
         **incident,
         **{
             "spoed": cache.get(spoed_cache_key, False),
         },
     }
+
+    return render(
+        request,
+        "incident/list_item.html",
+        {
+            "incident": incident,
+        },
+    )
+
+
+@login_required
+def incident_modal_handle(request, id):
+    user_token = request.user.token
+    incident = msb_api_service.get_detail(id, user_token)
+    form = HandleForm()
+    warnings = []
+    errors = []
+    messages = []
     form_submitted = False
+    is_handled = False
 
     if request.POST:
-        print(request.POST)
         form = HandleForm(request.POST)
         if form.is_valid():
             choice = form.cleaned_data.get("handle_choice", 1)
@@ -337,17 +352,26 @@ def incident_list_item(request, id):
                 messages = result.get("messages")
             form = None
             form_submitted = True
+            is_handled = not warnings and not errors
+            if not settings.ENABLE_MELDING_AFHANDELEN:
+                messages.append(
+                    "In deze omgeving kunnen meldingen niet worden afgehanded!"
+                )
 
     return render(
         request,
-        "incident/list_item.html",
+        "incident/modal_handle.html",
         {
             "incident": incident,
             "form": form,
             "form_submitted": form_submitted,
-            "errors": errors,
-            "warnings": warnings,
-            "messages": messages,
+            "parent_context": {
+                "form_submitted": form_submitted,
+                "errors": errors,
+                "warnings": warnings,
+                "messages": messages,
+                "is_handled": is_handled,
+            },
         },
     )
 

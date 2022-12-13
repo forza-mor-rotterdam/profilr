@@ -1,17 +1,20 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = [ "root" ]
-    static values = {
-        isSubmitted: String
-    }
+    static targets = ["button"]
     connect() {
+    }
 
-        const frame = this.rootTarget.closest("turbo-frame");
-        if (this.isSubmittedValue == "True"){
-            setTimeout(function (){
-                frame.reload()
-            }, 4000)
+    formHandleIsConnectedHandler(event) {
+        const removeElem = this.element.parentNode;
+        if (event.detail.is_handled){
+            this.element.classList.add("hide");
+            this.element.addEventListener('transitionend', function(e){
+                removeElem.parentNode.removeChild(removeElem);
+            });
+            const btn = this.element.querySelector("button");
+            console.log(btn)
+            this.buttonTarget.textContent = event.detail.messages.join(",")
         }
     }
 
