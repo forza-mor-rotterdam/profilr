@@ -51,7 +51,7 @@
             <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
         </button>
 
-        <turbo-frame id="incident_modal_handle" src="{% url 'incident_modal_handle_part' incident.id %}" loading="lazy">
+        <turbo-frame id="incident_modal_handle_{{ incident.id }}" src="{% url 'incident_modal_handle_part' incident.id %}" laoding="lazy">
         </turbo-frame>
     </div>
 </turbo-frame>
