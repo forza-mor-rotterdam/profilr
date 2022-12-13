@@ -26,7 +26,18 @@
     <form action="{% if incident.id %}{% url 'incident_modal_handle_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm">
         {% csrf_token %}
         
+        {{ form.handle_choice.label_tag }}
         {{ form.handle_choice }}
+        <fieldset>
+            {{ form.external_text.label_tag }}
+            {{ form.external_text }}
+        </fieldset>
+        <fieldset>
+            {{ form.internal_text.label_tag }}
+            {{ form.internal_text }}
+        </fieldset>
+
+
         
         <div class="form-row container__button">
             <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
