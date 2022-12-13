@@ -34,13 +34,12 @@ export default class extends Controller {
 
     formHandleIsConnectedHandler(event) {
         const removeElem = this.element.parentNode;
+        console.log('event.detail', event.detail)
         if (event.detail.is_handled){
             this.element.classList.add("hide");
             this.element.addEventListener('transitionend', function(e){
                 removeElem.parentNode.removeChild(removeElem);
             });
-            const btn = this.element.querySelector("button");
-            console.log(btn)
             this.buttonTarget.textContent = event.detail.messages.join(",")
         }
     }
@@ -130,21 +129,19 @@ export default class extends Controller {
           return;
         }
 
-        var differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
-        var newXTransform = (0 - differenceInX)+'px';
-        var transformStyle = 'translateX('+newXTransform+')';
+        let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
+        let newLeft = (0 - differenceInX)+'px';
+        let leftStyle = newLeft;
 
         if(differenceInX > -100 && differenceInX < 100) {
-            this.element.style.webkitTransform = transformStyle;
-            this.element.style.MozTransform = transformStyle;
-            this.element.style.msTransform = transformStyle;
-            this.element.style.transform = transformStyle;
+            this.element.style.left = leftStyle;
         } else if (differenceInX <= -100) {
-            this.element.style.transform = 'translateX(101%)';
+            this.element.style.left = '101%';
             this.finished = true;
             console.log('Niet afgehandeld')
+            this.openModal()
         } else {
-            this.element.style.transform = 'translateX(-101%)';
+            this.element.style.left = '-101%';
             console.log('Afgehandeld')
             this.finished = true;
             this.openModal()
