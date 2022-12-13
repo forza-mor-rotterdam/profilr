@@ -5,16 +5,6 @@ export default class extends Controller {
         filters: String
     }
 
-    // initialize() {
-    //     const departments = JSON.parse(this.filtersValue).afdelingen
-
-    //     if(departments?.length > 0) {
-    //         //show incidents
-    //     } else {
-    //         this.openFilterModal()
-    //     }
-    // }
-
     openFilterModal() {
         const modal = document.getElementById('modal-filter--first');
         const modalBackdrop = document.getElementById('modal-backdrop');

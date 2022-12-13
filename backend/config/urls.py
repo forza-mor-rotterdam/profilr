@@ -8,6 +8,7 @@ from apps.profilr.views import (
     incident_index,
     incident_list,
     incident_list_item,
+    incident_modal_handle,
     login,
     logout,
     root,
@@ -27,9 +28,14 @@ urlpatterns = [
     path("part/filter/", filter, name="filter_part"),
     path("part/incident-list/", incident_list, name="incident_list_part"),
     path(
-        "part/incident-list-item//<int:id>",
+        "part/incident-list-item/<int:id>",
         incident_list_item,
         name="incident_list_item_part",
+    ),
+    path(
+        "part/incident-modal-handle/<int:id>",
+        incident_modal_handle,
+        name="incident_modal_handle_part",
     ),
 ]
 
