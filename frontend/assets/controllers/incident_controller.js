@@ -191,12 +191,12 @@ export default class extends Controller {
     }
 
     openModal(e) {
-        const data = e.params.object;
+        // const data = e.params.object;
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
 
-        modal.setAttribute('data-id', data.id);
-        modal.setAttribute('data-subjectId', data.onderwerp.id);
+        // modal.setAttribute('data-id', data.id);
+        // modal.setAttribute('data-subjectId', data.onderwerp.id);
         
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
