@@ -82,13 +82,22 @@ class MSBService(APIService):
         )
 
     def get_wijken(self, user_token):
-        return self.do_request("wijken", user_token)
+        return self.do_request("wijken", user_token, cache_timeout=60 * 60 * 24)
 
     def get_onderwerpgroepen(self, user_token):
-        return self.do_request("msb/onderwerpgroepen", user_token)
+        return self.do_request(
+            "msb/onderwerpgroepen", user_token, cache_timeout=60 * 60 * 24
+        )
 
     def get_afdelingen(self, user_token):
-        return self.do_request("msb/afdelingen", user_token)
+        return self.do_request("msb/afdelingen", user_token, cache_timeout=60 * 60 * 24)
+
+    def get_afdeling_relaties(self, user_token, afdeling_id):
+        if not settings.ENABLE_AFDELING_RELATIES_ENDPOINT:
+            return {"success": True, "result": {}}
+        return self.do_request(
+            f"msb/afdeling/{afdeling_id}", user_token, cache_timeout=60 * 60 * 24
+        )
 
     def afhandelen(self, melding_id: str, user_token: str, data: dict):
         """
