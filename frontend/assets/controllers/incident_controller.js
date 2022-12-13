@@ -4,7 +4,7 @@ export default class extends Controller {
     static targets = ["button"]
     connect() {
         
-        const frame = this.rootTarget.closest("turbo-frame")
+        const frame = this.element.closest("turbo-frame")
         this.initialTouchPos = null
         this.rafPending = false
         this.finished = false
@@ -17,18 +17,18 @@ export default class extends Controller {
         // Check if pointer events are supported.
         if (window.PointerEvent) {
             // Add Pointer Event Listener
-            this.rootTarget.addEventListener('pointerdown', this.handleGestureStart.bind(this), true);
-            this.rootTarget.addEventListener('pointermove', this.handleGestureMove.bind(this), true);
-            this.rootTarget.addEventListener('pointerup', this.handleGestureEnd.bind(this), true);
-            this.rootTarget.addEventListener('pointercancel', this.handleGestureEnd.bind(this), true);
+            this.element.addEventListener('pointerdown', this.handleGestureStart.bind(this), true);
+            this.element.addEventListener('pointermove', this.handleGestureMove.bind(this), true);
+            this.element.addEventListener('pointerup', this.handleGestureEnd.bind(this), true);
+            this.element.addEventListener('pointercancel', this.handleGestureEnd.bind(this), true);
         } else {
             // Add Touch Listener
-            this.rootTarget.addEventListener('touchstart', this.handleGestureStart.bind(this), true);
-            this.rootTarget.addEventListener('touchmove', this.handleGestureMove.bind(this), true);
-            this.rootTarget.addEventListener('touchend', this.handleGestureEnd.bind(this), true);
-            this.rootTarget.addEventListener('touchcancel', this.handleGestureEnd.bind(this), true);
+            this.element.addEventListener('touchstart', this.handleGestureStart.bind(this), true);
+            this.element.addEventListener('touchmove', this.handleGestureMove.bind(this), true);
+            this.element.addEventListener('touchend', this.handleGestureEnd.bind(this), true);
+            this.element.addEventListener('touchcancel', this.handleGestureEnd.bind(this), true);
             // Add Mouse Listener
-            this.rootTarget.addEventListener('mousedown', this.handleGestureStart.bind(this), true);
+            this.element.addEventListener('mousedown', this.handleGestureStart.bind(this), true);
         }
     }
 
@@ -135,18 +135,19 @@ export default class extends Controller {
         var transformStyle = 'translateX('+newXTransform+')';
 
         if(differenceInX > -100 && differenceInX < 100) {
-            this.rootTarget.style.webkitTransform = transformStyle;
-            this.rootTarget.style.MozTransform = transformStyle;
-            this.rootTarget.style.msTransform = transformStyle;
-            this.rootTarget.style.transform = transformStyle;
+            this.element.style.webkitTransform = transformStyle;
+            this.element.style.MozTransform = transformStyle;
+            this.element.style.msTransform = transformStyle;
+            this.element.style.transform = transformStyle;
         } else if (differenceInX <= -100) {
-            this.rootTarget.style.transform = 'translateX(101%)';
+            this.element.style.transform = 'translateX(101%)';
             this.finished = true;
             console.log('Niet afgehandeld')
         } else {
-            this.rootTarget.style.transform = 'translateX(-101%)';
+            this.element.style.transform = 'translateX(-101%)';
             console.log('Afgehandeld')
             this.finished = true;
+            this.openModal()
         }
 
         this.rafPending = false;
@@ -157,10 +158,10 @@ export default class extends Controller {
             
         if(differenceInX > -100 && differenceInX < 100) {
             let transformStyle = 'translateX(0)';
-            this.rootTarget.style.webkitTransform = transformStyle;
-            this.rootTarget.style.MozTransform = transformStyle;
-            this.rootTarget.style.msTransform = transformStyle;
-            this.rootTarget.style.transform = transformStyle;
+            this.element.style.webkitTransform = transformStyle;
+            this.element.style.MozTransform = transformStyle;
+            this.element.style.msTransform = transformStyle;
+            this.element.style.transform = transformStyle;
         }
     }
 
