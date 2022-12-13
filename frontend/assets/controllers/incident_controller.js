@@ -167,25 +167,21 @@ export default class extends Controller {
         // Add the move and end listeners
         if (window.PointerEvent) {
             evt.target.setPointerCapture(evt.pointerId);
-            console.log('PointerEvent')
         } else {
             // Add Mouse Listeners
-            console.log('Mouse Listeners')
-
-            document.addEventListener('mousemove', this.handleGestureMove, true);
-            document.addEventListener('mouseup', this.handleGestureEnd, true);
+            document.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
+            document.addEventListener('mouseup', this.handleGestureEnd.bind(this), true);
         }
     
         this.initialTouchPos = this.getGesturePointFromEvent(evt);
-    
-        // this.rootTarget.style.transition = 'initial';
     }
 
     // Handle end gestures
     handleGestureEnd(evt) {
-        evt.preventDefault();
+        evt.preventDefault();       
     
-        if (evt.touches && evt.touches.length > 0) {
+        if ((evt.touches && evt.touches.length > 0)
+            || this.finished) {
             return;
         }
         this.rafPending = false;
@@ -222,15 +218,12 @@ export default class extends Controller {
 
     handleGestureMove(evt) {
         evt.preventDefault();
-        console.log('handleGestureMove 1', this.rafPending)
-      
-        if (!this.initialTouchPos) {
+        if (!this.initialTouchPos 
+            || this.finished) {
           return;
         }
       
         this.lastTouchPos = this.getGesturePointFromEvent(evt);
-
-        console.log(this.initialTouchPos, '---', this.lastTouchPos)
       
         if (this.rafPending) {
           return;
@@ -238,23 +231,19 @@ export default class extends Controller {
       
         this.rafPending = true;
       
-        // console.log('handleGestureMove 2', this.rafPending)
-
-        // window.requestAnimationFrame(this.onAnimFrame);
         this.onAnimFrame()
     }
 
     onAnimFrame() {
-        
-        if (!this.rafPending) {
-            console.log('return')
+      
+        if (!this.rafPending || this.finished) {
           return;
         }
-      
+
         var differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
         var newXTransform = (0 - differenceInX)+'px';
         var transformStyle = 'translateX('+newXTransform+')';
-      
+
         if(differenceInX > -100 && differenceInX < 100) {
             this.rootTarget.style.webkitTransform = transformStyle;
             this.rootTarget.style.MozTransform = transformStyle;
@@ -262,20 +251,19 @@ export default class extends Controller {
             this.rootTarget.style.transform = transformStyle;
         } else if (differenceInX <= -100) {
             this.rootTarget.style.transform = 'translateX(101%)';
+            this.finished = true;
             console.log('Niet afgehandeld')
         } else {
             this.rootTarget.style.transform = 'translateX(-101%)';
             console.log('Afgehandeld')
-
+            this.finished = true;
         }
 
         this.rafPending = false;
-        console.log('onAnimFrame, differenceInX', differenceInX)
     }
 
     updateSwipeRestPosition() {
         let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
-        console.log('updateSwipeRestPosition, differenceInX', differenceInX)
             
         if(differenceInX > -100 && differenceInX < 100) {
             let transformStyle = 'translateX(0)';
