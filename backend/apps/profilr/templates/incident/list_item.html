@@ -6,8 +6,15 @@
     <div
         class="list-item{% if form_submitted %} form-is-submitted{% endif %}{% if errors and warnings %} has-errors{% endif %}"
         data-controller="incident" 
-        data-action="click->incident#swipe formHandleIsConnected->incident#formHandleIsConnectedHandler"
+        data-action="formHandleIsConnected->incident#formHandleIsConnectedHandler"
         data-incident-id-value="{{ incident.id }}">
+        <button
+            class="container__actions handle--no-success"
+            data-id="{{ incident.id }}"
+            data-incident-target="button"
+        >
+            <img src="{% webpack_static 'icons/assets/icons/close.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandleNo"/>
+        </button>
         <div class="wrapper__swipe">
             <div class="container__flex">
                 <a href="/incident/{{ incident.id }}">
@@ -42,10 +49,8 @@
             </div>
         </div>
         <button
-            class="container__actions"
+            class="container__actions handle--success"
             data-id="{{ incident.id }}"
-            data-incident-object-param = "{{ incident|json_encode }}"
-            data-action="incident#openModal"
             data-incident-target="button"
         >
             <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
