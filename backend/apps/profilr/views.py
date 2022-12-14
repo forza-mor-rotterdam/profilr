@@ -239,10 +239,12 @@ def incident_list_item(request, id):
 
 
 @login_required
-def incident_modal_handle(request, id):
+def incident_modal_handle(request, id, handled_type=None):
+    if not handled_type:
+        return HttpResponse("")
     user_token = request.user.token
     incident = msb_api_service.get_detail(id, user_token)
-    form = HandleForm()
+    form = HandleForm(handled_type=handled_type)
     warnings = []
     errors = []
     messages = []
@@ -296,6 +298,7 @@ def incident_modal_handle(request, id):
         "incident/modal_handle.html",
         {
             "incident": incident,
+            "handled_type": handled_type,
             "form": form,
             "form_submitted": form_submitted,
             "parent_context": {
@@ -318,3 +321,10 @@ def image_thumbnail(request, id):
 def image_full(request, id, thumbnail=False):
     blob = msb_api_service.get_foto(id, request.user.token, thumbnail)
     return FileResponse(blob)
+
+
+def config(request):
+    return render(
+        request,
+        "config.html",
+    )

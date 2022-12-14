@@ -19,6 +19,7 @@ class HandleForm(forms.Form):
         label="Hoe wil je de melding afhandelen?",
         widget=RadioSelect(attrs={"class": "form-check-input"}),
         choices=[[x, HANDLE_OPTIONS[x][1]] for x in range(len(HANDLE_OPTIONS))],
+        initial=0,
     )
     external_text = forms.CharField(
         label="Bericht voor de melder",
@@ -30,3 +31,15 @@ class HandleForm(forms.Form):
         widget=forms.Textarea(),
         required=False,
     )
+
+    def __init__(self, *args, **kwargs):
+        handled_type = kwargs.pop("handled_type", None)
+        super().__init__(*args, **kwargs)
+        if handled_type == "handled":
+            self.fields["handle_choice"].widget = forms.HiddenInput()
+        else:
+            self.fields["handle_choice"].choices = [
+                [x, HANDLE_OPTIONS[x][1]]
+                for x in range(len(HANDLE_OPTIONS))
+                if HANDLE_OPTIONS[x][0] == "N"
+            ]

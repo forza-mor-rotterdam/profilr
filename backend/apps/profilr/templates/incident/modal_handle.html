@@ -1,33 +1,20 @@
-{% extends 'snippets/modal_context.html' %}
 {% load webpack_static from profilr_tags %}
 {% load to_date from profilr_tags %}
 {% load json_encode from profilr_tags %}
 
-
-{% block start_turbo_frame %}
 <turbo-frame id="incident_modal_handle_{{ incident.id }}">
-{% endblock %}
-{% block modal_header %}
-<h1>
-    Melding afhandelen<br>
-    <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
-</h1>
-<button type="button" class="btn-close modal-exit" aria-label="Sluit"></button> 
-{% endblock %}
-
-
-{% block modal_body %}
 <div class="container__form" 
     data-controller="incidentHandleForm"
     data-incidentHandleForm-parent-context-value =  "{{ parent_context|json_encode }}"
     data-incidentHandleForm-form-is-submitted-value =  {% if form_submitted %}true{% else %}false{% endif %}
 >
     {% if form %}
-    <form action="{% if incident.id %}{% url 'incident_modal_handle_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm">
+    <form action="{% if handled_type %}{% url 'incident_modal_handle_part' incident.id %}{% else %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% endif %}" method="post" data-testid="handleIncidentForm" novalidate>
         {% csrf_token %}
-        
+
         {{ form.handle_choice.label_tag }}
         {{ form.handle_choice }}
+
         <fieldset>
             {{ form.external_text.label_tag }}
             {{ form.external_text }}
@@ -48,8 +35,4 @@
 
     {% endif %}
 </div>
-{% endblock %}
-
-{% block end_turbo_frame %}
 </turbo-frame>
-{% endblock %}
