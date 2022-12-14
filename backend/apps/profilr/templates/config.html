@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Config{% endblock %}
+
+{% block body %}
+    <dl>
+        <dt>PROFILR_API_AVAILABLE</dt>
+        <dd>{{PROFILR_API_AVAILABLE}}</dd>
+
+        <dt>ENABLE_MELDING_AFHANDELEN</dt>
+        <dd>{{ENABLE_MELDING_AFHANDELEN}}</dd>
+
+        <dt>ENABLE_AFDELING_RELATIES_ENDPOINT</dt>
+        <dd>{{ENABLE_AFDELING_RELATIES_ENDPOINT}}</dd>
+
+        <dt>PROFILR_API_URL</dt>
+        <dd>{{PROFILR_API_URL}}</dd>
+
+        <dt>MSB_API_URL</dt>
+        <dd>{{MSB_API_URL}}</dd>
+
+        <dt>FRONTEND_URL</dt>
+        <dd>{{FRONTEND_URL}}</dd>
+
+        <dt>PROJECT_URL</dt>
+        <dd>{{PROJECT_URL}}</dd>
+    </dl>
+
+{% endblock %}

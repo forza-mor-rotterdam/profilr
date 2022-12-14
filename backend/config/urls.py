@@ -1,4 +1,5 @@
 from apps.profilr.views import (
+    config,
     filter,
     http_404,
     http_500,
@@ -18,6 +19,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", root, name="root"),
+    path("config", config, name="config"),
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),
     path("incident/", incident_index, name="incident_index"),
@@ -36,6 +38,11 @@ urlpatterns = [
         "part/incident-modal-handle/<int:id>",
         incident_modal_handle,
         name="incident_modal_handle_part",
+    ),
+    path(
+        "part/incident-modal-handle/<int:id>/<str:handled_type>",
+        incident_modal_handle,
+        name="incident_modal_handled_type_part",
     ),
 ]
 

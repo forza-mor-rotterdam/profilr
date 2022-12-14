@@ -1,9 +1,8 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ["button"]
+    static targets = ["button", "turboFormHandler"]
     connect() {
-        
         const frame = this.element.closest("turbo-frame")
         this.initialTouchPos = null
         this.rafPending = false
@@ -173,6 +172,9 @@ export default class extends Controller {
 
     openModal(isFinished) {
         console.log('isFinished', isFinished)
+        console.log(this.turboFormHandlerTarget)
+        this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
+
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
         
