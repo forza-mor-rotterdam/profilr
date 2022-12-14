@@ -3,7 +3,7 @@ from collections import Counter
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
-from apps.profilr.forms import HANDLE_OPTIONS, HandleForm
+from apps.profilr.forms import HANDLED_OPTIONS, HandleForm
 from apps.profilr.utils import get_filter_options
 from apps.services import msb_api_service
 from apps.services.msb import VALID_FILTERS
@@ -252,14 +252,14 @@ def incident_modal_handle(request, id, handled_type=None):
     is_handled = False
 
     if request.POST:
-        form = HandleForm(request.POST)
+        form = HandleForm(request.POST, handled_type=handled_type)
         if form.is_valid():
             choice = form.cleaned_data.get("handle_choice", 1)
             choice_type = {
-                x: HANDLE_OPTIONS[x][0] for x in range(len(HANDLE_OPTIONS))
+                x: HANDLED_OPTIONS[x][0] for x in range(len(HANDLED_OPTIONS))
             }.get(int(choice), choice)
             choice_value = {
-                x: HANDLE_OPTIONS[x][1] for x in range(len(HANDLE_OPTIONS))
+                x: HANDLED_OPTIONS[x][1] for x in range(len(HANDLED_OPTIONS))
             }.get(int(choice), choice)
             data = {
                 "meldingId": incident.get("id"),
@@ -301,6 +301,7 @@ def incident_modal_handle(request, id, handled_type=None):
             "handled_type": handled_type,
             "form": form,
             "form_submitted": form_submitted,
+            "HANDLED_OPTIONS": HANDLED_OPTIONS,
             "parent_context": {
                 "form_submitted": form_submitted,
                 "errors": errors,

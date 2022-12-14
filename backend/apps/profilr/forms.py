@@ -1,10 +1,23 @@
 from django import forms
 
-HANDLE_OPTIONS = (
-    ("O", "Opgeruimd"),
-    ("N", "Niets aangetroffen"),
-    ("N", "De melding is niet voor mij"),
-    ("N", "De gemeente gaat hier niet over"),
+HANDLED_OPTIONS = (
+    ("O", "Opgeruimd", ""),
+    (
+        "N",
+        "Niets aangetroffen",
+        "In uw melding heeft u een locatie genoemd. Op deze locatie hebben wij echter niets aangetroffen. We sluiten daarom uw meldin.g",
+    ),
+    (
+        "N",
+        "De locatie is niet bereikbaar",
+        "In uw melding heeft u een locatie genoemd. We kunnen deze locatie echter niet bereiken. We sluiten daarom uw melding.",
+    ),
+    ("N", "De melding is niet voor mij", ""),
+    (
+        "N",
+        "De gemeente gaat hier niet over",
+        "Helaas valt uw melding niet onder verantwoordelijkheid van de gemeente. We sluiten daarom uw melding.",
+    ),
 )
 
 
@@ -18,7 +31,7 @@ class HandleForm(forms.Form):
     handle_choice = forms.ChoiceField(
         label="Waarom kan de melding niet worden opgelost?",
         widget=RadioSelect(attrs={"class": "form-check-input"}),
-        choices=[[x, HANDLE_OPTIONS[x][1]] for x in range(len(HANDLE_OPTIONS))],
+        choices=[[x, HANDLED_OPTIONS[x][1]] for x in range(len(HANDLED_OPTIONS))],
         initial=0,
     )
     external_text = forms.CharField(
@@ -43,7 +56,11 @@ class HandleForm(forms.Form):
             self.fields["handle_choice"].widget = forms.HiddenInput()
         else:
             self.fields["handle_choice"].choices = [
-                [x, HANDLE_OPTIONS[x][1]]
-                for x in range(len(HANDLE_OPTIONS))
-                if HANDLE_OPTIONS[x][0] == "N"
+                [x, HANDLED_OPTIONS[x][1]]
+                for x in range(len(HANDLED_OPTIONS))
+                if HANDLED_OPTIONS[x][0] == "N"
             ]
+
+        if self.data.get("handle_choice", False) == "3":
+            self.fields["external_text"].widget = forms.HiddenInput()
+            self.fields["external_text"].required = False
