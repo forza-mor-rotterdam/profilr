@@ -8,27 +8,39 @@
     data-incidentHandleForm-parent-context-value =  "{{ parent_context|json_encode }}"
     data-incidentHandleForm-form-is-submitted-value =  {% if form_submitted %}true{% else %}false{% endif %}
 >
+
     {% if form %}
-    <form action="{% if handled_type %}{% url 'incident_modal_handle_part' incident.id %}{% else %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% endif %}" method="post" data-testid="handleIncidentForm" novalidate>
+    <form
+        action="{% if handled_type %}{% url 'incident_modal_handle_part' incident.id %}{% else %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% endif %}"
+        method="post"
+        data-testid="handleIncidentForm"
+        novalidate
+        class=""
+    >
         {% csrf_token %}
-
-        {{ form.handle_choice.label_tag }}
-        {{ form.handle_choice }}
-
         <fieldset>
-            {{ form.external_text.label_tag }}
-            {{ form.external_text }}
+            <div class="form-row">
+                {{ form.handle_choice.label_tag }}
+                {{ form.handle_choice }}
+            </div>
         </fieldset>
-        <fieldset>
-            {{ form.internal_text.label_tag }}
-            {{ form.internal_text }}
-        </fieldset>
-
-
         
-        <div class="form-row container__button">
-            <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
+        <fieldset>
+            <div class="form-row">
+                {{ form.external_text.label_tag }}
+                {{ form.external_text }}
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="form-row">
+                {{ form.internal_text.label_tag }}
+                {{ form.internal_text }}
+            </div>
+        </fieldset>
+
+        <div class="form-row">
             <button type="submit" class="btn btn-action"><span>Afhandelen</span></button>
+            <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
         </div>
     </form>
     {% else %}

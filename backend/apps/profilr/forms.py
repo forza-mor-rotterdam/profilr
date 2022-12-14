@@ -16,19 +16,23 @@ class RadioSelect(forms.RadioSelect):
 class HandleForm(forms.Form):
 
     handle_choice = forms.ChoiceField(
-        label="Hoe wil je de melding afhandelen?",
+        label="Waarom kan de melding niet worden opgelost?",
         widget=RadioSelect(attrs={"class": "form-check-input"}),
         choices=[[x, HANDLE_OPTIONS[x][1]] for x in range(len(HANDLE_OPTIONS))],
         initial=0,
     )
     external_text = forms.CharField(
         label="Bericht voor de melder",
-        widget=forms.Textarea(),
-        required=True,
+        widget=forms.Textarea(
+            attrs={"class": "form-control", "data-testid": "message", "rows": "4"}
+        ),
+        required=False,
     )
     internal_text = forms.CharField(
         label="Interne informatie",
-        widget=forms.Textarea(),
+        widget=forms.Textarea(
+            attrs={"class": "form-control", "data-testid": "information", "rows": "4"}
+        ),
         required=False,
     )
 

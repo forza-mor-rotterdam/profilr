@@ -188,10 +188,15 @@ $form-search-indicator-position: left 10px center !default;
     }
 
     > label {
-        font-size: $h3-font-size;
+        font-size: $h5-font-size;
         line-height: 24px;
     }
 
+    .form--login & {
+        > label {
+            font-size: $h3-font-size;
+        }
+    }
     
 
 
