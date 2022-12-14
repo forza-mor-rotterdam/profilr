@@ -6,6 +6,7 @@ export default class extends Controller {
         const frame = this.element.closest("turbo-frame")
         this.initialTouchPos = null
         this.rafPending = false
+        this.finished = false // to prevent swiping when modal is open
         if (this.isSubmittedValue == "True"){
             setTimeout(function (){
                 frame.reload()
@@ -45,7 +46,7 @@ export default class extends Controller {
     // Handle the start of gestures
     handleGestureStart(evt) {
         evt.preventDefault();
-        if((evt.touches && evt.touches.length > 1) ) {
+        if((evt.touches && evt.touches.length > 1) || this.finished) {
             return;
         }
     
@@ -71,10 +72,8 @@ export default class extends Controller {
     
         // Remove Event Listeners
         if (window.PointerEvent) {
-            console.log('ending, PointerEvent')
             this.element.releasePointerCapture(evt.pointerId);
         } else {
-            console.log('ending, MouseEvents')
             // Remove Mouse Listeners
             document.removeEventListener('mousemove', this.handleGestureMove, true);
             document.removeEventListener('mouseup', this.handleGestureEnd, true);
@@ -103,7 +102,8 @@ export default class extends Controller {
 
     handleGestureMove(evt) {
         evt.preventDefault();
-        if (!this.initialTouchPos) {
+        if (!this.initialTouchPos 
+            || this.finished) {
           return;
         }
       
@@ -120,7 +120,7 @@ export default class extends Controller {
 
     onAnimFrame() {
       
-        if (!this.rafPending) {
+        if (!this.rafPending || this.finished) {
           return;
         }
 
@@ -132,6 +132,7 @@ export default class extends Controller {
             this.element.style.left = leftStyle;
         } else if (differenceInX <= -100) {
             this.element.style.left = '100%';
+            this.finished = true;
             setTimeout(function (){
                 this.openModal(false)
             }.bind(this), 500)
@@ -139,9 +140,10 @@ export default class extends Controller {
             
         } else {
             this.element.style.left = '-100%';
+            console.log('Afgehandeld')
+            this.finished = true;
             setTimeout(function (){
                 this.openModal(true)
-                console.log('Afgehandeld')
             }.bind(this), 500)
         }
         this.rafPending = false;
@@ -149,6 +151,10 @@ export default class extends Controller {
 
     resetIncidentSwipe() {
         this.element.style.left = '0';
+    }
+
+    enableIncidentSwipe() {
+        this.finished = false;
     }
 
     updateSwipeRestPosition(evt) {
@@ -170,24 +176,24 @@ export default class extends Controller {
     }
 
     openModal(isFinished) {
-        console.log('isFinished', isFinished)
-        console.log(this.turboFormHandlerTarget)
         this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
 
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
+        const cb = this.enableIncidentSwipe.bind(this)
         
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
         document.body.classList.add('show-modal');
         const exits = modal.querySelectorAll('.modal-exit');
-        console.log('exits', exits)
+        
         exits.forEach((exit) => {
             exit.addEventListener('click', (event) => {
                 event.preventDefault();
                 modal.classList.remove('show');
                 modalBackdrop.classList.remove('show');
                 document.body.classList.remove('show-modal');
+                cb()
             });
         });
         setTimeout(function (){
