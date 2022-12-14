@@ -33,11 +33,12 @@ export default class extends Controller {
 
     formHandleIsConnectedHandler(event) {
         const removeElem = this.element.parentNode;
-        console.log('event.detail', event.detail)
         if (event.detail.is_handled){
             this.element.classList.add("hide");
+            // TODO closemodal
+            // TODO toon tekst in de melding
             this.element.addEventListener('transitionend', function(e){
-                removeElem.parentNode.removeChild(removeElem);
+                removeElem.parentNode?.removeChild(removeElem);
             });
             this.buttonTarget.textContent = event.detail.messages.join(",")
         }
@@ -65,7 +66,7 @@ export default class extends Controller {
     handleGestureEnd(evt) {
         evt.preventDefault();       
     
-        if (evt.touches && evt.touches.length > 0) {
+        if ((evt.touches && evt.touches.length > 0) || this.finished) {
             return;
         }
         this.rafPending = false;
@@ -140,7 +141,6 @@ export default class extends Controller {
             
         } else {
             this.element.style.left = '-100%';
-            console.log('Afgehandeld')
             this.finished = true;
             setTimeout(function (){
                 this.openModal(true)

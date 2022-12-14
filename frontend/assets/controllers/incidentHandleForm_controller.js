@@ -6,15 +6,34 @@ export default class extends Controller {
         parentContext: String,
         handledOptions: String,
     }
+    static targets = ["externalText", "internalText"]
     
     connect() {
-        console.log(this.formIsSubmittedValue)
-        const handledOptions = JSON.parse(this.handledOptionsValue)
-        console.log(handledOptions)
+
+        if(this.externalTextTarget.textContent.length > 0) {
+            this.externalMessage = this.externalTextTarget.textContent
+        }
 
         this.element.dispatchEvent(new CustomEvent("formHandleIsConnected", {
             detail: JSON.parse(this.parentContextValue),
             bubbles: true
         }));
     }
+
+    setExternalMessage(evt){
+        this.choice =  evt.params.index
+        this.externalMessage = JSON.parse(this.handledOptionsValue)[this.choice][2]
+        this.externalTextTarget.textContent = this.externalMessage
+    }
+
+    defaultExternalMessage(){
+        if(this.externalMessage.length === 0) return
+        
+        this.externalTextTarget.textContent = this.externalMessage
+    }
+
+    clearExternalMessage() {
+        this.externalTextTarget.textContent = ""
+    }
+
 }

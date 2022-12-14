@@ -20,29 +20,21 @@
         {{ form.handle_choice.errors }}
 
         <fieldset>
-            {{ form.external_text.label_tag }}
-            {{ form.external_text }}
-            {{ form.external_text.errors }}
-        </fieldset>
-        <fieldset>
-            {{ form.internal_text.label_tag }}
-            {{ form.internal_text }}
-            {{ form.internal_text.errors }}
-        </fieldset>
-        
-        <fieldset>
             <div class="form-row">
+                <button class="text-link" type="button" data-action="incidentHandleForm#clearExternalMessage">Wissen</button>
                 {{ form.external_text.label_tag }}
                 {{ form.external_text }}
+                {{ form.external_text.errors }}
+                <button class="text-link" type="button" data-action="incidentHandleForm#defaultExternalMessage">Gebruik de standaardtekst</button>
             </div>
         </fieldset>
         <fieldset>
-            <div class="form-row">
+            <div>
                 {{ form.internal_text.label_tag }}
                 {{ form.internal_text }}
+                {{ form.internal_text.errors }}
             </div>
         </fieldset>
-
         <div class="form-row">
             <button type="submit" class="btn btn-action"><span>Afhandelen</span></button>
             <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>

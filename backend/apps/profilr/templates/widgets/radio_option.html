@@ -1,4 +1,4 @@
-{% include "django/forms/widgets/input.html" %}
+<input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}" data-action="incidentHandleForm#setExternalMessage" data-incidentHandleForm-index-param="{{ widget.value|stringformat:'s' }}" {% endif %}{% include "django/forms/widgets/attrs.html" %}>
 <label class="form-check-label ms-1" {% if widget.attrs.id %} for="{{ widget.attrs.id }}"{% endif %}>
 {{ widget.label }}
 </label>

@@ -1,7 +1,11 @@
 from django import forms
 
 HANDLED_OPTIONS = (
-    ("O", "Opgeruimd", ""),
+    (
+        "O",
+        "Opgeruimd",
+        "De gemeente heeft deze melding in behandeling genomen en gaat ermee aan de slag. De melding is daarom afgesloten.",
+    ),
     (
         "N",
         "Niets aangetroffen",
@@ -37,14 +41,24 @@ class HandleForm(forms.Form):
     external_text = forms.CharField(
         label="Bericht voor de melder",
         widget=forms.Textarea(
-            attrs={"class": "form-control", "data-testid": "message", "rows": "4"}
+            attrs={
+                "class": "form-control",
+                "data-testid": "message",
+                "rows": "4",
+                "data-incidentHandleForm-target": "externalText",
+            }
         ),
         required=False,
     )
     internal_text = forms.CharField(
         label="Interne informatie",
         widget=forms.Textarea(
-            attrs={"class": "form-control", "data-testid": "information", "rows": "4"}
+            attrs={
+                "class": "form-control",
+                "data-testid": "information",
+                "rows": "4",
+                "data-incidentHandleForm-target": "internalText",
+            }
         ),
         required=False,
     )
@@ -54,6 +68,7 @@ class HandleForm(forms.Form):
         super().__init__(*args, **kwargs)
         if handled_type == "handled":
             self.fields["handle_choice"].widget = forms.HiddenInput()
+            self.fields["external_text"].initial = HANDLED_OPTIONS[0][2]
         else:
             self.fields["handle_choice"].choices = [
                 [x, HANDLED_OPTIONS[x][1]]
