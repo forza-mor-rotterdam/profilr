@@ -49,7 +49,7 @@
         scrollbar-width: none;
         cursor: grab;
         display: flex;
-        user-select: none;
+        // user-select: none;
         &::-webkit-scrollbar {
             display: none;
         }

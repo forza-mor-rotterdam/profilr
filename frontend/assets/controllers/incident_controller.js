@@ -6,7 +6,6 @@ export default class extends Controller {
         const frame = this.element.closest("turbo-frame")
         this.initialTouchPos = null
         this.rafPending = false
-        this.finished = false
         if (this.isSubmittedValue == "True"){
             setTimeout(function (){
                 frame.reload()
@@ -46,13 +45,13 @@ export default class extends Controller {
     // Handle the start of gestures
     handleGestureStart(evt) {
         evt.preventDefault();
-        if((evt.touches && evt.touches.length > 1) || this.finished) {
+        if((evt.touches && evt.touches.length > 1) ) {
             return;
         }
     
         // Add the move and end listeners
         if (window.PointerEvent) {
-            evt.target.setPointerCapture(evt.pointerId);
+            this.element.setPointerCapture(evt.pointerId);
         } else {
             // Add Mouse Listeners
             document.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
@@ -65,22 +64,23 @@ export default class extends Controller {
     handleGestureEnd(evt) {
         evt.preventDefault();       
     
-        if ((evt.touches && evt.touches.length > 0)
-            || this.finished) {
+        if (evt.touches && evt.touches.length > 0) {
             return;
         }
         this.rafPending = false;
     
         // Remove Event Listeners
         if (window.PointerEvent) {
-            evt.target.releasePointerCapture(evt.pointerId);
+            console.log('ending, PointerEvent')
+            this.element.releasePointerCapture(evt.pointerId);
         } else {
+            console.log('ending, MouseEvents')
             // Remove Mouse Listeners
             document.removeEventListener('mousemove', this.handleGestureMove, true);
             document.removeEventListener('mouseup', this.handleGestureEnd, true);
         }
     
-        this.updateSwipeRestPosition();
+        this.updateSwipeRestPosition(evt);
     
         this.initialTouchPos = null;
     }
@@ -103,8 +103,7 @@ export default class extends Controller {
 
     handleGestureMove(evt) {
         evt.preventDefault();
-        if (!this.initialTouchPos 
-            || this.finished) {
+        if (!this.initialTouchPos) {
           return;
         }
       
@@ -121,7 +120,7 @@ export default class extends Controller {
 
     onAnimFrame() {
       
-        if (!this.rafPending || this.finished) {
+        if (!this.rafPending) {
           return;
         }
 
@@ -133,17 +132,13 @@ export default class extends Controller {
             this.element.style.left = leftStyle;
         } else if (differenceInX <= -100) {
             this.element.style.left = '100%';
-            this.finished = true;
             setTimeout(function (){
                 this.openModal(false)
-                console.log('Niet afgehandeld')
             }.bind(this), 500)
             
             
         } else {
             this.element.style.left = '-100%';
-            console.log('Afgehandeld')
-            this.finished = true;
             setTimeout(function (){
                 this.openModal(true)
                 console.log('Afgehandeld')
@@ -152,7 +147,11 @@ export default class extends Controller {
         this.rafPending = false;
     }
 
-    updateSwipeRestPosition() {
+    resetIncidentSwipe() {
+        this.element.style.left = '0';
+    }
+
+    updateSwipeRestPosition(evt) {
         let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
         if(differenceInX > -100 && differenceInX < 100) {
             this.element.style.left = '0';
@@ -160,7 +159,7 @@ export default class extends Controller {
     
         // Add the move and end listeners
         if (window.PointerEvent) {
-            evt.target.setPointerCapture(evt.pointerId);
+            this.element.setPointerCapture(evt.pointerId);
         } else {
             // Add Mouse Listeners
             document.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
@@ -182,13 +181,18 @@ export default class extends Controller {
         modalBackdrop.classList.add('show');
         document.body.classList.add('show-modal');
         const exits = modal.querySelectorAll('.modal-exit');
-        exits.forEach(function (exit) {
-            exit.addEventListener('click', function (event) {
+        console.log('exits', exits)
+        exits.forEach((exit) => {
+            exit.addEventListener('click', (event) => {
                 event.preventDefault();
                 modal.classList.remove('show');
                 modalBackdrop.classList.remove('show');
                 document.body.classList.remove('show-modal');
             });
         });
+        setTimeout(function (){
+            this.resetIncidentSwipe()
+        }.bind(this), 1000)
+        
     }
 }
