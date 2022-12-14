@@ -1,4 +1,4 @@
-{% block start_turbo_frame %}{% endblock %}
+{% block before_modal_content %}{% endblock %}
 <div class="modal" {% if modal_id %}id="{{ modal_id }}"{% endif %}>
     <div class="modal-dialog">
         <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
@@ -14,4 +14,4 @@
         </div>
     </div>
 </div>
-{% block end_turbo_frame %}{% endblock %}
+{% block after_modal_content %}{% endblock %}
