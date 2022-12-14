@@ -13,7 +13,9 @@
             data-id="{{ incident.id }}"
             data-incident-target="button"
         >
-            <img src="{% webpack_static 'icons/assets/icons/close.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandleNo"/>
+            <div>
+                <span>Niet opgelost</span>
+            </div>
         </button>
         <div class="wrapper__swipe">
             <div class="container__flex">
@@ -53,7 +55,9 @@
             data-id="{{ incident.id }}"
             data-incident-target="button"
         >
-            <img src="{% webpack_static 'icons/assets/icons/checkmark.svg' %}" width="20" alt="" class="checkmark-handle" id="checkMarkHandle"/>
+            <div>
+                <span>Afhandelen</span>
+            </div>
         </button>
 
         <turbo-frame id="incident_modal_handle_{{ incident.id }}" src="{% url 'incident_modal_handle_part' incident.id %}" laoding="lazy">

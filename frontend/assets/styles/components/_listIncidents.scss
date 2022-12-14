@@ -141,9 +141,10 @@
             height: 100%;
             padding: 0;
             
-            .checkmark-handle {
-                margin: 25px;
-                width: 40px;
+            > div {
+                margin-top: 20px;
+                padding-top: 48px;
+                line-height: 18px;
             }
 
             &.handle--success {
@@ -151,15 +152,22 @@
                 right: -100%;
                 text-align: left;
                 
+                > div { 
+                    margin-left: 20px;
+                    background: url('../icons/checkmark.svg') left top no-repeat;
+                }
             }
 
             &.handle--no-success {
-                background-color: $danger;
+                background-color: #CE4C3B;
                 left: -100%;
                 text-align: right;
 
-                img {
-                    filter: invert(1) sepia(0) saturate(1) hue-rotate(175deg);
+                > div { 
+                    margin-right: 20px;
+                    background: url("data:image/svg+xml,%3csvg width=%2732%27 height=%2732%27 viewBox=%270 0 32 32%27 fill=%27black%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M26.6077 6.80752L25.1935 5.39331L16.0011 14.5857L6.80875 5.39331L5.39453 6.80752L14.5869 15.9999L5.39453 25.1923L6.80874 26.6065L16.0011 17.4141L25.1935 26.6065L26.6077 25.1923L17.4153 15.9999L26.6077 6.80752Z%27 fill=%27white%27/%3e%3c/svg%3e") right top no-repeat;
+                    background-size: contain;
+                    background-position: calc(100% + 10px) -10px;
                 }
             }
         }
