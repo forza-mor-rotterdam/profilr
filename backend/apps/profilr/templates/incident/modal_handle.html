@@ -6,25 +6,28 @@
 <div class="container__form" 
     data-controller="incidentHandleForm"
     data-incidentHandleForm-parent-context-value =  "{{ parent_context|json_encode }}"
+    data-incidentHandleForm-handled-options-value =  "{{ HANDLED_OPTIONS|json_encode }}"
     data-incidentHandleForm-form-is-submitted-value =  {% if form_submitted %}true{% else %}false{% endif %}
 >
     {% if form %}
-    <form action="{% if handled_type %}{% url 'incident_modal_handle_part' incident.id %}{% else %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% endif %}" method="post" data-testid="handleIncidentForm" novalidate>
+    <form action="{% if handled_type %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% else %}{% url 'incident_modal_handled_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm" novalidate>
         {% csrf_token %}
-
+        {% if not form.handle_choice.is_hidden %}
         {{ form.handle_choice.label_tag }}
+        {% endif %}
         {{ form.handle_choice }}
+        {{ form.handle_choice.errors }}
 
         <fieldset>
             {{ form.external_text.label_tag }}
             {{ form.external_text }}
+            {{ form.external_text.errors }}
         </fieldset>
         <fieldset>
             {{ form.internal_text.label_tag }}
             {{ form.internal_text }}
+            {{ form.internal_text.errors }}
         </fieldset>
-
-
         
         <div class="form-row container__button">
             <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
