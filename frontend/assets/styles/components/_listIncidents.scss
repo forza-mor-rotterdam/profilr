@@ -39,6 +39,7 @@
 
     .list-item {
         position: relative;
+        box-sizing: content-box;
         transition: height .3s ease-in-out, left .5s ease-out;
         min-height: 100px;
         border-bottom: 1px solid $gray-tint04;
@@ -62,6 +63,7 @@
         .wrapper__swipe {
             flex: 2 0 100%;
             background-color: $white;
+            z-index: 2;
         }
 
         .container__flex {
@@ -124,6 +126,7 @@
 
         .container__actions {
             display: block;
+            box-sizing: content-box;
             // flex: 1 0 100%;
             text-align: center;
             line-height: 60px;
@@ -136,21 +139,28 @@
             top: 0;
             width: 100%;
             height: 100%;
+            padding: 0;
             
             .checkmark-handle {
-                margin-top: 25px;
+                margin: 25px;
                 width: 40px;
             }
 
             &.handle--success {
                 background-color: $green-tint01;
-                right: -101%;
+                right: -100%;
+                text-align: left;
                 
             }
 
             &.handle--no-success {
                 background-color: $danger;
-                left: -101%;
+                left: -100%;
+                text-align: right;
+
+                img {
+                    filter: invert(1) sepia(0) saturate(1) hue-rotate(175deg);
+                }
             }
         }
     }

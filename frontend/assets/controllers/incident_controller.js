@@ -47,9 +47,7 @@ export default class extends Controller {
     // Handle the start of gestures
     handleGestureStart(evt) {
         evt.preventDefault();
-        if((evt.touches && evt.touches.length > 1) 
-            || this.finished) {
-            console.log('handleGestureStart', evt.touches)
+        if((evt.touches && evt.touches.length > 1) || this.finished) {
             return;
         }
     
@@ -61,7 +59,6 @@ export default class extends Controller {
             document.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
             document.addEventListener('mouseup', this.handleGestureEnd.bind(this), true);
         }
-    
         this.initialTouchPos = this.getGesturePointFromEvent(evt);
     }
 
@@ -136,29 +133,30 @@ export default class extends Controller {
         if(differenceInX > -100 && differenceInX < 100) {
             this.element.style.left = leftStyle;
         } else if (differenceInX <= -100) {
-            this.element.style.left = '101%';
+            this.element.style.left = '100%';
             this.finished = true;
-            console.log('Niet afgehandeld')
-            this.openModal()
+            setTimeout(function (){
+                this.openModal(false)
+                console.log('Niet afgehandeld')
+            }.bind(this), 500)
+            
+            
         } else {
-            this.element.style.left = '-101%';
+            this.element.style.left = '-100%';
             console.log('Afgehandeld')
             this.finished = true;
-            this.openModal()
+            setTimeout(function (){
+                this.openModal(true)
+                console.log('Afgehandeld')
+            }.bind(this), 500)
         }
-
         this.rafPending = false;
     }
 
     updateSwipeRestPosition() {
         let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
-            
         if(differenceInX > -100 && differenceInX < 100) {
-            let transformStyle = 'translateX(0)';
-            this.element.style.webkitTransform = transformStyle;
-            this.element.style.MozTransform = transformStyle;
-            this.element.style.msTransform = transformStyle;
-            this.element.style.transform = transformStyle;
+            this.element.style.left = '0';
         }
     
         // Add the move and end listeners
@@ -297,38 +295,10 @@ export default class extends Controller {
         // }
     }
 
-    swipe(e) {
-        // const li = e.target.tagName.toLowerCase() !== "img" && e.target.closest("li");
-        // const btn = e.target.closest("button");
-        // const anchor = e.target.closest("div.background-image")
-        // if(!anchor){
-        //     if (li && li.scrollLeft === 0) {
-        //         li.scrollBy({
-        //         left: 1,
-        //         behavior: "smooth"
-        //         });
-        //     } else if (!btn && li) {
-        //         li.scrollBy({
-        //         left: -1,
-        //         behavior: "smooth"
-        //         });
-        //     } else if (btn && li) {
-        //         // window.location.href=`/incident/${this.idValue}/handle`;
-        //         li.scrollBy({
-        //             left: -1,
-        //             behavior: "smooth"
-        //         });
-        //     }
-        // }
-    }
-
-    openModal(e) {
-        // const data = e.params.object;
+    openModal(isFinished) {
+        console.log('isFinished', isFinished)
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
-
-        // modal.setAttribute('data-id', data.id);
-        // modal.setAttribute('data-subjectId', data.onderwerp.id);
         
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
