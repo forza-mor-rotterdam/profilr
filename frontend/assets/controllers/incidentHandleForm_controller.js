@@ -9,9 +9,8 @@ export default class extends Controller {
     static targets = ["externalText", "internalText"]
     
     connect() {
-        console.log('CONNECT, this.externalTextTarget', this.externalTextTarget)
-        if(this.externalTextTarget !== undefined) {
-            if(this.externalTextTarget?.textContent.length > 0) {
+        if(this.hasExternalTextTarget) {
+            if(this.externalTextTarget.textContent.length > 0) {
                 this.externalMessage = this.externalTextTarget.textContent
             }
         }
@@ -26,6 +25,7 @@ export default class extends Controller {
         this.choice =  evt.params.index
         this.externalMessage = JSON.parse(this.handledOptionsValue)[this.choice][2]
         this.externalTextTarget.textContent = this.externalMessage
+
     }
 
     defaultExternalMessage(){
