@@ -22,7 +22,6 @@ export default class extends Controller {
     }
 
     cancelHandle() {
-        console.log('cancelHandle')
         this.element.dispatchEvent(new CustomEvent("cancelHandle", {
             detail: JSON.parse(this.parentContextValue),
             bubbles: true

@@ -42,7 +42,6 @@ export default class extends Controller {
     }
 
     cancelHandleHandler(event) {
-        console.log('cancelHandle 2')
         this.closeModal()
     }
 
@@ -178,7 +177,6 @@ export default class extends Controller {
     }
 
     closeModal() {
-        console.log('closeModal')
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
         
