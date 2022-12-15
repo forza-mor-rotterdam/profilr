@@ -35,7 +35,7 @@ export default class extends Controller {
         const removeElem = this.element.parentNode;
         if (event.detail.is_handled){
             this.element.classList.add("hide");
-            // TODO closemodal
+            // this.closeModal()
             // TODO toon tekst in de melding
             this.element.addEventListener('transitionend', function(e){
                 removeElem.parentNode?.removeChild(removeElem);
@@ -175,12 +175,26 @@ export default class extends Controller {
         this.initialTouchPos = this.getGesturePointFromEvent(evt);
     }
 
+    closeModal() {
+        console.log('closeModal')
+        const modal = this.element.querySelector('.modal');
+        const modalBackdrop = this.element.querySelector('.modal-backdrop');
+        console.log('closeModal, modal', modal)
+        console.log('closeModal, modalBackdrop', modalBackdrop)
+
+
+        modal.classList.remove('show');
+        modalBackdrop.classList.remove('show');
+        document.body.classList.remove('show-modal');
+        this.enableIncidentSwipe()
+    }
+
     openModal(isFinished) {
         this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
 
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
-        const cb = this.enableIncidentSwipe.bind(this)
+        
         
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
@@ -190,10 +204,7 @@ export default class extends Controller {
         exits.forEach((exit) => {
             exit.addEventListener('click', (event) => {
                 event.preventDefault();
-                modal.classList.remove('show');
-                modalBackdrop.classList.remove('show');
-                document.body.classList.remove('show-modal');
-                cb()
+                this.closeModal()
             });
         });
         setTimeout(function (){

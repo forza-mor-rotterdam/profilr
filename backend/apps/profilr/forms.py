@@ -9,7 +9,7 @@ HANDLED_OPTIONS = (
     (
         "N",
         "Niets aangetroffen",
-        "In uw melding heeft u een locatie genoemd. Op deze locatie hebben wij echter niets aangetroffen. We sluiten daarom uw meldin.g",
+        "In uw melding heeft u een locatie genoemd. Op deze locatie hebben wij echter niets aangetroffen. We sluiten daarom uw melding.",
     ),
     (
         "N",

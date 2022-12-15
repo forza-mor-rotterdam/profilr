@@ -9,9 +9,11 @@ export default class extends Controller {
     static targets = ["externalText", "internalText"]
     
     connect() {
-
-        if(this.externalTextTarget.textContent.length > 0) {
-            this.externalMessage = this.externalTextTarget.textContent
+        console.log('CONNECT, this.externalTextTarget', this.externalTextTarget)
+        if(this.externalTextTarget !== undefined) {
+            if(this.externalTextTarget?.textContent.length > 0) {
+                this.externalMessage = this.externalTextTarget.textContent
+            }
         }
 
         this.element.dispatchEvent(new CustomEvent("formHandleIsConnected", {
