@@ -404,6 +404,7 @@ def incident_modal_handle(request, id, handled_type=None):
             form = None
             form_submitted = True
             is_handled = not warnings and not errors
+            warnings or errors
             if not settings.ENABLE_MELDING_AFHANDELEN:
                 messages.append(
                     "In deze omgeving kunnen meldingen niet worden afgehanded!"

@@ -41,7 +41,30 @@
         </div>
     </form>
     {% else %}
+    <div class="alert alert--info">
+        <span><img src="{% webpack_static 'icons/assets/icons/info.svg' %}"/></span>
+        <div>
+            {% if parent_context.messages %}
+            {% for e in parent_context.messages %}
+            {{ e }}
+            {% endfor %}
+            {% endif %}
 
+            {% if parent_context.warnings %}
+            <h3>Waarschuwing!</h3>
+            {% for e in parent_context.warnings %}
+            {{ e }}
+            {% endfor %}
+
+            {% endif %}
+            {% if parent_context.errors %}
+            <h3>Er is een fout opgetreden!</h3>
+            {% for e in .parent_context.errors %}
+            {{ e }}
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
     {% endif %}
 </div>
 </turbo-frame>
