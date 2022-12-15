@@ -1,9 +1,11 @@
 import copy
+import mimetypes
+from base64 import b64encode
 from collections import Counter
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
-from apps.profilr.forms import HANDLED_OPTIONS, HandleForm
+from apps.profilr.forms import HANDLED_OPTIONS, CreateIncidentForm, HandleForm
 from apps.profilr.utils import get_filter_options
 from apps.services import msb_api_service
 from apps.services.msb import VALID_FILTERS
@@ -12,6 +14,21 @@ from django.core.cache import cache
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+
+
+def encode_b64(value):
+    value.file.seek(0)
+    mime_type, encoding = mimetypes.guess_type(value.name)
+    if not mime_type:
+        mime_type = "image/png"
+    data = value.file.read()
+    image_data = bytes("data:" + mime_type + ";base64,", encoding="UTF-8") + b64encode(
+        data
+    )
+    return image_data  # or str(image_data, 'utf-8')
+
 
 PAGE_SIZE = 10
 
@@ -182,6 +199,94 @@ def incident_index(request):
 
 
 @login_required
+def incident_create(request):
+    request.user.profile
+    request.user.token
+    foto_base64 = None
+    if request.POST:
+        form = CreateIncidentForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            # print(form.cleaned_data)
+            # print(request.FILES['foto'])
+            # foto = request.FILES['foto']
+            foto = form.cleaned_data.get("foto")
+            # with open(foto.file, "rb") as image_file:
+            #     encoded_string = base64.b64encode(image_file.read())
+            # print(foto.temporary_file_path)
+
+            # b64_img = base64.urlsafe_b64encode(foto.read()).decode('utf-8')
+
+            encode_b64(foto)
+
+            # image = ImageFile.open(foto)
+            # encodedBytes = base64.b64encode(image.read())
+            # b64_img = str(encodedBytes, "utf-8")
+
+            # b64_img = escape(b64_img)
+
+            # b64_img = base64.urlsafe_b64encode(b64_img)
+            # b64_img = base64.b64encode(foto.read()).decode('ascii')
+            # print(b64_img)
+
+            # with open(default_storage.path(foto.name), 'wb+') as image_file:
+            #     encoded_string = base64.b64encode(image_file.read())
+
+            # b64_img = encoded_string.decode('ascii')
+            # b64_img = encoded_string.decode('utf-8')
+
+            # print(b64_img)
+
+            # img = cv2.imread('test_image.jpg')
+            # jpg_img = cv2.imencode('.jpg', img)
+            # b64_string = base64.b64encode(jpg_img[1]).decode('utf-8')
+
+            # image = open(foto, 'rb') #open binary file in read mode
+            # image_read = image.read()
+            # image_64_encode = base64.b64encode(image_read)
+
+            # print(encoded_string)
+            # print(b64_img)
+            # data = {
+            #     "fotos": [{
+            #         "dataUrl": b64_img,
+            #         # "dataUrl": f"data:image/png;base64,{b64_img}",
+            #         "isEindsituatie": False,
+            #     }],
+            #     "huisnummer": "114",
+            #     "melderInformeren": False,
+            #     "meldingtype": "S",
+            #     "omschrijving": "Er ligt hier vuil op straat",
+            #     "onderwerp": "47",
+            #     "spoed": False,
+            #     "straat": "66400",
+            #     "x": 89789,
+            #     "y": 438634
+            # }
+            # result = msb_api_service.melding_aanmaken(user_token, data)
+            # print(result)
+            # foto = f"data:image/png;base64,{b64_img}"
+
+            # foto_base64 = format_html(mark_safe('iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='))
+            # foto_base64 = format_html(mark_safe(b64_img))
+            foto_base64 = format_html(mark_safe(""))
+            # return redirect(reverse("incident_create"))
+    else:
+        form = CreateIncidentForm()
+
+    # foto_base64 = format_html(mark_safe('iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='))
+    print(foto_base64)
+    return render(
+        request,
+        "incident/create.html",
+        {
+            "form": form,
+            "foto_base64": foto_base64,
+        },
+    )
+
+
+@login_required
 def incident_detail(request, id):
     profile = request.user.profile
     user_token = request.user.token
@@ -255,17 +360,21 @@ def incident_modal_handle(request, id, handled_type=None):
         form = HandleForm(request.POST, handled_type=handled_type)
         if form.is_valid():
             choice = form.cleaned_data.get("handle_choice", 1)
+            external_text = form.cleaned_data.get("external_text", "")
+            internal_text = form.cleaned_data.get("internal_text", "")
             choice_type = {
                 x: HANDLED_OPTIONS[x][0] for x in range(len(HANDLED_OPTIONS))
             }.get(int(choice), choice)
-            choice_value = {
-                x: HANDLED_OPTIONS[x][1] for x in range(len(HANDLED_OPTIONS))
+            choice_not_handled = {
+                x: HANDLED_OPTIONS[x][3] for x in range(len(HANDLED_OPTIONS))
             }.get(int(choice), choice)
+
             data = {
                 "meldingId": incident.get("id"),
                 "behandelaar": request.user.name,
                 "meldingType": choice_type,
-                "afhandelOpmerking": choice_value,
+                "afhandelOpmerking": external_text,
+                "opmerking": internal_text,
                 "straat": incident.get("locatie", {})
                 .get("adres", {})
                 .get("straatNummer"),
@@ -276,6 +385,13 @@ def incident_modal_handle(request, id, handled_type=None):
                 "x": incident.get("locatie", {}).get("x", 0),
                 "y": incident.get("locatie", {}).get("y", 0),
             }
+            if choice_type == "N":
+                data.update(
+                    {
+                        "redenAfhandelenNiet": choice_not_handled,
+                    }
+                )
+
             print(data)
             result = msb_api_service.afhandelen(incident.get("id"), user_token, data)
             print(result)

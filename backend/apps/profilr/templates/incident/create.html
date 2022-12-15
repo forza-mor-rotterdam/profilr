@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load webpack_static from profilr_tags %}
+{% load to_date from profilr_tags %}
+{% load json_encode from profilr_tags %}
+{% block title %}Melding aanmaken{% endblock %}
+
+{% block body %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-action"><span>Aanmaken</span></button>
+    </form>
+    {{foto_base64|safe}}
+    <img src="data:image/jpeg;base64, {{foto_base64}}"> 
+    <img src="data:image/jpeg;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==">
+    <img src="data:image/jpeg;base64," >    {% if foto %}
+    {% endif %}
+{% endblock %}

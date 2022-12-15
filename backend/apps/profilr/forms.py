@@ -5,22 +5,31 @@ HANDLED_OPTIONS = (
         "O",
         "Opgeruimd",
         "De gemeente heeft deze melding in behandeling genomen en gaat ermee aan de slag. De melding is daarom afgesloten.",
+        "-1",
     ),
     (
         "N",
         "Niets aangetroffen",
         "In uw melding heeft u een locatie genoemd. Op deze locatie hebben wij echter niets aangetroffen. We sluiten daarom uw melding.",
+        "3",
     ),
     (
         "N",
         "De locatie is niet bereikbaar",
         "In uw melding heeft u een locatie genoemd. We kunnen deze locatie echter niet bereiken. We sluiten daarom uw melding.",
+        "4",
     ),
-    ("N", "De melding is niet voor mij", ""),
+    (
+        "N",
+        "De melding is niet voor mij",
+        "",
+        "5",
+    ),
     (
         "N",
         "De gemeente gaat hier niet over",
         "Helaas valt uw melding niet onder verantwoordelijkheid van de gemeente. We sluiten daarom uw melding.",
+        "1",
     ),
 )
 
@@ -79,3 +88,9 @@ class HandleForm(forms.Form):
         if self.data.get("handle_choice", False) == "3":
             self.fields["external_text"].widget = forms.HiddenInput()
             self.fields["external_text"].required = False
+
+
+class CreateIncidentForm(forms.Form):
+    foto = forms.FileField(
+        label="Foto",
+    )
