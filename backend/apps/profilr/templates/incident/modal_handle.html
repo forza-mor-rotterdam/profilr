@@ -1,0 +1,70 @@
+{% load webpack_static from profilr_tags %}
+{% load to_date from profilr_tags %}
+{% load json_encode from profilr_tags %}
+
+<turbo-frame id="incident_modal_handle_{{ incident.id }}">
+<div class="container__form" 
+    data-controller="incidentHandleForm"
+    data-incidentHandleForm-parent-context-value =  "{{ parent_context|json_encode }}"
+    data-incidentHandleForm-handled-options-value =  "{{ HANDLED_OPTIONS|json_encode }}"
+    data-incidentHandleForm-form-is-submitted-value =  {% if form_submitted %}true{% else %}false{% endif %}
+>
+
+    {% if form %}
+    <form action="{% if handled_type %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% else %}{% url 'incident_modal_handled_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm" class="form--incident-handle" novalidate>
+        {% csrf_token %}
+        {% if not form.handle_choice.is_hidden %}
+        {{ form.handle_choice.label_tag }}
+        {% endif %}
+        {{ form.handle_choice }}
+        {{ form.handle_choice.errors }}
+
+        <fieldset>
+            <div class="form-row">
+                <button class="btn-textlink top-right" type="button" data-action="incidentHandleForm#clearExternalMessage">Wissen</button>
+                {{ form.external_text.label_tag }}
+                {{ form.external_text }}
+                {{ form.external_text.errors }}
+                <button class="btn-textlink" type="button" data-action="incidentHandleForm#defaultExternalMessage">Gebruik de standaardtekst</button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div>
+                {{ form.internal_text.label_tag }}
+                {{ form.internal_text }}
+                {{ form.internal_text.errors }}
+            </div>
+        </fieldset>
+        <div class="form-row">
+            <button type="submit" class="btn btn-action"><span>Afhandelen</span></button>
+            <button type="reset" class="btn btn-tertiary modal-exit"><span>Annuleren</span></button>
+        </div>
+    </form>
+    {% else %}
+    <div class="alert alert--info">
+        <span><img src="{% webpack_static 'icons/assets/icons/info.svg' %}"/></span>
+        <div>
+            {% if parent_context.messages %}
+            {% for e in parent_context.messages %}
+            {{ e }}
+            {% endfor %}
+            {% endif %}
+
+            {% if parent_context.warnings %}
+            <h3>Waarschuwing!</h3>
+            {% for e in parent_context.warnings %}
+            {{ e }}
+            {% endfor %}
+
+            {% endif %}
+            {% if parent_context.errors %}
+            <h3>Er is een fout opgetreden!</h3>
+            {% for e in .parent_context.errors %}
+            {{ e }}
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+</turbo-frame>

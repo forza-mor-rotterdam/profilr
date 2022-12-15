@@ -1,34 +1,59 @@
-.spinner {
-    z-index: 2000;
-    display: none;
-    background-color: rgba(255,255,255,0.5);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    &::after {
-        content: "";
-        border: 8px solid $green-tint01;
-        border-top: 8px solid rgba(0, 129, 31, 0.5);
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        animation: spin 2s linear infinite;
-        left: calc(50% - 30px);
-        top: calc(50% - 30px);
-        display: block;
-        position: absolute;
-        
-    }
-
-    .show-spinner & {
-        display: block;
-    }
+.turbo-progress-bar {
+    height: 5px;
+    background-color: $green-tint01;
   }
+
+turbo-frame {
+    position: relative;
+    &[busy] {
+        &::before {
+            content: "";
+            z-index: 2000;
+            background-color: rgba(255,255,255,0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+        &::after {
+            content: "";
+            border: 8px solid $green-tint01;
+            border-top: 8px solid rgba(0, 129, 31, 0.5);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            left: calc(50% - 30px);
+            top: calc(50% - 30px);
+            display: block;
+            position: fixed;
+            z-index: 2001;
+        }
+    }
+
+    
+    .list__incidents & {
+        &[busy] {
+            &::before {
+                position: absolute;
+            }
+            &::after {
+                border: 4px solid $green-tint01;
+                border-top: 4px solid rgba(0, 129, 31, 0.5);
+                width: 30px;
+                height: 30px;
+                left: 100px;
+                top: 15px;
+                position: absolute;
+            }
+        }
+    }
+    
+}
   
-  @keyframes spin {
+@keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
+}

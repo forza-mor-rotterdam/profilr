@@ -74,12 +74,8 @@ class APIService(BaseAPIService):
                 "json" if self._json_enabled else "data": data,
                 "timeout": self._timeout,
             }
-            try:
-                response = action(**action_params)
-                response.raise_for_status()
-            except Exception:
-                # raise PermissionDenied()
-                pass
+            response = action(**action_params)
+            response.raise_for_status()
 
             if int(response.status_code) >= 200 and int(response.status_code) < 300:
                 cache.set(cache_key, response, cache_timeout)

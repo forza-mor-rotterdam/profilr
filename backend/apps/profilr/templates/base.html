@@ -15,6 +15,7 @@
         {% endblock %}
     </head>
     <body>
+    {% if not PROFILR_API_AVAILABLE %}<span>Je filter instellingen kunnen niet worden opgeslagen of opgehaald!</span>{% endif %}
     {% include 'snippets/pageheader.html' %}
         <main>
             <div class="container">

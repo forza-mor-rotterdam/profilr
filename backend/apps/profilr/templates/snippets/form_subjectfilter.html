@@ -1,0 +1,58 @@
+{% load json_encode from profilr_tags %}
+<ul
+    class="list-clean"
+    data-controller="filter--filter"
+    data-testid="incidentFilterSubject"
+>
+    {% for group in categories %}
+        <li class="container__check">
+            <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__groep_{{group.code}}"{% if "foldout__groep_"|add:group.code in foldout_states %} open{% endif %}>
+                <summary>
+                    {{ group.omschrijving }} ({{group.filters|length}})
+                </summary>
+                {% if group.onderwerpen %}
+                <div class="container__list--subjects foldout">
+                    <div class="container__list--header">
+                        <h3 class="h5">Onderwerpen</h3>
+                        {% if group.onderwerpen|length > 1 %}
+                            <div>
+                                <button 
+                                    class="btn btn-textlink"
+                                    data-action="filter--filter#selectAll"
+                                    data-filter--filter-filter-type-param="all"
+                                >
+                                    Selecteer alles
+                                </button>
+                                <button 
+                                    class="btn btn-textlink"
+                                    data-action="filter--filter#selectAll"
+                                >
+                                    / niets
+                                </button>
+                            </div>
+                            {% endif %}
+                    </div>
+                    <ul class="list-clean">
+                        {% for subject in group.onderwerpen %}
+                        <li>
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input filter--subject"
+                                    type="checkbox"
+                                    value="{{ subject.code }}"
+                                    {% if subject.code in valid_filters.onderwerpItems %}checked{% endif %}
+                                    name="onderwerpItems"
+                                    id="subject_{{ subject.code }}"
+                                    data-action="filter--filter#onChangeFilter"
+                                >
+                                <label class="form-check-label" for="subject_{{ subject.code }}">{{ subject.omschrijving }}</label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </details>
+        </li>
+    {% endfor %}
+    </ul>

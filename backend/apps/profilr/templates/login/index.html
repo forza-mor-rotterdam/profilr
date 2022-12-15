@@ -4,9 +4,10 @@
 {% block title %}Inloggen{% endblock %}
 
 {% block body %}
+<turbo-frame id="login">
 <h1>Inloggen</h1>
 {% if error %} {{ error }} {% endif %}
-<form action="" method="post" data-testid="loginForm" data-controller="login">
+<form action="{% url 'login' %}" method="post" data-testid="loginForm" data-controller="login" class="form--login">
     {% csrf_token %}
     <div class="form-row">
         <label for="_username">Personeelsnummer</label>
@@ -46,4 +47,5 @@
     </div>
 </form>
 
+</turbo-frame>
 {% endblock %}

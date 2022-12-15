@@ -1,0 +1,58 @@
+{% load json_encode from profilr_tags %}
+<ul
+    class="list-clean"
+    data-testid="incidentFilterArea"
+>
+    {% for area in areas %}
+        <li class="container__check">
+            <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__wijk_{{area.code}}"{% if "foldout__wijk_"|add:area.code in foldout_states %} open{% endif %}>
+                <summary>
+                    {{ area.omschrijving }} ({{area.filters|length}})
+                </summary>
+                {% if area.buurten %}
+                <div class="container__list--districts foldout">
+                    <div class="container__list--header">
+                        <h3 class="h5">Buurten</h3>
+                        {% if area.buurten|length > 1 %}
+                        <div>
+                            <button 
+                                class="btn btn-textlink"
+                                data-action="filter--filter#selectAll"
+                                data-filter--filter-filter-type-param="all"
+                            >
+                                Selecteer alles
+                            </button>
+                            <button 
+                                class="btn btn-textlink"
+                                data-action="filter--filter#selectAll"
+                            >
+                                / niets
+                            </button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <ul class="list-clean">
+                        {% for district in area.buurten %}
+                        <li>
+                            <div class="form-check">
+                                <input 
+                                    class="form-check-input filter--district"
+                                    type="checkbox"
+                                    value="{{ district.code }}"
+                                    {% if district.code in valid_filters.buurten %}checked{% endif %}
+                                    name="buurten"
+                                    id="district_{{ district.code }}"
+                                    data-action="change->filter--filter#onChangeFilter"
+                                >
+                                <label class="form-check-label" for="district_{{ district.code }}">{{ district.omschrijving }}</label>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </details>
+            
+        </li>
+    {% endfor %}
+    </ul>

@@ -1,0 +1,17 @@
+{% block before_modal_content %}{% endblock %}
+<div class="modal" {% if modal_id %}id="{{ modal_id }}"{% endif %}>
+    <div class="modal-dialog">
+        <div class="modal-backdrop modal-exit" id="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+            {% block modal_header %}
+            {% endblock %}
+            </div>
+            <div class="modal-body">
+            {% block modal_body %}
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% block after_modal_content %}{% endblock %}
