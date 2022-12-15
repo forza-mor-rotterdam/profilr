@@ -7,15 +7,11 @@ export default class extends Controller {
         this.initialTouchPos = null
         this.rafPending = false
         this.finished = false // to prevent swiping when modal is open
-        if (this.isSubmittedValue == "True"){
-            setTimeout(function (){
-                frame.reload()
-            }, 4000)
-        }
 
         // Check if pointer events are supported.
         if (window.PointerEvent) {
             // Add Pointer Event Listener
+            // this.element.addEventListener('click', this.openModal.bind(this), true);
             this.element.addEventListener('pointerdown', this.handleGestureStart.bind(this), true);
             this.element.addEventListener('pointermove', this.handleGestureMove.bind(this), true);
             this.element.addEventListener('pointerup', this.handleGestureEnd.bind(this), true);
@@ -40,9 +36,14 @@ export default class extends Controller {
                 removeElem.parentNode?.removeChild(removeElem);
             });
             this.buttonTarget.textContent = event.detail.messages.join(",")
-            this.closeModal()
+            // this.closeModal()
             
         }
+    }
+
+    cancelHandleHandler(event) {
+        console.log('cancelHandle 2')
+        this.closeModal()
     }
 
     // Handle the start of gestures
@@ -57,8 +58,8 @@ export default class extends Controller {
             this.element.setPointerCapture(evt.pointerId);
         } else {
             // Add Mouse Listeners
-            document.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
-            document.addEventListener('mouseup', this.handleGestureEnd.bind(this), true);
+            this.element.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
+            this.element.addEventListener('mouseup', this.handleGestureEnd.bind(this), true);
         }
         this.initialTouchPos = this.getGesturePointFromEvent(evt);
     }
@@ -77,8 +78,8 @@ export default class extends Controller {
             this.element.releasePointerCapture(evt.pointerId);
         } else {
             // Remove Mouse Listeners
-            document.removeEventListener('mousemove', this.handleGestureMove, true);
-            document.removeEventListener('mouseup', this.handleGestureEnd, true);
+            this.element.removeEventListener('mousemove', this.handleGestureMove.bind(this), true);
+            this.element.removeEventListener('mouseup', this.handleGestureEnd.bind(this), true);
         }
     
         this.updateSwipeRestPosition(evt);

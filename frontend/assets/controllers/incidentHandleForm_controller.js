@@ -21,6 +21,14 @@ export default class extends Controller {
         }));
     }
 
+    cancelHandle() {
+        console.log('cancelHandle')
+        this.element.dispatchEvent(new CustomEvent("cancelHandle", {
+            detail: JSON.parse(this.parentContextValue),
+            bubbles: true
+        }));
+    }
+
     setExternalMessage(evt){
         this.choice =  evt.params.index
         this.externalMessage = JSON.parse(this.handledOptionsValue)[this.choice][2]
