@@ -35,12 +35,13 @@ export default class extends Controller {
         const removeElem = this.element.parentNode;
         if (event.detail.is_handled){
             this.element.classList.add("hide");
-            // this.closeModal()
             // TODO toon tekst in de melding
             this.element.addEventListener('transitionend', function(e){
                 removeElem.parentNode?.removeChild(removeElem);
             });
             this.buttonTarget.textContent = event.detail.messages.join(",")
+            this.closeModal()
+            
         }
     }
 
@@ -179,10 +180,7 @@ export default class extends Controller {
         console.log('closeModal')
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
-        console.log('closeModal, modal', modal)
-        console.log('closeModal, modalBackdrop', modalBackdrop)
-
-
+        
         modal.classList.remove('show');
         modalBackdrop.classList.remove('show');
         document.body.classList.remove('show-modal');
