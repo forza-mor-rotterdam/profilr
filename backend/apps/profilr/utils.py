@@ -13,6 +13,10 @@ def get_filter_options(filters, user_token):
     categories = msb_api_service.get_onderwerpgroepen(user_token)
     areas = msb_api_service.get_wijken(user_token)
 
+    departments = [
+        d for d in departments if d.get("omschrijving", "").startswith("Schone Stad")
+    ]
+
     afdeling_relaties = [
         msb_api_service.get_afdeling_relaties(user_token, a)
         for a in filters.get(AFDELINGEN, {})
