@@ -240,3 +240,18 @@ $form-search-indicator-position: left 10px center !default;
         }
     }
 }
+
+.form--incident-handle {
+    .btn-textlink {
+        &.top-right {
+            position: absolute;
+            top: 5px;
+            right: 0;
+        }
+    }
+
+    textarea + .btn-textlink {
+        transform: translateY(-20px);
+    }
+
+}

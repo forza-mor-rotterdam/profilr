@@ -11,7 +11,7 @@
 >
 
     {% if form %}
-    <form action="{% if handled_type %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% else %}{% url 'incident_modal_handled_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm" novalidate>
+    <form action="{% if handled_type %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% else %}{% url 'incident_modal_handled_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm" class="form--incident-handle" novalidate>
         {% csrf_token %}
         {% if not form.handle_choice.is_hidden %}
         {{ form.handle_choice.label_tag }}
@@ -21,7 +21,7 @@
 
         <fieldset>
             <div class="form-row">
-                <button class="btn-textlink" type="button" data-action="incidentHandleForm#clearExternalMessage">Wissen</button>
+                <button class="btn-textlink top-right" type="button" data-action="incidentHandleForm#clearExternalMessage">Wissen</button>
                 {{ form.external_text.label_tag }}
                 {{ form.external_text }}
                 {{ form.external_text.errors }}
