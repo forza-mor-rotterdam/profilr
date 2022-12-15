@@ -2,6 +2,7 @@ import copy
 
 from apps.services.base import APIService
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from requests import Response
 
 DEFAULT_FILTERS = {
@@ -60,9 +61,12 @@ class MSBService(APIService):
         )
 
     def get_detail(self, melding_id, user_token):
-        return self.do_request(
-            f"msb/melding/{melding_id}", user_token, cache_timeout=30
+        result = self.do_request(
+            f"msb/melding/{melding_id}", user_token, cache_timeout=0
         )
+        if result.get("id") is None:
+            raise ObjectDoesNotExist("Melding not found")
+        return result
 
     def get_mutatieregels(self, melding_id, user_token):
         return self.do_request(
@@ -97,6 +101,48 @@ class MSBService(APIService):
             return {"success": True, "result": {}}
         return self.do_request(
             f"msb/afdeling/{afdeling_id}", user_token, cache_timeout=60 * 60 * 24
+        )
+
+    def melding_aanmaken(self, user_token: str, data: dict):
+        """
+        {
+            fotos: [{
+                dataUrl: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABkA...,
+                isEindsituatie: false,
+            }]
+            huisnummer: "114",
+            melderInformeren: false,
+            meldingtype: "S",
+            omschrijving: "Er ligt hier vuil op straat",
+            onderwerp: "47",
+            spoed: false,
+            straat: "66400",
+            x: 89789,
+            y: 438634
+        }
+        """
+        if settings.MSB_API_URL.startswith("https://diensten.rotterdam.nl"):
+            return {
+                "success": True,
+                "result": "Melding ******* is aangemaakt.",
+                "messages": [
+                    "Melding ******* ingevoerd",
+                    "Foto bij melding ******* is opgeslagen.",
+                    "Mail voor afdeling bij nieuwe melding opgeslagen",
+                    "De afdeling van melding ******* is aangepast.",
+                    "Mail voor afdeling bij doorverwijzen opgeslagen",
+                    "Melding ******* is aangemaakt.",
+                ],
+                "warnings": [],
+                "errors": [],
+            }
+        return self.do_request(
+            "msb/melding",
+            user_token,
+            data=data,
+            method=APIService.POST,
+            no_cache=True,
+            raw_response=True,
         )
 
     def afhandelen(self, melding_id: str, user_token: str, data: dict):
