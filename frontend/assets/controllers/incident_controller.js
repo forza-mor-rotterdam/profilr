@@ -191,6 +191,8 @@ export default class extends Controller {
     openModal(isFinished) {
         this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
 
+        const modalHeader = this.element.querySelector('.modal-header h1');
+        modalHeader.textContent = isFinished ? "Afhandelen" : "Niet opgelost";
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
         
