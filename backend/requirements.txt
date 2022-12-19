@@ -7,3 +7,4 @@ requests
 debugpy
 django-health-check
 django_redis
+django-permissions-policy
