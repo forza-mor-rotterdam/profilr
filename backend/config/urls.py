@@ -1,6 +1,5 @@
 from apps.profilr.views import (
     config,
-    error,
     filter,
     http_404,
     http_500,
@@ -46,7 +45,6 @@ urlpatterns = [
         incident_modal_handle,
         name="incident_modal_handled_type_part",
     ),
-    path("error", error, name="error"),
 ]
 
 if settings.DEBUG:
