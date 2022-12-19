@@ -6,6 +6,6 @@ requests
 debugpy
 django-health-check
 django_redis
-django-permissions-policy
+django-permissions-policy==4.14.0
 django-cors-headers==3.13.0
 profilr-api-services @ git+https://github.com/forza-mor-rotterdam/profilr-api-services.git
