@@ -7,15 +7,14 @@ from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
 from apps.profilr.forms import HANDLED_OPTIONS, CreateIncidentForm, HandleForm
 from apps.profilr.utils import get_filter_options
-from apps.services import msb_api_service
-from apps.services.msb import VALID_FILTERS
-from django.conf import settings
 from django.core.cache import cache
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from profilr_api_services import MSB_VALID_FILTERS, msb_api_service
+from profilr_api_services.conf import conf
 
 
 def encode_b64(value):
@@ -98,11 +97,11 @@ def filter(request):
     user_token = request.user.token
     if request.POST:
         profile = {
-            FILTERS: {f: request.POST.getlist(f, []) for f in VALID_FILTERS},
+            FILTERS: {f: request.POST.getlist(f, []) for f in MSB_VALID_FILTERS},
         }
         if not profile[FILTERS][AFDELINGEN]:
             profile = {
-                FILTERS: {f: [] for f in VALID_FILTERS},
+                FILTERS: {f: [] for f in MSB_VALID_FILTERS},
             }
         profile = request.user.set_profile(profile)
 
@@ -405,7 +404,7 @@ def incident_modal_handle(request, id, handled_type=None):
             form_submitted = True
             is_handled = not warnings and not errors
             warnings or errors
-            if not settings.ENABLE_MELDING_AFHANDELEN:
+            if not conf.MSB_ENABLE_MELDING_AFHANDELEN:
                 messages.append(
                     "In deze omgeving kunnen meldingen niet worden afgehanded!"
                 )
