@@ -1,6 +1,5 @@
 Django==3.2.16
 djangorestframework==3.13.1
-django-cors-headers==3.8.0
 uWSGI==2.0.20
 django-webpack-loader==1.7.0
 requests
@@ -9,3 +8,4 @@ django-health-check
 django_redis
 django-permissions-policy
 django-cors-headers==3.13.0
+profilr-api-services @ git+https://github.com/forza-mor-rotterdam/profilr-api-services.git
