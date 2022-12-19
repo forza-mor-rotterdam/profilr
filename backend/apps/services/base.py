@@ -4,6 +4,11 @@ import requests
 from django.core.cache import cache
 from requests import Response
 
+from ..services.exceptions import (
+    ApiServiceForbiddenException,
+    ApiServiceNotFoundException,
+)
+
 
 class BaseAPIService:
     def __init__(self, *args, **kwargs):
@@ -75,10 +80,13 @@ class APIService(BaseAPIService):
                 "timeout": self._timeout,
             }
             response = action(**action_params)
-            response.raise_for_status()
 
             if int(response.status_code) >= 200 and int(response.status_code) < 300:
                 cache.set(cache_key, response, cache_timeout)
+            elif response.status_code == 401:
+                raise ApiServiceForbiddenException(f"url={url}")
+            elif response.status_code == 404:
+                raise ApiServiceNotFoundException(f"url={url}")
         else:
             print(f"fetch from cache: {cache_key}")
         return response if raw_response else self.process_response(response)
