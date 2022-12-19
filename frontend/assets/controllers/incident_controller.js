@@ -5,27 +5,49 @@ export default class extends Controller {
     connect() {
         const frame = this.element.closest("turbo-frame")
         this.initialTouchPos = null
-        this.rafPending = false
-        this.finished = false // to prevent swiping when modal is open
+        this.bindStart = this.handleGestureStart.bind(this);
+        this.bindMove = this.handleGestureMove.bind(this);
+        this.bindEnd = this.handleGestureEnd.bind(this);
+        this.addAllListeners()
+    }
 
-        // Check if pointer events are supported.
-        if (window.PointerEvent) {
+    addAllListeners() {
+         // Check if pointer events are supported.
+         if (window.PointerEvent) {
             // Add Pointer Event Listener
-            // this.element.addEventListener('click', this.openModal.bind(this), true);
-            this.element.addEventListener('pointerdown', this.handleGestureStart.bind(this), true);
-            this.element.addEventListener('pointermove', this.handleGestureMove.bind(this), true);
-            this.element.addEventListener('pointerup', this.handleGestureEnd.bind(this), true);
-            this.element.addEventListener('pointercancel', this.handleGestureEnd.bind(this), true);
+            this.element.addEventListener('pointerdown', this.bindStart);
+            this.element.addEventListener('pointermove', this.bindMove);
+            this.element.addEventListener('pointerup', this.bindEnd);
+            this.element.addEventListener('pointercancel', this.bindEnd);
         } else {
             // Add Touch Listener
-            this.element.addEventListener('touchstart', this.handleGestureStart.bind(this), true);
-            this.element.addEventListener('touchmove', this.handleGestureMove.bind(this), true);
-            this.element.addEventListener('touchend', this.handleGestureEnd.bind(this), true);
-            this.element.addEventListener('touchcancel', this.handleGestureEnd.bind(this), true);
+            this.element.addEventListener('touchstart', this.bindStart);
+            this.element.addEventListener('touchmove', this.bindMove);
+            this.element.addEventListener('touchend', this.bindEnd);
+            this.element.addEventListener('touchcancel', this.bindEnd);
             // Add Mouse Listener
-            this.element.addEventListener('mousedown', this.handleGestureStart.bind(this), true);
+            this.element.addEventListener('mousedown', this.bindStart);
         }
     }
+
+    removeAllListeners() {
+        // Check if pointer events are supported.
+        if (window.PointerEvent) {
+           // Add Pointer Event Listener
+           this.element.removeEventListener('pointerdown', this.bindStart);
+           this.element.removeEventListener('pointermove', this.bindMove);
+           this.element.removeEventListener('pointerup', this.bindEnd);
+           this.element.removeEventListener('pointercancel', this.bindEnd);
+       } else {
+           // Add Touch Listener
+           this.element.removeEventListener('touchstart', this.bindStart);
+           this.element.removeEventListener('touchmove', this.bindMove);
+           this.element.removeEventListener('touchend', this.bindEnd);
+           this.element.removeEventListener('touchcancel', this.bindEnd);
+           // Add Mouse Listener
+           this.element.removeEventListener('mousedown', this.bindStart);
+       }
+   }
 
     formHandleIsConnectedHandler(event) {
         const removeElem = this.element.parentNode;
@@ -36,8 +58,6 @@ export default class extends Controller {
                 removeElem.parentNode?.removeChild(removeElem);
             });
             this.buttonTarget.textContent = event.detail.messages.join(",")
-            // this.closeModal()
-            
         }
     }
 
@@ -48,39 +68,22 @@ export default class extends Controller {
     // Handle the start of gestures
     handleGestureStart(evt) {
         evt.preventDefault();
-        if((evt.touches && evt.touches.length > 1) || this.finished) {
+        if((evt.touches && evt.touches.length > 1)) {
             return;
         }
     
-        // Add the move and end listeners
-        if (window.PointerEvent) {
-            this.element.setPointerCapture(evt.pointerId);
-        } else {
-            // Add Mouse Listeners
-            this.element.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
-            this.element.addEventListener('mouseup', this.handleGestureEnd.bind(this), true);
-        }
+        this.addAllListeners()
         this.initialTouchPos = this.getGesturePointFromEvent(evt);
     }
 
     // Handle end gestures
     handleGestureEnd(evt) {
         evt.preventDefault();       
-    
-        if ((evt.touches && evt.touches.length > 0) || this.finished) {
+        if ((evt.touches && evt.touches.length > 0)) {
             return;
         }
-        this.rafPending = false;
     
-        // Remove Event Listeners
-        if (window.PointerEvent) {
-            this.element.releasePointerCapture(evt.pointerId);
-        } else {
-            // Remove Mouse Listeners
-            this.element.removeEventListener('mousemove', this.handleGestureMove.bind(this), true);
-            this.element.removeEventListener('mouseup', this.handleGestureEnd.bind(this), true);
-        }
-    
+        this.removeAllListeners()
         this.updateSwipeRestPosition(evt);
     
         this.initialTouchPos = null;
@@ -104,28 +107,17 @@ export default class extends Controller {
 
     handleGestureMove(evt) {
         evt.preventDefault();
-        if (!this.initialTouchPos 
-            || this.finished) {
+        if (!this.initialTouchPos) {
           return;
         }
       
         this.lastTouchPos = this.getGesturePointFromEvent(evt);
-      
-        if (this.rafPending) {
-          return;
-        }
-      
-        this.rafPending = true;
       
         this.onAnimFrame()
     }
 
     onAnimFrame() {
       
-        if (!this.rafPending || this.finished) {
-          return;
-        }
-
         let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
         let newLeft = (0 - differenceInX)+'px';
         let leftStyle = newLeft;
@@ -134,7 +126,6 @@ export default class extends Controller {
             this.element.style.left = leftStyle;
         } else if (differenceInX <= -100) {
             this.element.style.left = '100%';
-            this.finished = true;
             setTimeout(function (){
                 this.openModal(false)
             }.bind(this), 500)
@@ -142,35 +133,22 @@ export default class extends Controller {
             
         } else {
             this.element.style.left = '-100%';
-            this.finished = true;
             setTimeout(function (){
                 this.openModal(true)
             }.bind(this), 500)
         }
-        this.rafPending = false;
     }
 
     resetIncidentSwipe() {
         this.element.style.left = '0';
     }
 
-    enableIncidentSwipe() {
-        this.finished = false;
-    }
-
     updateSwipeRestPosition(evt) {
+    
+        this.addAllListeners()
         let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
         if(differenceInX > -100 && differenceInX < 100) {
             this.element.style.left = '0';
-        }
-    
-        // Add the move and end listeners
-        if (window.PointerEvent) {
-            this.element.setPointerCapture(evt.pointerId);
-        } else {
-            // Add Mouse Listeners
-            document.addEventListener('mousemove', this.handleGestureMove.bind(this), true);
-            document.addEventListener('mouseup', this.handleGestureEnd.bind(this), true);
         }
     
         this.initialTouchPos = this.getGesturePointFromEvent(evt);
@@ -183,17 +161,17 @@ export default class extends Controller {
         modal.classList.remove('show');
         modalBackdrop.classList.remove('show');
         document.body.classList.remove('show-modal');
-        this.enableIncidentSwipe()
+        this.addAllListeners()
     }
 
     openModal(isFinished) {
         this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
 
+        this.removeAllListeners()
         const modalHeader = this.element.querySelector('.modal-header h1');
         modalHeader.textContent = isFinished ? "Afhandelen" : "Niet opgelost";
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
-        
         
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
@@ -209,6 +187,5 @@ export default class extends Controller {
         setTimeout(function (){
             this.resetIncidentSwipe()
         }.bind(this), 1000)
-        
     }
 }
