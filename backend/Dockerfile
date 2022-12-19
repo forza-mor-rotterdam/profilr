@@ -4,7 +4,7 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app/
 
-RUN apt-get update && apt-get install -y build-essential python-dev
+RUN apt-get update && apt-get install -y build-essential python-dev git
 RUN pip install --upgrade pip
 
 COPY . /app/
