@@ -67,8 +67,6 @@ export default class extends Controller {
 
     // Handle the start of gestures
     handleGestureStart(evt) {
-        console.log('start')
-
         evt.preventDefault();
         if((evt.touches && evt.touches.length > 1)) {
             return;
@@ -80,7 +78,6 @@ export default class extends Controller {
 
     // Handle end gestures
     handleGestureEnd(evt) {
-        console.log('end')
         evt.preventDefault();       
         if ((evt.touches && evt.touches.length > 0)) {
             return;
@@ -109,8 +106,6 @@ export default class extends Controller {
     }
 
     handleGestureMove(evt) {
-        console.log('move')
-
         evt.preventDefault();
         if (!this.initialTouchPos) {
           return;
