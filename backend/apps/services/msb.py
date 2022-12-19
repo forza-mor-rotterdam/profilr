@@ -1,8 +1,8 @@
 import copy
 
 from apps.services.base import APIService
+from apps.services.exceptions import ApiServiceNotFoundException
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from requests import Response
 
 DEFAULT_FILTERS = {
@@ -65,7 +65,7 @@ class MSBService(APIService):
             f"msb/melding/{melding_id}", user_token, cache_timeout=0
         )
         if result.get("id") is None:
-            raise ObjectDoesNotExist("Melding not found")
+            raise ApiServiceNotFoundException(f"Melding not found: {melding_id}")
         return result
 
     def get_mutatieregels(self, melding_id, user_token):

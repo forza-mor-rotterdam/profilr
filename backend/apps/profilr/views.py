@@ -47,6 +47,14 @@ def http_500(request):
     )
 
 
+def error(request):
+    1 / 0
+    return render(
+        request,
+        "404.html",
+    )
+
+
 def http_response(request):
     return HttpResponse("<h1>Hello HttpResponse</h1>")
 
