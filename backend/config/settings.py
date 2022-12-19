@@ -34,6 +34,7 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "rest_framework",
     "webpack_loader",
+    "corsheaders",
     "health_check",
     "health_check.cache",
     "health_check.storage",
@@ -78,10 +79,6 @@ PERMISSIONS_POLICY = {
     "usb": [],
 }
 
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_SECONDS = 3600
-SECURE_HSTS_PRELOAD = True
-
 AUTHENTICATION_BACKENDS = ["apps.auth.backends.MSBAuthenticationBackend"]
 
 STATIC_URL = "/static/"
@@ -100,10 +97,21 @@ WEBPACK_LOADER = {
     }
 }
 
+# Django security settings
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_PRELOAD = True
 CORS_ORIGIN_WHITELIST = ()
 CORS_ORIGIN_ALLOW_ALL = False
-
 USE_X_FORWARDED_HOST = True
+CSRF_COOKIE_HTTPONLY = True
+# SECURE_SSL_REDIRECT = not DEBUG
+# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
 
 TEMPLATES = [
     {
@@ -119,11 +127,6 @@ TEMPLATES = [
         },
     }
 ]
-
-# SECURE_SSL_REDIRECT = not DEBUG
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
 
 REDIS_URL = "redis://redis:6379"
 CACHES = {

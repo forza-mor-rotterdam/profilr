@@ -8,3 +8,4 @@ debugpy
 django-health-check
 django_redis
 django-permissions-policy
+django-cors-headers==3.13.0
