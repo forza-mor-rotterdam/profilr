@@ -51,7 +51,7 @@ MIDDLEWARE = (
     "profilr_api_services.middleware.ApiServiceExceptionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.security.SecurityMiddleware",
+    # "django.middleware.security.SecurityMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "apps.auth.middleware.AuthenticationMiddleware",
@@ -100,17 +100,17 @@ WEBPACK_LOADER = {
 
 # Django security settings
 SECURE_BROWSER_XSS_FILTER = True
+SECURE_REFERRER_POLICY = None
 # SECURE_CONTENT_TYPE_NOSNIFF = True
-# X_FRAME_OPTIONS = "SAMEORIGIN"
+X_FRAME_OPTIONS = None
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 # SECURE_HSTS_SECONDS = 3600
 # SECURE_HSTS_PRELOAD = True
 CORS_ORIGIN_WHITELIST = ()
 CORS_ORIGIN_ALLOW_ALL = False
 USE_X_FORWARDED_HOST = True
+SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
-# SECURE_SSL_REDIRECT = not DEBUG
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_NAME = "__Secure-sessionid" if not DEBUG else "sessionid"
