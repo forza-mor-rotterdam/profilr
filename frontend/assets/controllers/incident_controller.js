@@ -8,25 +8,41 @@ export default class extends Controller {
         this.bindStart = this.handleGestureStart.bind(this);
         this.bindMove = this.handleGestureMove.bind(this);
         this.bindEnd = this.handleGestureEnd.bind(this);
-        this.addAllListeners()
+        this.addInitialListeners()
+    }
+
+    addInitialListeners() {
+        // Safari on iOS does not apply the active state by default
+        if (/iP(hone|ad)/.test(window.navigator.userAgent)) {
+            document.body.addEventListener('touchstart', function() {}, false);
+        }
+        if (window.PointerEvent) {
+            // Add Pointer Event Listener
+            this.element.addEventListener('pointerdown', this.bindStart, false);
+        } else {
+            // Add Touch Listener
+            this.element.addEventListener('touchstart', this.bindStart, false);
+            // Add Mouse Listener
+            this.element.addEventListener('mousedown', this.bindStart, false);
+        }
     }
 
     addAllListeners() {
          // Check if pointer events are supported.
          if (window.PointerEvent) {
             // Add Pointer Event Listener
-            this.element.addEventListener('pointerdown', this.bindStart);
-            this.element.addEventListener('pointermove', this.bindMove);
-            this.element.addEventListener('pointerup', this.bindEnd);
-            this.element.addEventListener('pointercancel', this.bindEnd);
+            this.element.addEventListener('pointerdown', this.bindStart, false);
+            this.element.addEventListener('pointermove', this.bindMove, false);
+            this.element.addEventListener('pointerup', this.bindEnd, false);
+            this.element.addEventListener('pointercancel', this.bindEnd, false);
         } else {
             // Add Touch Listener
-            this.element.addEventListener('touchstart', this.bindStart);
-            this.element.addEventListener('touchmove', this.bindMove);
-            this.element.addEventListener('touchend', this.bindEnd);
-            this.element.addEventListener('touchcancel', this.bindEnd);
+            this.element.addEventListener('touchstart', this.bindStart, false);
+            this.element.addEventListener('touchmove', this.bindMove, false);
+            this.element.addEventListener('touchend', this.bindEnd, false);
+            this.element.addEventListener('touchcancel', this.bindEnd, false);
             // Add Mouse Listener
-            this.element.addEventListener('mousedown', this.bindStart);
+            this.element.addEventListener('mousedown', this.bindStart, false);
         }
     }
 
@@ -34,18 +50,18 @@ export default class extends Controller {
         // Check if pointer events are supported.
         if (window.PointerEvent) {
            // Add Pointer Event Listener
-           this.element.removeEventListener('pointerdown', this.bindStart);
-           this.element.removeEventListener('pointermove', this.bindMove);
-           this.element.removeEventListener('pointerup', this.bindEnd);
-           this.element.removeEventListener('pointercancel', this.bindEnd);
+           this.element.removeEventListener('pointerdown', this.bindStart, false);
+           this.element.removeEventListener('pointermove', this.bindMove, false);
+           this.element.removeEventListener('pointerup', this.bindEnd, false);
+           this.element.removeEventListener('pointercancel', this.bindEnd, false);
        } else {
            // Add Touch Listener
-           this.element.removeEventListener('touchstart', this.bindStart);
-           this.element.removeEventListener('touchmove', this.bindMove);
-           this.element.removeEventListener('touchend', this.bindEnd);
-           this.element.removeEventListener('touchcancel', this.bindEnd);
+           this.element.removeEventListener('touchstart', this.bindStart, false);
+           this.element.removeEventListener('touchmove', this.bindMove, false);
+           this.element.removeEventListener('touchend', this.bindEnd, false);
+           this.element.removeEventListener('touchcancel', this.bindEnd, false);
            // Add Mouse Listener
-           this.element.removeEventListener('mousedown', this.bindStart);
+           this.element.removeEventListener('mousedown', this.bindStart, false);
        }
    }
 
@@ -89,6 +105,16 @@ export default class extends Controller {
         this.initialTouchPos = null;
     }
 
+    handleGestureMove(evt) {
+        evt.preventDefault();
+        if (!this.initialTouchPos) {
+          return;
+        }
+      
+        this.lastTouchPos = this.getGesturePointFromEvent(evt);
+        this.onAnimFrame()
+    }
+
     getGesturePointFromEvent = function (evt) {
         var point = {};
     
@@ -103,17 +129,6 @@ export default class extends Controller {
         }
     
         return point;
-    }
-
-    handleGestureMove(evt) {
-        evt.preventDefault();
-        if (!this.initialTouchPos) {
-          return;
-        }
-      
-        this.lastTouchPos = this.getGesturePointFromEvent(evt);
-      
-        this.onAnimFrame()
     }
 
     onAnimFrame() {
@@ -145,7 +160,6 @@ export default class extends Controller {
 
     updateSwipeRestPosition(evt) {
     
-        this.addAllListeners()
         let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
         if(differenceInX > -100 && differenceInX < 100) {
             this.element.style.left = '0';
@@ -161,7 +175,7 @@ export default class extends Controller {
         modal.classList.remove('show');
         modalBackdrop.classList.remove('show');
         document.body.classList.remove('show-modal');
-        this.addAllListeners()
+        this.addInitialListeners()
     }
 
     openModal(isFinished) {
