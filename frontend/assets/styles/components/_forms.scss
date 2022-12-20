@@ -111,13 +111,8 @@ $form-search-indicator-position: left 10px center !default;
     }
 }
 
-.list--form-check-input {
-    @include list-clean();
-    li {
-        margin-bottom: 0.25rem;
-    }
-    input {
-        @extend %disable-platform-appearance;
+@mixin form-check-input {
+    @extend %disable-platform-appearance;
         width: 1.5em;
         height: 1.5em;
         margin-top: 0.125em;
@@ -179,7 +174,20 @@ $form-search-indicator-position: left 10px center !default;
             line-height: 1.5rem;
             font-weight: 400;
         }
+}
+
+.list--form-check-input {
+    @include list-clean();
+    li {
+        margin-bottom: 0.25rem;
     }
+    input {
+        @include form-check-input();
+    }
+}
+
+.form-check-input {
+    @include form-check-input();
 }
 
 .form-title-muted {
