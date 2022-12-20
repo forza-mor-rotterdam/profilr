@@ -120,7 +120,7 @@ SESSION_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
 CSRF_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
 
 # Settings for Content-Security-Policy header
-CSP_DEFAULT = ("'self'",)
+CSP_DEFAULT = ("'self'",) if not DEBUG else ("'self'", PROJECT_URL)
 CSP_DEFAULT_SRC = CSP_DEFAULT
 CSP_FRAME_ANCESTORS = CSP_DEFAULT
 CSP_SCRIPT_SRC = CSP_DEFAULT
