@@ -423,6 +423,7 @@ def incident_modal_handle(request, id, handled_type=None):
                 "errors": errors,
                 "warnings": warnings,
                 "messages": messages,
+                "handled_type": handled_type,
                 "is_handled": is_handled,
             },
         },

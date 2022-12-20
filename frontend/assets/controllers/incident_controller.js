@@ -67,14 +67,31 @@ export default class extends Controller {
 
     formHandleIsConnectedHandler(event) {
         const removeElem = this.element.parentNode;
+
+        console.log('event', event)
+        console.log('event.detail', event.detail)
+
         if (event.detail.is_handled){
             this.element.classList.add("hide");
-            // TODO toon tekst in de melding
+            if(event.detail.handled_type) {
+                this.showAlert(event.detail.handled_type)
+            }
             this.element.addEventListener('transitionend', function(e){
                 removeElem.parentNode?.removeChild(removeElem);
             });
             this.buttonTarget.textContent = event.detail.messages.join(",")
         }
+    }
+
+    showAlert(type) {
+        const div = document.createElement('div')
+        div.classList.add('message')
+        if (type === "handled") {
+            div.append("De melding is afgehandeld")
+        } else {
+            div.append("De melding is doorverwezen")
+        }
+        this.element.append(div)
     }
 
     cancelHandleHandler(event) {

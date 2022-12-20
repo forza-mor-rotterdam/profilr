@@ -13,11 +13,16 @@
     {% if form %}
     <form action="{% if handled_type %}{% url 'incident_modal_handled_type_part' incident.id handled_type %}{% else %}{% url 'incident_modal_handled_part' incident.id %}{% endif %}" method="post" data-testid="handleIncidentForm" class="form--incident-handle" novalidate>
         {% csrf_token %}
+        
         {% if not form.handle_choice.is_hidden %}
+        <fieldset>
         {{ form.handle_choice.label_tag }}
         {% endif %}
         {{ form.handle_choice }}
         {{ form.handle_choice.errors }}
+        {% if not form.handle_choice.is_hidden %}
+        </fieldset>
+        {% endif %}
 
         <fieldset>
             <div class="form-row">
@@ -25,7 +30,7 @@
                 {{ form.external_text.label_tag }}
                 {{ form.external_text }}
                 {{ form.external_text.errors }}
-                <button class="btn-textlink" type="button" data-action="incidentHandleForm#defaultExternalMessage">Gebruik de standaardtekst</button>
+                <button class="btn-textlink" type="button" data-action="incidentHandleForm#defaultExternalMessage">Gebruik de standaard afhandeltekst</button>
             </div>
         </fieldset>
         <fieldset>
