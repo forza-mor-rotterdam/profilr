@@ -120,13 +120,22 @@ SESSION_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
 CSRF_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
 
 # Settings for Content-Security-Policy header
-CSP_DEFAULT = ("'self'",) if not DEBUG else ("'self'", PROJECT_URL)
-CSP_DEFAULT_SRC = CSP_DEFAULT
-CSP_FRAME_ANCESTORS = CSP_DEFAULT
-CSP_SCRIPT_SRC = CSP_DEFAULT
-CSP_IMG_SRC = CSP_DEFAULT
-CSP_STYLE_SRC = CSP_DEFAULT
-CSP_CONNECT_SRC = CSP_DEFAULT
+CSP_DEFAULT_SRC = ("'self'",) if not DEBUG else ("'self'", PROJECT_URL)
+CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_SCRIPT_SRC = (
+    ("'self'", "'unsafe-eval'")
+    if not DEBUG
+    else ("'self'", "'unsafe-eval'", PROJECT_URL)
+)
+CSP_IMG_SRC = ("'self'", "data:") if not DEBUG else ("'self'", "data:", PROJECT_URL)
+CSP_STYLE_SRC = (
+    ("'self'", "'unsafe-inline'")
+    if not DEBUG
+    else ("'self'", "'unsafe-inline'", PROJECT_URL)
+)
+CSP_CONNECT_SRC = (
+    ("'self'",) if not DEBUG else ("'self'", "ws://profilr.forzamor.local:3000/ws")
+)
 
 TEMPLATES = [
     {
