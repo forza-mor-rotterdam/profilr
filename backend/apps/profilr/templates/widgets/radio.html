@@ -1,5 +1,6 @@
 {% with id=widget.attrs.id %}
 <fieldset{% if id %} id="{{ id }}"{% endif %}>
+{{ widget.label_tag }}
 {% for group, options, index in widget.optgroups %}
     {% if group %}
     <div class="form-check">{{ group }}
