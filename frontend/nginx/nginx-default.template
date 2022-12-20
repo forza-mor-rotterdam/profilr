@@ -12,10 +12,7 @@ server {
 
     add_header Feature-Policy "";
     add_header Strict-Transport-Security "max-age=31536000; preload";
-    add_header X-Frame-Options "SAMEORIGIN";
     add_header Content-Security-Policy "frame-ancestors 'self'";
-    add_header Referrer-Policy "strict-origin";
-    add_header X-Content-Type-Options "nosniff";
 
     client_max_body_size 11M; # 10MB for upload, 1MB for other data
 
