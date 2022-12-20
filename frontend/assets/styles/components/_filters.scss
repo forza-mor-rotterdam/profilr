@@ -14,10 +14,12 @@
     margin: 0 3px;
 
     button & {
-        font-size: 8px;
-        width: 12px;
-        height: 12px;
-        line-height: 12px;
+        font-size: 10px;
+        width: 15px;
+        height: 15px;
+        line-height: 15px;
+        color: $black;
+        background-color: $white;
     }
 }
 
