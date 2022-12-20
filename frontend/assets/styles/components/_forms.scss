@@ -200,17 +200,17 @@ $form-search-indicator-position: left 10px center !default;
     
 
 
-    @media (min-width: map-get($grid-breakpoints, md)) {
-        display: flex;
+    // @media (min-width: map-get($grid-breakpoints, md)) {
+    //     display: flex;
 
-        > * {
-            flex: 1;
-        }
+    //     > * {
+    //         flex: 1;
+    //     }
 
-        button {
-            width: auto;
-        }
-    }
+    //     button {
+    //         width: auto;
+    //     }
+    // }
 
     &.container__button {
         display: flex;
