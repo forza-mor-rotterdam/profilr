@@ -133,9 +133,7 @@ CSP_STYLE_SRC = (
     if not DEBUG
     else ("'self'", "'unsafe-inline'", PROJECT_URL)
 )
-CSP_CONNECT_SRC = (
-    ("'self'",) if not DEBUG else ("'self'", "ws://profilr.forzamor.local:3000/ws")
-)
+CSP_CONNECT_SRC = ("'self'",) if not DEBUG else ("'self'", "ws://localhost:3000/ws")
 
 TEMPLATES = [
     {
