@@ -136,7 +136,7 @@
             summary {
                 background-color: $gray-tint01;
                 margin: 0 -16px;
-                padding: 24px $input-padding-x 24px 80px;
+                padding: 24px 32px 24px 80px;
                 
                 &::before {
                     left: 57px;
@@ -179,11 +179,9 @@
     }
 
     .filter {
-    //     padding: 0 $input-padding-x;
-    //     background-color: $gray-tint01;
         &:first-of-type{
             > summary {
-                border-top: 1px solid $gray-tint04;
+                border-top: 0;
                 
             }
         }
