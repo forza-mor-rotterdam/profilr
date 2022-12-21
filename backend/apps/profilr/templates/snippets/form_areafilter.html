@@ -7,7 +7,8 @@
         <li class="container__check">
             <details class="" data-action="filter--filter#toggleActiveFilter" id="foldout__wijk_{{area.code}}"{% if "foldout__wijk_"|add:area.code in foldout_states %} open{% endif %}>
                 <summary>
-                    {{ area.omschrijving }} ({{area.filters|length}})
+                    <span>{{ area.omschrijving }}</span>
+                    <span>({{area.filters|length}})</span>
                 </summary>
                 {% if area.buurten %}
                 <div class="container__list--districts foldout">
