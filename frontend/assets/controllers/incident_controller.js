@@ -1,7 +1,11 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ["button", "turboFormHandler"]
+    static targets = ["button", "turboFormHandler", "incidentDate"]
+    static values = {
+        date: String
+    }
+
     connect() {
         const frame = this.element.closest("turbo-frame")
         this.initialTouchPos = null
@@ -9,6 +13,27 @@ export default class extends Controller {
         this.bindMove = this.handleGestureMove.bind(this);
         this.bindEnd = this.handleGestureEnd.bind(this);
         this.addInitialListeners()
+
+        if(!!this.dateValue) {
+
+            this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue)
+        }
+    }
+
+    getNumberOfDays(date) {
+        const date_incident = new Date(date);
+        const date_today = new Date();
+        const difference = date_today.getTime() - date_incident.getTime();
+        const totalDays = Math.floor(difference / (1000 * 3600 * 24));
+        const dateTypes = ["Vandaag", "Gisteren", "Eergisteren", "dagen"]
+
+        if(totalDays < 3) {
+            const minutes = date_incident.getMinutes() < 10 ? `0${date_incident.getMinutes()}` : date_incident.getMinutes();
+            const time = `${date_incident.getHours()}:${minutes}`
+            return `${dateTypes[totalDays]}, ${time}`;
+        } else {
+            return `${totalDays} dagen`
+        }
     }
 
     addInitialListeners() {
