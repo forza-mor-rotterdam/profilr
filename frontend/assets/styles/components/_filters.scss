@@ -192,15 +192,11 @@
 
 .container__list--districts,
 .container__list--subjects {
-    background-color: $gray-tint01;
+    background-color: transparent;
     margin: 0 0 16px -8px;
     padding: 0 0 16px 48px;
 
     > *:first-child {
         margin-top: 0;
     }
-}
-
-.container__list--districts {
-    background-color: transparent;
 }
