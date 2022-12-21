@@ -73,6 +73,7 @@ class HandleForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         handled_type = kwargs.pop("handled_type", None)
+        kwargs.setdefault("label_suffix", "")
         super().__init__(*args, **kwargs)
         if handled_type == "handled":
             self.fields["handle_choice"].widget = forms.HiddenInput()
