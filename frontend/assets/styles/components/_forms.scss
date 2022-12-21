@@ -101,6 +101,10 @@ $form-search-indicator-position: left 10px center !default;
   }
 }
 
+textarea {
+    color: $gray-tint11;
+}
+
 .form-check {
     display: flex;
     margin-bottom: 0.75rem;
@@ -130,6 +134,7 @@ $form-search-indicator-position: left 10px center !default;
     
         &[type="radio"]{
             border-radius: 50%;
+            margin-left: 0;
         }
         
         &:checked[type="radio"]{
@@ -211,20 +216,6 @@ $form-search-indicator-position: left 10px center !default;
             font-size: $h3-font-size;
         }
     }
-    
-
-
-    // @media (min-width: map-get($grid-breakpoints, md)) {
-    //     display: flex;
-
-    //     > * {
-    //         flex: 1;
-    //     }
-
-    //     button {
-    //         width: auto;
-    //     }
-    // }
 
     &.container__button {
         display: flex;
@@ -251,6 +242,12 @@ $form-search-indicator-position: left 10px center !default;
 
         &-active {
             opacity: 0.5;
+        }
+    }
+
+    button {
+        &:last-child {
+            margin-bottom: 0;
         }
     }
 }
