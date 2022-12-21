@@ -26,7 +26,7 @@
     data-detail-area-list-value="{{ areas|json_encode }}"
     data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
 >
-    <section class="section--seperated" data-testid="detailPhotoviewer">
+    <section class="section--seperated" data-testid="detailPhotoviewer" {% if incident.fotos|length < 2 %}style="border: 0;"{% endif %}>
         <div class="full-width">
         {% if incident.fotos|length > 0 %}
             <div class="container__imageslider">
@@ -185,7 +185,7 @@
                     <a href="#" class="link--next">In behandeling nemen</a>
                 </li>
                 {% endif %}
-                {% if incident.magDoorsturenMelddesk %}
+                {% if incident.magDoorverwijzen %}
                 <li>
                     <a href="#" class="link--next">Doorsturen</a>
                 </li>
@@ -201,11 +201,6 @@
                     >
                         Afhandelen
                     </button>
-                </div>
-            {% endif %}
-            {% if incident.magDoorverwijzen %}
-                <div class="form-row">
-                    <button class="btn btn-tertiary">Doorverwijzen</button>
                 </div>
             {% endif %}
         </div>
