@@ -15,11 +15,11 @@
                 <span class="count count--filter">{{ filters_count }}<span>
             </summary>
             <fieldset>
-                <ul>
+                <ul class="list-clean">
                     {% if filters.afdelingen|length > 0 %}
                     <li>
                         <h3 class="h5">Afdeling</h3>
-                        <ul class="list-filters--active">
+                        <ul class="list-filters--active list-clean">
                             {% for department in filters.afdelingen %}
                             <li class="js-filter-active">
                                 <button

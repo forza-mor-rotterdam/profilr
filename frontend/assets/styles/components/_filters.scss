@@ -71,6 +71,10 @@
                 background-color: $gray-tint01;
                 border: 0;
                 margin-bottom: $input-padding-x;
+
+                ul {
+                    margin: 0;
+                }
             }
         }
         
@@ -93,6 +97,14 @@
                 transform: rotate(90deg);
             }
             
+        }
+
+        &.filter:not([open]) {
+            &:last-of-type {
+                > summary {
+                    border-bottom: 1px solid $gray-tint04;
+                }
+            }
         }
 
         &[open] {
