@@ -100,6 +100,9 @@ export default class extends Controller {
     formHandleIsConnectedHandler(event) {
         const removeElem = this.element.parentNode;
 
+        const frame = document.getElementById('incident_detail_part');
+        frame?.reload()
+
         if (event.detail.is_handled){
             this.element.classList.add("hide");
             if(event.detail.handled_type) {
