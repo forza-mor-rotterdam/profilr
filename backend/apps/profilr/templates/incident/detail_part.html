@@ -7,7 +7,7 @@
 {% block before_modal_content %}
 
 <turbo-frame id="incident_detail_part">
-    <div  data-controller="incident" >
+    <div  data-controller="incident" data-action="cancelHandle->incident#cancelHandleHandler" >
 <div 
     data-controller="detail"
     data-detail-incident-x-value="{{ incident.locatie.x }}"
@@ -176,15 +176,12 @@
                 {% endif %}
                 {% if incident.magDoorverwijzen %}
                 <li>
-                    <a 
-                        href=""
-                        role="button"
-                        class="link--next"
+                    <button
+                        class="btn-textlink link--next"
                         data-action="incident#openModal"
                         data-id="{{ incident.id }}"
-                        data-incident-object-param = "{{ incident|json_encode }}"    
                         data-incident-is-finished-param = false
-                    >Doorsturen</a>
+                    >Doorsturen</button>
                 </li>
                 {% endif %}
             </ul>
@@ -193,7 +190,6 @@
                     <button 
                         class="btn btn-action"
                         data-id="{{ incident.id }}"
-                        data-incident-object-param = "{{ incident|json_encode }}"
                         data-incident-is-finished-param = true
                         data-action="incident#openModal"
                     >

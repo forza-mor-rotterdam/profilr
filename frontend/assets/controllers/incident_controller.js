@@ -7,18 +7,25 @@ export default class extends Controller {
     }
 
     connect() {
-        const frame = this.element.closest("turbo-frame")
-        this.initialTouchPos = null
-        this.bindStart = this.handleGestureStart.bind(this);
-        this.bindMove = this.handleGestureMove.bind(this);
-        this.bindEnd = this.handleGestureEnd.bind(this);
-        this.addInitialListeners()
+        if(this.element.classList.contains('list-item')) {
 
-        if(!!this.dateValue) {
+            const frame = this.element.closest("turbo-frame")
+            this.initialTouchPos = null
+            this.bindStart = this.handleGestureStart.bind(this);
+            this.bindMove = this.handleGestureMove.bind(this);
+            this.bindEnd = this.handleGestureEnd.bind(this);
+            this.addInitialListeners()
 
-            this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue)
+            if(!!this.dateValue) {
+                this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue)
+            }
         }
     }
+
+    disconnect() {
+        this.removeAllListeners()
+    }
+
 
     getNumberOfDays(date) {
         const date_incident = new Date(date);
@@ -92,9 +99,6 @@ export default class extends Controller {
 
     formHandleIsConnectedHandler(event) {
         const removeElem = this.element.parentNode;
-
-        console.log('event', event)
-        console.log('event.detail', event.detail)
 
         if (event.detail.is_handled){
             this.element.classList.add("hide");
@@ -221,7 +225,6 @@ export default class extends Controller {
     }
 
     openModal(event) {
-        event.preventDefault()
         let isFinished = false
         if (typeof(event) === 'boolean' ){
             isFinished = event
