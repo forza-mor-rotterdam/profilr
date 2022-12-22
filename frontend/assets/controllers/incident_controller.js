@@ -220,7 +220,17 @@ export default class extends Controller {
         this.addInitialListeners()
     }
 
-    openModal(isFinished) {
+    openModal(event) {
+        event.preventDefault()
+        let isFinished = false
+        if (typeof(event) === 'boolean' ){
+            isFinished = event
+        } else if( typeof(event) === 'object') {
+            isFinished = event.params.isFinished
+        } else {
+            return
+        }
+
         this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
 
         this.removeAllListeners()
