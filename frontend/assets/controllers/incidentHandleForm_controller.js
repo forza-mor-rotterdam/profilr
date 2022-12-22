@@ -13,7 +13,6 @@ export default class extends Controller {
         if(this.hasExternalTextTarget) {
             if(this.externalTextTarget.textContent.length > 0) {
                 this.externalMessage = this.externalTextTarget.textContent
-                console.log('this.externalMessage', this.externalMessage)
             }
         }
 
