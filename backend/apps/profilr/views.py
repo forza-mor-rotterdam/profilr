@@ -287,6 +287,17 @@ def incident_create(request):
 
 @login_required
 def incident_detail(request, id):
+    return render(
+        request,
+        "incident/detail.html",
+        {
+            "id": id,
+        },
+    )
+
+
+@login_required
+def incident_detail_part(request, id):
     profile = request.user.profile
     user_token = request.user.token
 
@@ -310,7 +321,7 @@ def incident_detail(request, id):
 
     return render(
         request,
-        "incident/detail.html",
+        "incident/detail_part.html",
         {
             "id": id,
             "incident": incident,

@@ -7,6 +7,7 @@ from apps.profilr.views import (
     image_thumbnail,
     incident_create,
     incident_detail,
+    incident_detail_part,
     incident_index,
     incident_list,
     incident_list_item,
@@ -28,6 +29,7 @@ urlpatterns = [
     path("image/<int:id>", image_full, name="image_full"),
     path("image/<int:id>/thumbnail", image_thumbnail, name="image_thumbnail"),
     path("health/", include("health_check.urls")),
+    path("part/incident/<int:id>", incident_detail_part, name="incident_detail_part"),
     path("part/filter/", filter, name="filter_part"),
     path("part/incident-list/", incident_list, name="incident_list_part"),
     path(
