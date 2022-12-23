@@ -10,7 +10,7 @@
         class="list-item{% if form_submitted %} form-is-submitted{% endif %}{% if errors and warnings %} has-errors{% endif %}"
         data-controller="incident" 
         data-action="formHandleIsConnected->incident#formHandleIsConnectedHandler cancelHandle->incident#cancelHandleHandler"
-        data-incident-id-value="{{ incident.id }}">
+        data-incident-date-value="{{ incident.datumMelding }}">
         <button
             class="container__actions handle--no-success"
             data-id="{{ incident.id }}"
@@ -41,10 +41,11 @@
                         </div>
 
                         <span class="incident__category">
-                            {{ incident.onderwerp.omschrijving }} - {{ incident.status }}
+                            {{ incident.onderwerp.omschrijving }}
                         </span>
                         <div class="incident__moment">
-                            <span>
+                            <span>{{ incident.status }}</span>
+                            <span data-incident-target="incidentDate">
                                 {{ incident.datumMelding|to_date|date:"d-M-Y" }} 
                                 {{ incident.datumMelding|to_date|date:"H:i" }}
                             </span>
@@ -66,7 +67,7 @@
 
 {% block modal_header %}
 <h1>
-    Afhandelen<br>
+    <span>Afhandelen</span><br>
     <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
 </h1>
 <button type="button" class="btn-close modal-exit" aria-label="Sluit"></button> 

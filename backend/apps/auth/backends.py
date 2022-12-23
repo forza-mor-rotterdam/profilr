@@ -1,8 +1,13 @@
 import copy
 
-from apps.services import msb_api_service, profilr_api_service
-from apps.services.msb import DEFAULT_PROFILE
 from django.conf import settings
+from profilr_api_services import (
+    MSB_DEFAULT_FILTERS,
+    msb_api_service,
+    profilr_api_service,
+)
+
+DEFAULT_PROFILE = {"filters": MSB_DEFAULT_FILTERS}
 
 
 class MSBUser:

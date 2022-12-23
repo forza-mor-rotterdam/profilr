@@ -127,6 +127,16 @@ a {
     }
 }
 
+button {
+    &.link--next {
+        @include has-icon();
+        &:before {
+            content: url('../icons/arrow-right.svg');
+            top: 2px;
+            left: -18px;
+        }
+    }
+}
 
 p {
     &.text--person {

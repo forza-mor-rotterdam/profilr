@@ -1,0 +1,223 @@
+{% extends 'snippets/modal_context.html' %}
+{% load webpack_static from profilr_tags %}
+{% load to_date from profilr_tags %}
+{% load json_encode from profilr_tags %}
+
+
+{% block before_modal_content %}
+
+<turbo-frame id="incident_detail_part">
+    <div  data-controller="incident" data-action="cancelHandle->incident#cancelHandleHandler" >
+<div 
+    data-controller="detail"
+    data-detail-incident-x-value="{{ incident.locatie.x }}"
+    data-detail-incident-y-value="{{ incident.locatie.y }}"
+    data-detail-area-list-value="{{ areas|json_encode }}"
+    data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
+>
+    <section class="section--seperated" data-testid="detailPhotoviewer" {% if incident.fotos|length < 2 %}style="border: 0;"{% endif %}>
+        <div class="full-width">
+        {% if incident.fotos|length > 0 %}
+            <div class="container__imageslider">
+                <div class="container__image">
+                    <img src="{% url 'image_full' incident.fotos.0.id %}" alt="" data-detail-target="selectedImage" />
+                </div>
+                {% if incident.fotos|length > 1 %}
+                <div class="container__thumbs">
+                    <ul data-detail-target="thumbList">
+                        {% for foto in incident.fotos %}
+                        <li data-action="click->detail#selectImage"
+                            data-detail-image-source-param="{% url 'image_full' foto.id %}">
+                            <div class="container__image">
+                                <img src="{% url 'image_thumbnail' foto.id %}" alt="" />
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="no-image" style="background-image: url('{% webpack_static 'icons/assets/icons/noimage.svg' %}');"></div>
+        {% endif %}
+        </div>
+    </section>
+
+    <section class="section--seperated"  data-testid="detailAbout">
+        <div class="container__details">
+        {# TODO add optional huisletter and huisnummer_toevoeging  #}
+            <h1 class="h3">{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</h1>
+            <div class="incident__header">
+                <span>
+                    {{ incident.datumMelding|to_date|date:'d-m-Y' }} 
+                    {{ incident.datumMelding|to_date|date:'H:i' }}
+                </span>
+                {% if incident.spoed %}<span><span class="icon icon--warning"> Spoed</span></span>{% endif %}
+            </div>
+
+            <h2 class="h5">Omschrijving</h2>
+            <p>
+                {% if incident.omschrijving %}
+                    {{ incident.omschrijving }}
+                {% else %}
+                    -
+                {% endif %}
+            </p>
+            <h2 class="h5">Onderwerp</h2>
+            <p>
+                {% if incident.onderwerp.omschrijving %}
+                    {{ incident.onderwerp.omschrijving }}
+                {% else %}
+                    -
+                {% endif %}
+            </p>
+            <h2 class="h5">Afdeling</h2>
+            <p>
+                {% if incident.afdeling.omschrijving %}
+                    {{ incident.afdeling.omschrijving }}
+                {% else %}
+                    -
+                {% endif %}
+            </p>
+
+            <h2 class="h5">Melding {{ incident.id }}</h2>
+            <p>
+                {% if incident.status %}
+                    Status: {{ incident.status }}
+                {% else %}
+                    Status: -
+                {% endif %}
+            </p>
+
+        </div>
+    </section>
+
+    <section class="section--seperated section--location" data-testid="detailLocation">
+        <div class="container__details">
+            <h2 class="h5">Locatie</h2>
+            <p>
+                <a href="#" class="link--location">{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</a>
+            </p>
+            <dl>
+                <div>
+                    <dt>Wijk:</dt>
+                    <dd data-detail-target="area"></dd>
+                </div>
+                <div>
+                    <dt>Buurt:</dt>
+                    <dd data-detail-target="district"></dd>
+                </div>
+                {% if incident.locatie.subbuurt %}
+                <div>
+                    <dt>Subbuurt:</dt>
+                    <dd>{{ incident.locatie.subbuurt }}</dd>
+                </div>
+                {% endif %}
+                {% if incident.locatie.plaatsbepaling %}
+                <div>
+                    <dt>Plaatsbepaling:</dt>
+                    <dd>{{ incident.locatie.plaatsbepaling }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+            <div class="container__map full-width">
+                <div class="map" id="incidentMap">
+                    <div class="map__overlay">
+                        <span>
+                            Gebruik twee vingers om de kaart te verplaatsen
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section--seperated" data-testid="detailReporter">
+        <div class="container__details">
+            <h2 class="h5">Gemeld door</h2>
+            <ul class="list-clean incident-meta-list">
+                {% if incident.melder.herkomst %}
+                <li>
+                    <p class="text--person">{{ incident.melder.herkomst }}</p>
+                </li>
+                {% endif %}
+                {% if incident.melder.telefoon %}
+                <li>
+                    <a href="tel:{{ incident.melder.telefoon }}" class="link--phone">{{ incident.melder.telefoon }}</a>
+                </li>
+                {% endif %}
+                {% if incident.melder.email %}
+                <li>
+                    <a href="mailto:{{ incident.melder.email }}" class="link--email">{{ incident.melder.email }}</a>
+                </li>
+                {% endif %}
+                {% if incident.melder.informeren == "Nee" %}
+                <li>
+                    <p class="text--close">De melder wil niet op de hoogte blijven</p>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </section>
+
+    <section class="section--seperated" data-testid="detailActions">
+        <div class="container__details">
+            <ul class="list-clean incident-meta-list">
+                <!-- <li>
+                    <a href="#" class="link--file-text">Mutatieregels</a>
+                </li> -->
+                <!-- <li>
+                    <a href="#" class="link--file">Bestanden</a>
+                </li> -->
+                {% if incident.magInBehandelingNemen %}
+                <!-- <li>
+                    <a href="#" class="link--next">In behandeling nemen</a>
+                </li> -->
+                {% endif %}
+                {% if incident.magDoorverwijzen %}
+                <li>
+                    <button
+                        class="btn-textlink link--next"
+                        data-action="incident#openModal"
+                        data-id="{{ incident.id }}"
+                        data-incident-is-finished-param = false
+                    >Doorsturen</button>
+                </li>
+                {% endif %}
+            </ul>
+            {% if incident.magAfhandelen %}
+                <div class="form-row">
+                    <button 
+                        class="btn btn-action"
+                        data-id="{{ incident.id }}"
+                        data-incident-is-finished-param = true
+                        data-action="incident#openModal"
+                    >
+                        Afhandelen
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block modal_header %}
+<h1>
+    <span>Afhandelen</span><br>
+    <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
+</h1>
+<button type="button" class="btn-close modal-exit" aria-label="Sluit"></button> 
+{% endblock %}
+
+{% block modal_body %}
+        <turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-src="{% url 'incident_modal_handle_part' incident.id %}" src="{% url 'incident_modal_handle_part' incident.id %}" laoding="lazy">
+        </turbo-frame>
+{% endblock %}
+
+
+{% block after_modal_content %}
+</div>
+</turbo-frame>
+{% endblock %}

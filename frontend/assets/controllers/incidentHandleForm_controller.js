@@ -6,6 +6,7 @@ export default class extends Controller {
         parentContext: String,
         handledOptions: String,
     }
+
     static targets = ["externalText", "internalText"]
     
     connect() {
@@ -31,18 +32,16 @@ export default class extends Controller {
     setExternalMessage(evt){
         this.choice =  evt.params.index
         this.externalMessage = JSON.parse(this.handledOptionsValue)[this.choice][2]
-        this.externalTextTarget.textContent = this.externalMessage
-
+        this.externalTextTarget.value = this.externalMessage
     }
 
     defaultExternalMessage(){
         if(this.externalMessage.length === 0) return
         
-        this.externalTextTarget.textContent = this.externalMessage
+        this.externalTextTarget.value = this.externalMessage
     }
 
     clearExternalMessage() {
-        this.externalTextTarget.textContent = ""
+        this.externalTextTarget.value = ""
     }
-
 }

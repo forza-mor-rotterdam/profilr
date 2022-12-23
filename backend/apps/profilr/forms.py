@@ -35,7 +35,6 @@ HANDLED_OPTIONS = (
 
 
 class RadioSelect(forms.RadioSelect):
-    template_name = "widgets/radio.html"
     option_template_name = "widgets/radio_option.html"
 
 
@@ -43,7 +42,7 @@ class HandleForm(forms.Form):
 
     handle_choice = forms.ChoiceField(
         label="Waarom kan de melding niet worden opgelost?",
-        widget=RadioSelect(attrs={"class": "form-check-input"}),
+        widget=RadioSelect(attrs={"class": "list--form-check-input"}),
         choices=[[x, HANDLED_OPTIONS[x][1]] for x in range(len(HANDLED_OPTIONS))],
         initial=0,
     )
@@ -74,6 +73,7 @@ class HandleForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         handled_type = kwargs.pop("handled_type", None)
+        kwargs.setdefault("label_suffix", "")
         super().__init__(*args, **kwargs)
         if handled_type == "handled":
             self.fields["handle_choice"].widget = forms.HiddenInput()

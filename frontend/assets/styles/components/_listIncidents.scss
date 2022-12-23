@@ -2,6 +2,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 16px;
+
+    h1 {
+        margin-bottom: 0;
+    }
 
     .btn {
         flex: 0 1 25%;
@@ -28,7 +33,6 @@
 
     &.seperated {
         border-top: 1px solid $gray-tint04;
-        padding-top: $input-padding-x;
     }
 }
 .list__incidents {
@@ -58,10 +62,35 @@
             display: none;
         }
         &.hide {
-            transition: all .3s ease-in-out 2.5s;
+            transition: all 0.5s ease-in-out 4s;
             border-bottom: 0px solid #CAD6DA;
             min-height: 0;
             height: 0;
+            overflow: hidden;
+
+        }
+
+        .message {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            bottom: 5px;
+            right: 5px;
+            background-color: #E5F1E9;
+            border: 1px solid $green-tint01;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            padding-left: 56px;
+            overflow: hidden;
+
+            &:before {
+                content: url('../icons/checkmark-circle.svg');
+                position: absolute;
+                left: 16px;
+                top: calc(50% - 13px);
+
+            }
         }
         
         .wrapper__swipe {
@@ -91,6 +120,7 @@
 
         .container__info {
             flex: 1;
+            padding-top: 8px;
 
             a {
                 color: inherit;
@@ -120,10 +150,15 @@
 
             .incident__moment {
                 display: flex;
-                justify-content: flex-end;
+                justify-content: space-between;
 
                 span {
-                    display: inline-block;
+                    &:last-child {
+                        display: block;
+                        flex: 1;
+                        text-align: right;
+                        padding-left: 4px;
+                    }
                 }
             }
         }

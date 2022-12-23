@@ -14,10 +14,12 @@
     margin: 0 3px;
 
     button & {
-        font-size: 8px;
-        width: 12px;
-        height: 12px;
-        line-height: 12px;
+        font-size: 10px;
+        width: 15px;
+        height: 15px;
+        line-height: 15px;
+        color: $black;
+        background-color: $white;
     }
 }
 
@@ -69,6 +71,10 @@
                 background-color: $gray-tint01;
                 border: 0;
                 margin-bottom: $input-padding-x;
+
+                ul {
+                    margin: 0;
+                }
             }
         }
         
@@ -80,6 +86,9 @@
             cursor: pointer;
             border-top: 1px solid $gray-tint04;
 
+            &::-webkit-details-marker {
+                display:none;
+            }
             &::before {
                 content: url('../icons/arrow-right.svg');
                 position: absolute;
@@ -88,6 +97,14 @@
                 transform: rotate(90deg);
             }
             
+        }
+
+        &.filter:not([open]) {
+            &:last-of-type {
+                > summary {
+                    border-bottom: 1px solid $gray-tint04;
+                }
+            }
         }
 
         &[open] {
@@ -119,7 +136,7 @@
             summary {
                 background-color: $gray-tint01;
                 margin: 0 -16px;
-                padding: 24px $input-padding-x 24px 80px;
+                padding: 24px 32px 24px 80px;
                 
                 &::before {
                     left: 57px;
@@ -148,24 +165,23 @@
             align-items: center;
 
             > div {
-                display: flex;
                 flex: 1;
-                justify-content: flex-end;
+                text-align: right;
             }
             .btn {
                 flex: 0 1 25%;
                 white-space: nowrap;
+                display: inline;
+                width: auto;
             }
         }
         
     }
 
     .filter {
-    //     padding: 0 $input-padding-x;
-    //     background-color: $gray-tint01;
         &:first-of-type{
             > summary {
-                border-top: 1px solid $gray-tint04;
+                border-top: 0;
                 
             }
         }
@@ -174,15 +190,11 @@
 
 .container__list--districts,
 .container__list--subjects {
-    background-color: $gray-tint01;
+    background-color: transparent;
     margin: 0 0 16px -8px;
     padding: 0 0 16px 48px;
 
     > *:first-child {
         margin-top: 0;
     }
-}
-
-.container__list--districts {
-    background-color: transparent;
 }

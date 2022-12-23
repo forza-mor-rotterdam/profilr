@@ -1,5 +1,5 @@
-from apps.services import msb_api_service
-from django.conf import settings
+from profilr_api_services import msb_api_service
+from profilr_api_services.conf import conf
 
 
 def get_filter_options(filters, user_token):
@@ -57,7 +57,7 @@ def get_filter_options(filters, user_token):
             BUURTEN: [
                 o
                 for o in d.get(BUURTEN)
-                if not settings.ENABLE_AFDELING_RELATIES_ENDPOINT
+                if not conf.MSB_ENABLE_AFDELING_RELATIES_ENDPOINT
                 or o.get("code") in afdeling_relaties.get(BUURTEN, [])
             ],
             FILTERS: [
@@ -67,7 +67,7 @@ def get_filter_options(filters, user_token):
                 in [
                     bb.get("code")
                     for bb in d.get(BUURTEN, [])
-                    if not settings.ENABLE_AFDELING_RELATIES_ENDPOINT
+                    if not conf.MSB_ENABLE_AFDELING_RELATIES_ENDPOINT
                     or bb.get("code") in afdeling_relaties.get(BUURTEN, [])
                 ]
             ],
@@ -76,7 +76,7 @@ def get_filter_options(filters, user_token):
         if [
             o
             for o in d.get(BUURTEN)
-            if not settings.ENABLE_AFDELING_RELATIES_ENDPOINT
+            if not conf.MSB_ENABLE_AFDELING_RELATIES_ENDPOINT
             or o.get("code") in afdeling_relaties.get(BUURTEN, [])
         ]
     ]
@@ -87,7 +87,7 @@ def get_filter_options(filters, user_token):
             ONDERWERPEN: [
                 o
                 for o in d.get(ONDERWERPEN)
-                if not settings.ENABLE_AFDELING_RELATIES_ENDPOINT
+                if not conf.MSB_ENABLE_AFDELING_RELATIES_ENDPOINT
                 or o.get("code") in afdeling_relaties.get(ONDERWERPEN, [])
             ],
             FILTERS: [
@@ -97,7 +97,7 @@ def get_filter_options(filters, user_token):
                 in [
                     bb.get("code")
                     for bb in d.get(ONDERWERPEN, [])
-                    if not settings.ENABLE_AFDELING_RELATIES_ENDPOINT
+                    if not conf.MSB_ENABLE_AFDELING_RELATIES_ENDPOINT
                     or bb.get("code") in afdeling_relaties.get(ONDERWERPEN, [])
                 ]
             ],
@@ -106,7 +106,7 @@ def get_filter_options(filters, user_token):
         if [
             o
             for o in d.get(ONDERWERPEN)
-            if not settings.ENABLE_AFDELING_RELATIES_ENDPOINT
+            if not conf.MSB_ENABLE_AFDELING_RELATIES_ENDPOINT
             or o.get("code") in afdeling_relaties.get(ONDERWERPEN, [])
         ]
     ]

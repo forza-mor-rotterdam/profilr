@@ -34,9 +34,11 @@ INSTALLED_APPS = (
     "django.contrib.sessions",
     "rest_framework",
     "webpack_loader",
+    "corsheaders",
     "health_check",
     "health_check.cache",
     "health_check.storage",
+    "profilr_api_services",
     # Apps
     "apps.profilr",
     "apps.health",
@@ -46,16 +48,38 @@ INSTALLED_APPS = (
 LOGIN_URL = "/login/"
 
 MIDDLEWARE = (
-    "apps.services.middleware.ApiServiceExceptionMiddleware",
+    "profilr_api_services.middleware.ApiServiceExceptionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "django_permissions_policy.PermissionsPolicyMiddleware",
+    "csp.middleware.CSPMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "apps.auth.middleware.AuthenticationMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
+
+# django-permissions-policy settings
+PERMISSIONS_POLICY = {
+    "accelerometer": [],
+    "ambient-light-sensor": [],
+    "autoplay": [],
+    "camera": [],
+    "display-capture": [],
+    "document-domain": [],
+    "encrypted-media": [],
+    "fullscreen": [],
+    "geolocation": [],
+    "gyroscope": [],
+    "interest-cohort": [],
+    "magnetometer": [],
+    "microphone": [],
+    "midi": [],
+    "payment": [],
+    "usb": [],
+}
 
 AUTHENTICATION_BACKENDS = ["apps.auth.backends.MSBAuthenticationBackend"]
 
@@ -75,10 +99,45 @@ WEBPACK_LOADER = {
     }
 }
 
+# Django security settings
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_REFERRER_POLICY = "strict-origin"
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_PRELOAD = True
 CORS_ORIGIN_WHITELIST = ()
 CORS_ORIGIN_ALLOW_ALL = False
-
 USE_X_FORWARDED_HOST = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_NAME = "__Secure-sessionid" if not DEBUG else "sessionid"
+CSRF_COOKIE_NAME = "__Secure-csrftoken" if not DEBUG else "csrftoken"
+SESSION_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
+CSRF_COOKIE_SAMESITE = "Strict" if not DEBUG else "Lax"
+
+# Settings for Content-Security-Policy header
+CSP_DEFAULT_SRC = ("'self'",) if not DEBUG else ("'self'", PROJECT_URL)
+CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_SCRIPT_SRC = (
+    ("'self'", "'unsafe-eval'", "unpkg.com")
+    if not DEBUG
+    else ("'self'", "'unsafe-eval'", "unpkg.com", PROJECT_URL)
+)
+CSP_IMG_SRC = (
+    ("'self'", "data:", "unpkg.com")
+    if not DEBUG
+    else ("'self'", "data:", "unpkg.com", "tile.openstreetmap.org", PROJECT_URL)
+)
+CSP_STYLE_SRC = (
+    ("'self'", "'unsafe-inline'", "unpkg.com")
+    if not DEBUG
+    else ("'self'", "'unsafe-inline'", "unpkg.com", PROJECT_URL)
+)
+CSP_CONNECT_SRC = ("'self'",) if not DEBUG else ("'self'", "ws:")
 
 TEMPLATES = [
     {
@@ -94,11 +153,6 @@ TEMPLATES = [
         },
     }
 ]
-
-# SECURE_SSL_REDIRECT = not DEBUG
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
 
 REDIS_URL = "redis://redis:6379"
 CACHES = {
@@ -119,14 +173,13 @@ MSB_API_URL = os.getenv("MSB_API_URL", "https://diensten.rotterdam.nl")
 PROFILR_API_URL = os.getenv("PROFILR_API_URL", "https://api.profilr.forzamor.nl")
 PROFILR_API_HEALTH_URL = f"{PROFILR_API_URL}/health/"
 
-ENABLE_MELDING_AFHANDELEN = os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
-
-ENABLE_AFDELING_RELATIES_ENDPOINT = (
-    os.getenv("ENABLE_AFDELING_RELATIES_ENDPOINT", False) in TRUE_VALUES
+MSB_ENABLE_MELDING_AFHANDELEN = (
+    os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
 )
 
-if MSB_API_URL.startswith("https://diensten.rotterdam.nl"):
-    ENABLE_MELDING_AFHANDELEN = False
+MSB_ENABLE_AFDELING_RELATIES_ENDPOINT = (
+    os.getenv("ENABLE_AFDELING_RELATIES_ENDPOINT", False) in TRUE_VALUES
+)
 
 LOGGING = {
     "version": 1,

@@ -14,7 +14,6 @@ export default class extends Controller {
 
         groupCheckList.forEach(check => {
             if(filterGroupList.find(group => group[0] === check.value)) {
-                // console.log('group', group)
                 check.checked = true
                 check.closest('.container__check-group')
                     .getElementsByClassName('container__list--subjects')[0]
