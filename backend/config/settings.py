@@ -128,7 +128,7 @@ CSP_SCRIPT_SRC = (
     else ("'self'", "'unsafe-eval'", "unpkg.com", PROJECT_URL)
 )
 CSP_IMG_SRC = (
-    ("'self'", "data:", "unpkg.com")
+    ("'self'", "data:", "unpkg.com", "tile.openstreetmap.org")
     if not DEBUG
     else ("'self'", "data:", "unpkg.com", "tile.openstreetmap.org", PROJECT_URL)
 )
