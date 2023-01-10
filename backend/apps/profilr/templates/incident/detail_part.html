@@ -18,16 +18,24 @@
     <section class="section--seperated" data-testid="detailPhotoviewer" {% if incident.fotos|length < 2 %}style="border: 0;"{% endif %}>
         <div class="full-width">
         {% if incident.fotos|length > 0 %}
-            <div class="container__imageslider">
-                <div class="container__image">
-                    <img src="{% url 'image_full' incident.fotos.0.id %}" alt="" data-detail-target="selectedImage" />
-                </div>
-                {% if incident.fotos|length > 1 %}
+            <div class="container__imageslider" data-detail-target="imageSliderContainer" data-action="scroll->detail#onScrollSlider">
+                <ul 
+                    class="list-clean imageslider"
+                    style="width: calc(100% * {{ incident.fotos|length }})"
+                >
+                    {% for foto in incident.fotos %}
+                    <li class="container__image" id="{{ foto.id }}">
+                        <img src="{% url 'image_full' foto.id %}" alt="" data-detail-target="selectedImage" />
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if incident.fotos|length > 1 %}
                 <div class="container__thumbs">
                     <ul data-detail-target="thumbList">
                         {% for foto in incident.fotos %}
                         <li data-action="click->detail#selectImage"
-                            data-detail-image-source-param="{% url 'image_full' foto.id %}">
+                            data-detail-image-index-param="{{ foto.volgnummer }}">
                             <div class="container__image">
                                 <img src="{% url 'image_thumbnail' foto.id %}" alt="" />
                             </div>
@@ -36,7 +44,6 @@
                     </ul>
                 </div>
                 {% endif %}
-            </div>
         {% else %}
             <div class="no-image" style="background-image: url('{% webpack_static 'icons/assets/icons/noimage.svg' %}');"></div>
         {% endif %}
