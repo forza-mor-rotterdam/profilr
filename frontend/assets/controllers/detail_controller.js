@@ -7,7 +7,7 @@ export default class extends Controller {
         areaList: String,
         currentDistrict: String
     }
-    static targets = ['area', 'district', 'selectedImage', 'thumbList']
+    static targets = ['area', 'district', 'selectedImage', 'thumbList', 'imageSliderContainer']
     
     initialize() {
         if(this.currentDistrictValue) {
@@ -45,11 +45,19 @@ export default class extends Controller {
         document.getElementById('incidentMap').addEventListener('touchend', onTwoFingerDrag);
     }
 
+    onScrollSlider(e) {
+        this.highlightThumb(Math.floor(this.imageSliderContainerTarget.scrollLeft / this.imageSliderContainerTarget.offsetWidth))
+    }
+
     selectImage(e) {
-        const imgSrc = e.params.imageSource;
-        this.selectedImageTarget.src = imgSrc;
+        this.imageSliderContainerTarget.scrollTo({left: (Number(e.params.imageIndex) - 1) * this.imageSliderContainerTarget.offsetWidth, top: 0})
         this.deselectThumbs(e.target.closest('ul'));
-        e.target.closest('li').classList.add('selected')
+        e.target.closest('li').classList.add('selected');
+    }
+
+    highlightThumb(index) {
+        this.deselectThumbs(this.thumbListTarget)
+        this.thumbListTarget.getElementsByTagName('li')[index].classList.add('selected')
     }
 
     deselectThumbs(list) {
