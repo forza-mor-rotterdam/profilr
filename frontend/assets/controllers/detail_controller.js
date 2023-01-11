@@ -33,16 +33,14 @@ export default class extends Controller {
         }).setView(incidentCoordinates, 16);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         const marker = L.marker(incidentCoordinates).addTo(map);
+    }
 
-        const onTwoFingerDrag = (e) => {
-            if (e.type === 'touchstart' && e.touches.length === 1) {
-                e.currentTarget.classList.add('swiping')
-            } else {
-                e.currentTarget.classList.remove('swiping')
-            }
+    onTwoFingerDrag (e) {
+        if (e.type === 'touchstart' && e.touches.length === 1) {
+            e.currentTarget.classList.add('swiping')
+        } else {
+            e.currentTarget.classList.remove('swiping')
         }
-        document.getElementById('incidentMap').addEventListener('touchstart', onTwoFingerDrag);
-        document.getElementById('incidentMap').addEventListener('touchend', onTwoFingerDrag);
     }
 
     onScrollSlider(e) {

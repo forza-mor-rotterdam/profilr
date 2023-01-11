@@ -70,7 +70,12 @@
     <span>Afhandelen</span><br>
     <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
 </h1>
-<button type="button" class="btn-close modal-exit" aria-label="Sluit"></button> 
+<button
+    type="button"
+    class="btn-close"
+    aria-label="Sluit"
+    data-action="incident#closeModal"
+></button> 
 {% endblock %}
 
 {% block modal_body %}
