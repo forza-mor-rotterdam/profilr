@@ -218,9 +218,11 @@ export default class extends Controller {
     }
 
     closeModal() {
+        console.log('closeModal')
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
-        
+        console.log('modal', modal)
+        console.log('modalBackDrop', modalBackdrop)
         modal.classList.remove('show');
         modalBackdrop.classList.remove('show');
         document.body.classList.remove('show-modal');
@@ -248,14 +250,16 @@ export default class extends Controller {
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
         document.body.classList.add('show-modal');
+
+        // TODO only used for modal backdrop, try to get rid of it
         const exits = modal.querySelectorAll('.modal-exit');
-        
         exits.forEach((exit) => {
             exit.addEventListener('click', (event) => {
                 event.preventDefault();
                 this.closeModal()
             });
         });
+        
         setTimeout(function (){
             this.resetIncidentSwipe()
         }.bind(this), 1000)
