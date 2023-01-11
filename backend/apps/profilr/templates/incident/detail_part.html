@@ -128,7 +128,11 @@
                 {% endif %}
             </dl>
             <div class="container__map full-width">
-                <div class="map" id="incidentMap">
+                <div 
+                    class="map"
+                    id="incidentMap"
+                    data-action="touchstart->detail#onTwoFingerDrag touchend->detail#onTwoFingerDrag"
+                >
                     <div class="map__overlay">
                         <span>
                             Gebruik twee vingers om de kaart te verplaatsen
