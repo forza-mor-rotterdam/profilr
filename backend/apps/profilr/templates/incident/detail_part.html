@@ -10,6 +10,7 @@
     <div  data-controller="incident" data-action="cancelHandle->incident#cancelHandleHandler" >
         <div 
             data-controller="detail"
+            data-detail-incident-object-value="{{ incident|json_encode }}"
             data-detail-incident-x-value="{{ incident.locatie.x }}"
             data-detail-incident-y-value="{{ incident.locatie.y }}"
             data-detail-area-list-value="{{ areas|json_encode }}"

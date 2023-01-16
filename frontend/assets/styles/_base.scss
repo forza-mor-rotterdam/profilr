@@ -16,11 +16,14 @@ body {
 	font-smoothing: antialiased;
 }
 
-main {
+body,
+main,
+header {
     padding: 0 map-get($container-margin, md) 16px;
     margin: 0 auto;
 
     > .container {
+        display: block;
         max-width: map-get($container-max-widths , sm );
         margin: 0 auto;
     }

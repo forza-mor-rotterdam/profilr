@@ -26,7 +26,6 @@ export default class extends Controller {
         this.removeAllListeners()
     }
 
-
     getNumberOfDays(date) {
         const date_incident = new Date(date);
         const date_today = new Date();

@@ -1,0 +1,252 @@
+// grijstinten
+$gray-tint01: #EFF4F6;
+$gray-tint02: #E4EEF1;
+$gray-tint03: #DBE7EA;
+$gray-tint04: #CAD6DA;
+$gray-tint05: #B6C4C8;
+$gray-tint06: #9DAFB6;
+$gray-tint07: #8D9DA4;
+$gray-tint08: #7C8B90;
+$gray-tint09: #65757B;
+// tint10 #536165 unused
+$gray-tint11: #404B4F;
+
+// groentinten
+$green-tint01: #00811F;
+$green-tint02: #006E32;
+$green-tint03: #006E32;
+
+// magentatinten
+$magenta-tint01: #C93675;
+$magenta-tint02: #A12B5E;
+
+$white:    #fff;
+$black:    #000;
+
+// bootstrap primaire kleuren, moeten nog afgestemd worden op in10 palet
+// nodig voor de thema's.
+$blue:    #0d6efd;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #d63384;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   $green-tint01;
+$teal:    #20c997;
+$cyan:    #0dcaf0;
+
+// theme-colors
+$primary:           $green;
+$primary-active:    $green-tint02;
+$secondary:         $black;
+$success:           $green;
+$info:              #1791D4;
+$warning:           #EDB500;
+$danger:            #E3614D;
+$light:             $gray-tint01;
+$dark:              $gray-tint11;
+$action:            $magenta-tint01;
+$action-active:     $magenta-tint02;      
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  xxl: 1440px
+);
+
+// Grid containers
+//
+// Define the maximum width of `.container` for different screen sizes.
+$container-max-widths: (
+  sm: 540px,
+  md: 624px,
+  lg: 832px,
+  xl: 992px,
+  xxl: 1152px
+);
+
+// rotterdam-ui extension: we have extra margins *outside* the normal
+// grid.  container must be small enough to allow three margins left and right
+// around it in window.
+$container-margin: (
+  xs: 0px,
+  sm: 0px,
+  md: 24px,
+  lg: 32px,
+  xl: 32px,
+ xxl: 48px
+);
+
+$container-padding-x: 1.5rem;
+
+// In10 wants square corners.  used for buttons, accordeons ,etc
+$border-radius: 0;
+$border-radius-sm: 0;
+$border-radius-lg: 0;
+$border-radius-pill: 0;
+$border-color: $gray-tint04;
+$hover-border-color: $green;
+$focus-border-color: $gray-tint11;
+$disabled-border-color: $gray-tint08;
+
+$font-weight-normal: 400;
+$line-height-base: 1.75 !default;
+
+// voor footer links, <small> en input field error messages
+$small-font-size: 0.75rem;
+
+// color matches rotterdam.nl, hover and decoration not consistent between sites
+$link-color: $primary;
+$link-decoration: underline;
+$link-hover-color: $primary-active;
+
+$font-family-sans-serif: "Bolder", Arial, sans-serif;
+
+$headings-font-weight: 700;     
+$h1-font-size: calc(1.375rem + 1.5vw);
+$h2-font-size: calc(1.275rem + 0.3vw);
+$h3-font-size: 1.25rem;
+$h4-font-size: 1.125rem;
+$h5-font-size: 1rem;
+$h6-font-size: 0.75rem;
+$font-size-base: 1rem;
+
+$body-color: $gray-tint11;
+$text-muted: $gray-tint09;
+
+// Form text
+// It should be explicitly associated with the form control it relates to using the aria-describedby attribute.
+// This will ensure that assistive technologies—such as screen readers—will announce this form text when the user focuses or enters the control.
+$form-text-font-style: normal;
+$form-text-font-weight: normal;
+$form-text-color: $body-color;
+
+// Checkbox
+$form-check-input-checked-bg-image: url("data:image/svg+xml, <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M9.86006 16.144L19.406 6.59806L20.4667 7.65873L9.86006 18.2653L3.49609 11.9014L4.55675 10.8407L9.86006 16.144Z' fill='white'/></svg>");
+$form-check-input-border-radius: $border-radius;
+$form-check-input-border: 1px solid $gray-tint08;
+$form-check-input-width: 1.5em;
+$form-check-input-focus-border: $green;
+$form-check-input-focus-box-shadow: 0 0 0 1px $green;
+
+// Radio button
+$form-check-radio-checked-bg-image: url("data:image/svg+xml, <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z' fill='none'/><rect x='8' y='8' width='8' height='8' rx='4' fill='white'/></svg>");
+
+// Combobox
+$form-select-focus-box-shadow: none;
+$form-select-indicator: url("data:image/svg+xml, <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>  <path fill-rule='evenodd' clip-rule='evenodd' d='M15.75 9.75L12 4.5L8.25 9.75H15.75ZM15.75 14.25L12 19.5L8.25 14.25H15.75Z' fill='#{$gray-tint09}'/>  </svg>");
+$form-select-bg-size: 24px 24px;                        // size of select indicator (icon)
+$form-select-bg-position: right 10px center !default;   // position of select indicator (icon)
+$form-select-disabled-bg: $gray-tint01;
+$form-select-disabled-border-color: $disabled-border-color;
+$form-select-disabled-color: $gray-tint07;
+
+// Textual controls
+$input-disabled-bg: $gray-tint01;
+$input-disabled-border-color: $disabled-border-color;
+$input-disabled-color: $gray-tint07;
+$input-box-shadow: inset 0 0;
+$input-border-color: $gray-tint08;
+$input-focus-width: 1px;                   // Zorgt voor een donker grijs rand met de juiste dikte bij focus en gebruik van 'is-valid' of 'is-invalid'
+$input-focus-box-shadow: 0 0 5px #157631;
+$input-focus-border-color: $green;         // Focus kleur van tekstvelden.
+$input-btn-focus-color: $green;            // Kleur van border indien een knop met klasse 'btn' gefocust is.
+                                           // Niet zichtbaar op knoppen die extra btn klassen hebben, zoals
+                                           // btn-primary, btn-success, btn-light etc.
+$input-btn-focus-color-opacity: 1;         // Zorgt voor een donker grijs rand bij focus en gebruik van 'is-valid' of 'is-invalid'
+
+$input-placeholder-color: $gray-tint09;
+$input-padding-y: 8px;
+$input-padding-x: 16px;
+$input-line-height: 1.875;
+
+$btn-line-height: 2.125;
+$btn-disabled-opacity: 1;
+$enable-shadows: false;                    // Disable shadow for buttons when focus
+$btn-focus-width: 0px;                     // Disable shadow for buttons when focus
+                                           // zoals btn-primary, btn-success, btn-light etc.
+                                           // Zorgt om een grotere rand om de knop om meer accent te leggen op focus.
+
+$modal-inner-padding: 3rem;                // Padding applied to the modal body, ontwerp Sander
+$modal-dialog-margin: 1.5rem;              // 24px outer margins for smaller screens (mobile)
+$modal-md: 575px !default;
+
+$spinner-width: 1.5rem;                    // See _spinner.scss, close to ontwerp Sander
+$spinner-vertical-align: middle;           // Spinner centered vertically
+
+// breadcrumb
+$chevron-right: "data:image/svg+xml,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M13.9928 12L8.68945 6.69671L9.75011 5.63605L16.1141 12L9.75011 18.364L8.68945 17.3033L13.9928 12Z' fill='#00811F'/></svg>";
+$chevron-left: "data:image/svg+xml,<svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M6.91421 7.99996L10.4497 4.46443L9.74264 3.75732L5.5 7.99996L9.74264 12.2426L10.4497 11.5355L6.91421 7.99996Z' fill='#00811F'/></svg>";
+$breadcrumb-divider: url($chevron-right);
+$breadcrumb-divider-flipped: url($chevron-left);
+$breadcrumb-padding-y: 2rem;           // matches Figma parksaver design 32px white space above and under.
+$breadcrumb-padding-x: 0;              // matches rotterdam.nl
+$breadcrumb-margin-bottom: 0;
+
+
+$navbar-padding-y: 0;
+$navbar-nav-link-padding-x: 20px;
+
+// Volgens de nieuwe huisstijl 2021, ontwerp van Sander de Gans
+$table-striped-bg: $light;
+$table-striped-order: even;
+$table-border-color: $gray-tint04;
+$table-group-separator-color: transparent;
+$table-cell-padding-x: 16px;
+$table-cell-padding-y: 12px;
+$table-cell-padding-x-sm: 16px;
+$table-cell-padding-y-sm: 12px;
+
+// Modal popup and modal close button
+$btn-close-color: white;
+$btn-close-width: 32px;                    // Content svg without padding should take up space 32x32px.
+$btn-close-height: 32px;                   // Content svg without padding should take up space 32x32px.
+$btn-close-bg: url("data:image/svg+xml,<svg width='32' height='32' viewBox='0 0 32 32' fill='black' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M26.6077 6.80752L25.1935 5.39331L16.0011 14.5857L6.80875 5.39331L5.39453 6.80752L14.5869 15.9999L5.39453 25.1923L6.80874 26.6065L16.0011 17.4141L25.1935 26.6065L26.6077 25.1923L17.4153 15.9999L26.6077 6.80752Z' fill='white'/></svg>");
+                                           // Change default svg to Figma In10 svg close button.
+$btn-close-opacity: 1;                     // Make background completely black.
+$modal-header-padding: 0px 0px 28px 48px;  // * top and right 0, to make close button touch edge of modal.
+                                           // * Bottom 28px, to give white space between the header and the content below.
+                                           // * Indent left 48px.
+
+// Alerts
+$alert-padding-x: 1.25em;                // 20px, matches Figma In10 design.
+$alert-padding-y: 1.25em;                // 20px, matches Figma In10 design.
+$alert-link-font-weight: $font-weight-normal;
+
+// dropdown
+$enable-caret: false;
+
+// validation
+$valid-color: $success;
+$invalid-color: #B53322;                   // WCAG contrast compliant
+$enable-validation-icons: false;           // Hide Bootstrap validation icons within the input
+$form-feedback-valid-color: $body-color;   // Border remains its color, so only the bottom will be green (done by 'is-valid')
+$form-feedback-invalid-color: $body-color; // Border remains its color, so only the bottom will be red (done by 'is-invalid')
+
+// Custom alert text/background/border override colors, voor gebruik in _alerts.scss.
+$alert-danger-color: $invalid-color;
+$alert-danger-background-color: rgba(227, 97, 77, 0.1); // #E3614D/$danger
+$alert-danger-border-color: rgba(227, 97, 77, 0.25); // #E3614D/$danger
+$alert-info-color: #00689E;
+$alert-info-background-color: rgba(23, 145, 212, 0.1); // #1791D4/$info
+$alert-info-border-color: rgba(23, 145, 212, 0.25); // #1791D4/$info
+$alert-success-color: #00602E;
+$alert-success-background-color: rgba(0, 129, 31, 0.1); // #00811F/$green-tint01
+$alert-success-border-color: rgba(0, 129, 31, 0.25); // #00811F/$green-tint01
+$alert-warning-color: #A65600;
+$alert-warning-background-color: rgba(237, 181, 0, 0.1); // #EDB500/$warning
+$alert-warning-border-color: rgba(237, 181, 0, 0.25); // #EDB500/$warning
+
+// Tiles
+$card-height: 100%;
+
+// Labels
+$dt-font-weight: 700;
