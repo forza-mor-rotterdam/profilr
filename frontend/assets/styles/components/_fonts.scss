@@ -31,31 +31,31 @@
  */
 @font-face {
   font-family: "Bolder";
-  src: url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-Light.woff2") format("woff2"),
-       url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-Light.woff") format("woff");
+  src: url("./fonts/bolder/Bolder-Light.woff2") format("woff2"),
+       url("./fonts/bolder/Bolder-Light.woff") format("woff");
   font-style: normal;
   font-weight: 300;
 }
 
 @font-face {
   font-family: "Bolder";
-  src: url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-Regular.woff2") format("woff2"),
-       url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-Regular.woff") format("woff");
+  src: url("./fonts/bolder/Bolder-Regular.woff2") format("woff2"),
+       url("./fonts/bolder/Bolder-Regular.woff") format("woff");
   font-style: normal; // 400
 }
 
 @font-face {
   font-family: "Bolder";
-  src: url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-RegularItalic.woff2") format("woff2"),
-       url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-RegularItalic.woff") format("woff");
+  src: url("./fonts/bolder/Bolder-RegularItalic.woff2") format("woff2"),
+       url("./fonts/bolder/Bolder-RegularItalic.woff") format("woff");
   font-style: italic;
   font-weight: normal; // 400
 }
 
 @font-face {
   font-family: "Bolder";
-  src: url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-Bold.woff2") format("woff2"),
-       url("#{$rotterdam-ui-path}/fonts/bolder/Bolder-Bold.woff") format("woff");
+  src: url("./fonts/bolder/Bolder-Bold.woff2") format("woff2"),
+       url("./fonts/bolder/Bolder-Bold.woff") format("woff");
   font-style: normal;
   font-weight: bold; // 700
 }

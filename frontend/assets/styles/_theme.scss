@@ -1,45 +1,27 @@
-/**
- * Customizes Bootstrap to match the style of Rotterdam.
- */
- $rotterdam-ui-path: '.';
-
- // grijstinten zoals bekend bij In10 design
- // met overeenkomstige bootstrap naam
-$gray-tint01: #EFF4F6;  // (steunkleur), $gray-100
+// grijstinten
+$gray-tint01: #EFF4F6;
 $gray-tint02: #E4EEF1;
-$gray-tint03: #DBE7EA;  // unused, $gray-200
-$gray-tint04: #CAD6DA;  // $gray-300
-$gray-tint05: #B6C4C8;  // unused, $gray-400
-$gray-tint06: #9DAFB6;  // $gray-500
-$gray-tint07: #8D9DA4;  // unused, but $gray-600 defines bootstrap gray
-$gray-tint08: #7C8B90;  // $gray-700 (input border)
-$gray-tint09: #65757B;  // $gray-800 (placeholder), defines bootstrap gray-dark
+$gray-tint03: #DBE7EA;
+$gray-tint04: #CAD6DA;
+$gray-tint05: #B6C4C8;
+$gray-tint06: #9DAFB6;
+$gray-tint07: #8D9DA4;
+$gray-tint08: #7C8B90;
+$gray-tint09: #65757B;
 // tint10 #536165 unused
-$gray-tint11: #404B4F;  // $gray-900, (softer typography), defines bootstrap dark
+$gray-tint11: #404B4F;
 
-// groentinten zoals bekend bij In10 design
+// groentinten
 $green-tint01: #00811F;
 $green-tint02: #006E32;
 $green-tint03: #006E32;
 
-// magentatinten zoals bekend bij In10 design
+// magentatinten
 $magenta-tint01: #C93675;
 $magenta-tint02: #A12B5E;
 
-// herdefinieer de bootstrap grijswaarden op basis van in10 palet
-// in10 heeft 11 kleuren, bootstrap maar 9, dus tint2 en tint10 passen er niet tussen
 $white:    #fff;
-$gray-100: $gray-tint01;  // (steunkleur), defines bootstrap light
-$gray-200: $gray-tint03;  //
-$gray-300: $gray-tint04;  // bootstrap default border color
-$gray-400: $gray-tint05;  //
-$gray-500: $gray-tint06;  //
-$gray-600: $gray-tint07;  // defines bootstrap gray
-$gray-700: $gray-tint08;  // (input border)
-$gray-800: $gray-tint09;  // (placeholder), defines bootstrap gray-dark
-$gray-900: $gray-tint11;  // (softer typography), defines bootstrap dark
 $black:    #000;
-// bootstrap combineert dit in een $grays tabel waar we niet aanzitten
 
 // bootstrap primaire kleuren, moeten nog afgestemd worden op in10 palet
 // nodig voor de thema's.
@@ -50,53 +32,22 @@ $pink:    #d63384;
 $red:     #dc3545;
 $orange:  #fd7e14;
 $yellow:  #ffc107;
-$green:   $green-tint01;    // in10 green, beetje anders dan basis bootstrap groen
+$green:   $green-tint01;
 $teal:    #20c997;
 $cyan:    #0dcaf0;
-// bootstrap combineert dit in $colors tabel waar we niet aanzitten
 
-// override bootstrap theme colors
-// bootstrap zal wit en zwart bijmengen om bijpassende kleuren voor
-// bijvoorbeeld alert-success te maken.
-$primary:       $green;               // in10 primary color
-$secondary:     $black;               // in10: tweede steunkleur
-$success:       $green;               // in10 base green
-$info:          #1791D4;              // in10 secondary blue tint 01
-$warning:       #EDB500;              // in10 secondary dark yellow tint 01
-$danger:        #E3614D;              // in10 secondary orange tint 01
-$light:         $gray-100;            // in10: derde steunkleur
-$dark:          $gray-900;            // in10: softer typography
-
-$action:        $magenta-tint01;      //custom theme color: in10 call-to-action
-
-// override bootstrap map, including our custom theme color
-$theme-colors: (
-  "primary":    $primary,
-  "secondary":  $secondary,
-  "success":    $success,
-  "info":       $info,
-  "warning":    $warning,
-  "danger":     $danger,
-  "light":      $light,
-  "dark":       $dark,
-  "action":     $action,
-  // Tint04, tint06 are not intended for buttons or alerts.
-  // Note how bootstrap generates border-color CSS for $theme-colors,
-  // but not for $utilities-colors.
-  "gray-tint04": $gray-tint04,
-  "gray-tint06": $gray-tint06
-);
-
-
-// Hoeveel wit/zwart bijmengen in info/danger/warning/success themas voor alerts.
-// in10 heeft iets meer saturatie. Dat kan je bereiken door in color-scale
-// minder zwart bij te mengen, maar dan ziet bootstrap contrast voor warning
-// te laag worden, en gaat die daar vol-automatisch een veel donkerer kleur
-// voor gebruiken.   Misschien alleen voor warning expliciet foreground kleur zetten?
-$alert-bg-scale:       -90%;    // -80% default
-$alert-border-scale:   -80%;    // -70% default
-$alert-color-scale:    +40%;    // 40% default
-
+// theme-colors
+$primary:           $green;
+$primary-active:    $green-tint02;
+$secondary:         $black;
+$success:           $green;
+$info:              #1791D4;
+$warning:           #EDB500;
+$danger:            #E3614D;
+$light:             $gray-tint01;
+$dark:              $gray-tint11;
+$action:            $magenta-tint01;
+$action-active:     $magenta-tint02;      
 
 // Grid breakpoints
 //
@@ -136,35 +87,31 @@ $container-margin: (
 
 $container-padding-x: 1.5rem;
 
-
-
 // In10 wants square corners.  used for buttons, accordeons ,etc
 $border-radius: 0;
 $border-radius-sm: 0;
 $border-radius-lg: 0;
 $border-radius-pill: 0;
-$border-color: $gray-300;             // bootstrap default is $gray-300
-$hover-border-color: $green;          // Randkleur van tekstvelden bij hover.
-$focus-border-color: $gray-900;       // Randkleur van tekstvelden bij focus.
-$disabled-border-color: $gray-700;    // Randkleur van tekstvelden bij disabled.
+$border-color: $gray-tint04;
+$hover-border-color: $green;
+$focus-border-color: $gray-tint11;
+$disabled-border-color: $gray-tint08;
 
-$font-weight-normal: 400; // rotterdam.nl at least for paragraph, matches bootstrap.
-// bootstrap has font-size-base 1rem=16px, which matches desing sander.  Don't touch.
-$line-height-base:            1.75 !default;
+$font-weight-normal: 400;
+$line-height-base: 1.75 !default;
 
 // voor footer links, <small> en input field error messages
-$small-font-size:             0.75rem;
+$small-font-size: 0.75rem;
 
 // color matches rotterdam.nl, hover and decoration not consistent between sites
-$link-color: $green;
+$link-color: $primary;
 $link-decoration: underline;
-$link-hover-color: #00602E;
+$link-hover-color: $primary-active;
 
 $font-family-sans-serif: "Bolder", Arial, sans-serif;
 
-$headings-font-weight: 700;     // based on https://www.figma.com/file/Hkj60vCTa0K5L79nXFFt5R/Parksaver-test?node-id=1%3A3 "Parkeervergunning bewoners"
-// bootstrap has $headings-line-height: 1.2; no need to override
-$h1-font-size: calc(1.375rem + 1.5vw); // // based on https://www.figma.com/file/Hkj60vCTa0K5L79nXFFt5R/Parksaver-test?node-id=1%3A3 "Parkeervergunning bewoners"
+$headings-font-weight: 700;     
+$h1-font-size: calc(1.375rem + 1.5vw);
 $h2-font-size: calc(1.275rem + 0.3vw);
 $h3-font-size: 1.25rem;
 $h4-font-size: 1.125rem;
@@ -172,9 +119,8 @@ $h5-font-size: 1rem;
 $h6-font-size: 0.75rem;
 $font-size-base: 1rem;
 
-
-$body-color: $gray-900;
-$text-muted: $gray-800;
+$body-color: $gray-tint11;
+$text-muted: $gray-tint09;
 
 // Form text
 // It should be explicitly associated with the form control it relates to using the aria-describedby attribute.
@@ -186,7 +132,7 @@ $form-text-color: $body-color;
 // Checkbox
 $form-check-input-checked-bg-image: url("data:image/svg+xml, <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M9.86006 16.144L19.406 6.59806L20.4667 7.65873L9.86006 18.2653L3.49609 11.9014L4.55675 10.8407L9.86006 16.144Z' fill='white'/></svg>");
 $form-check-input-border-radius: $border-radius;
-$form-check-input-border: 1px solid $gray-700;
+$form-check-input-border: 1px solid $gray-tint08;
 $form-check-input-width: 1.5em;
 $form-check-input-focus-border: $green;
 $form-check-input-focus-box-shadow: 0 0 0 1px $green;
@@ -196,19 +142,19 @@ $form-check-radio-checked-bg-image: url("data:image/svg+xml, <svg width='24' hei
 
 // Combobox
 $form-select-focus-box-shadow: none;
-$form-select-indicator: url("data:image/svg+xml, <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>  <path fill-rule='evenodd' clip-rule='evenodd' d='M15.75 9.75L12 4.5L8.25 9.75H15.75ZM15.75 14.25L12 19.5L8.25 14.25H15.75Z' fill='#{$gray-800}'/>  </svg>");
+$form-select-indicator: url("data:image/svg+xml, <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>  <path fill-rule='evenodd' clip-rule='evenodd' d='M15.75 9.75L12 4.5L8.25 9.75H15.75ZM15.75 14.25L12 19.5L8.25 14.25H15.75Z' fill='#{$gray-tint09}'/>  </svg>");
 $form-select-bg-size: 24px 24px;                        // size of select indicator (icon)
 $form-select-bg-position: right 10px center !default;   // position of select indicator (icon)
-$form-select-disabled-bg: $gray-100;
+$form-select-disabled-bg: $gray-tint01;
 $form-select-disabled-border-color: $disabled-border-color;
-$form-select-disabled-color: $gray-600;
+$form-select-disabled-color: $gray-tint07;
 
 // Textual controls
-$input-disabled-bg: $gray-100;
+$input-disabled-bg: $gray-tint01;
 $input-disabled-border-color: $disabled-border-color;
-$input-disabled-color: $gray-600;
+$input-disabled-color: $gray-tint07;
 $input-box-shadow: inset 0 0;
-$input-border-color: $gray-700;
+$input-border-color: $gray-tint08;
 $input-focus-width: 1px;                   // Zorgt voor een donker grijs rand met de juiste dikte bij focus en gebruik van 'is-valid' of 'is-invalid'
 $input-focus-box-shadow: 0 0 5px #157631;
 $input-focus-border-color: $green;         // Focus kleur van tekstvelden.
@@ -217,13 +163,13 @@ $input-btn-focus-color: $green;            // Kleur van border indien een knop m
                                            // btn-primary, btn-success, btn-light etc.
 $input-btn-focus-color-opacity: 1;         // Zorgt voor een donker grijs rand bij focus en gebruik van 'is-valid' of 'is-invalid'
 
-$input-placeholder-color: $gray-800;
+$input-placeholder-color: $gray-tint09;
 $input-padding-y: 8px;
 $input-padding-x: 16px;
-$input-line-height: 1.875;                 // 48px, matches Figma In10 design.
+$input-line-height: 1.875;
 
-$btn-line-height: 2.125;                   // 48px, matches Figma In10 design.
-$btn-disabled-opacity: 1;                  // Full opacity in order to match the Figma In10 design.
+$btn-line-height: 2.125;
+$btn-disabled-opacity: 1;
 $enable-shadows: false;                    // Disable shadow for buttons when focus
 $btn-focus-width: 0px;                     // Disable shadow for buttons when focus
                                            // zoals btn-primary, btn-success, btn-light etc.

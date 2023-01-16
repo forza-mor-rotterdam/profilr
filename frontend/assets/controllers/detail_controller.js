@@ -5,11 +5,19 @@ export default class extends Controller {
         incidentX: String,
         incidentY: String,
         areaList: String,
-        currentDistrict: String
+        currentDistrict: String,
+        incidentObject: Object
     }
     static targets = ['area', 'district', 'selectedImage', 'thumbList', 'imageSliderContainer']
     
+    Mapping = {
+        'fotos': 'media',
+    };
+	
     initialize() {
+        console.log('incidentObject', this.incidentObjectValue)
+        console.log('mapped incidentObject', this.mappingFunction(this.incidentObjectValue))
+
         if(this.currentDistrictValue) {
             let currentArea = JSON.parse(this.areaListValue).find(area => area.buurten.some((district) => district.code === this.currentDistrictValue))
             this.areaTarget.textContent = currentArea.omschrijving
@@ -34,6 +42,27 @@ export default class extends Controller {
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         const marker = L.marker(incidentCoordinates).addTo(map);
     }
+
+    showString(event) {
+        console.log('showString', event)
+        return event;
+    }
+
+    mappingFunction(object) {
+        console.log(this.Mapping)
+        const result = {};
+        for (const key in this.Mapping) {
+			const newKey = this.Mapping[key];
+            console.log('newKey', newKey)
+            if (object.hasOwnProperty(key)) {
+                result[newKey] = object[key];
+            } else {
+                result[newKey] = null;
+            }
+        }
+        return result;
+    }
+
 
     onTwoFingerDrag (e) {
         if (e.type === 'touchstart' && e.touches.length === 1) {
