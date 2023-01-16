@@ -241,6 +241,10 @@ textarea {
         position: absolute;
         right: 20px;
         top: 25px;
+        margin-left: -30px;
+        cursor: pointer;
+        width: 20px;
+        height: 14px;
 
         &-active {
             opacity: 0.5;
