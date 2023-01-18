@@ -1,16 +1,13 @@
 import copy
 
+from apps.services import incident_api_service, profile_api_service
 from django.conf import settings
-from profilr_api_services import (
-    MSB_DEFAULT_FILTERS,
-    msb_api_service,
-    profilr_api_service,
-)
+from profilr_api_services import MSB_DEFAULT_FILTERS
 
 DEFAULT_PROFILE = {"filters": MSB_DEFAULT_FILTERS}
 
 
-class MSBUser:
+class IncidentUser:
     _is_authenticated = None
     _token = None
     _profile = None
@@ -25,9 +22,9 @@ class MSBUser:
         profile = request.session.get("profile", copy.deepcopy(DEFAULT_PROFILE))
         try:
             if settings.ENABLE_PROFILR_API:
-                profile = profilr_api_service.get_profile(token)
+                profile = profile_api_service.get_profile(token)
             else:
-                msb_api_service.get_user_info(token)
+                incident_api_service.get_user_info(token)
         except Exception:
             self._is_authenticated = False
 
@@ -46,7 +43,7 @@ class MSBUser:
     def set_profile(self, profile):
         self._request.session["profile"] = profile
         if settings.ENABLE_PROFILR_API:
-            profile = profilr_api_service.set_profile(self.token, profile)
+            profile = profile_api_service.set_profile(self.token, profile)
 
         self._profile = profile
         return self._profile
@@ -60,16 +57,14 @@ class MSBUser:
         return self._is_authenticated
 
 
-class MSBAuthenticationBackend:
+class IncidentAuthenticationBackend:
     def authenticate(self, request, username=None, password=None):
-        success, token = msb_api_service.login(
+        success, token = incident_api_service.login(
             username,
             password,
         )
-        print(success)
-        print(token)
         request.session["token"] = token
-        return (True, MSBUser(request)) if success else (False, token)
+        return (True, IncidentUser(request)) if success else (False, token)
 
 
-authenticate = MSBAuthenticationBackend().authenticate
+authenticate = IncidentAuthenticationBackend().authenticate

@@ -1,33 +1,17 @@
 import copy
-import mimetypes
-from base64 import b64encode
 from collections import Counter
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
-from apps.profilr.forms import HANDLED_OPTIONS, CreateIncidentForm, HandleForm
+from apps.profilr.forms import HANDLED_OPTIONS, HandleForm
 from apps.profilr.utils import get_filter_options
+from apps.services import incident_api_service
+from django.conf import settings
 from django.core.cache import cache
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.utils.html import format_html
-from django.utils.safestring import mark_safe
-from profilr_api_services import MSB_VALID_FILTERS, msb_api_service
-from profilr_api_services.conf import conf
-
-
-def encode_b64(value):
-    value.file.seek(0)
-    mime_type, encoding = mimetypes.guess_type(value.name)
-    if not mime_type:
-        mime_type = "image/png"
-    data = value.file.read()
-    image_data = bytes("data:" + mime_type + ";base64,", encoding="UTF-8") + b64encode(
-        data
-    )
-    return image_data  # or str(image_data, 'utf-8')
-
+from profilr_api_services import MSB_VALID_FILTERS
 
 PAGE_SIZE = 10
 
@@ -57,7 +41,7 @@ def root(request):
 
 
 def logout(request):
-    msb_api_service.logout()
+    incident_api_service.logout()
     request.session.flush()
     return redirect(reverse("root"))
 
@@ -73,12 +57,10 @@ def login(request):
             username=request.POST.get("_username"),
             password=request.POST.get("_password"),
         )
-        print(result)
         if success:
             return redirect(reverse("incident_index"))
         else:
             error = result
-    print("render")
     return render(
         request,
         "login/index.html",
@@ -105,7 +87,7 @@ def filter(request):
             }
         profile = request.user.set_profile(profile)
 
-    valid_filters = msb_api_service.validate_filters(profile.get(FILTERS))
+    valid_filters = incident_api_service.validate_filters(profile.get(FILTERS))
 
     filters = copy.deepcopy(valid_filters)
 
@@ -114,7 +96,7 @@ def filter(request):
     filters_count = len([vv for k, v in filters.items() for vv in v])
     incident_count = 0
     if filters_count > 0:
-        incidents = msb_api_service.get_list(
+        incidents = incident_api_service.get_list(
             user_token, data=valid_filters, no_cache=True
         )
         incident_count = len(incidents)
@@ -158,14 +140,14 @@ def filter(request):
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
-    valid_filters = msb_api_service.validate_filters(profile.get("filters"))
+    valid_filters = incident_api_service.validate_filters(profile.get("filters"))
 
     filters_count = len([vv for k, v in valid_filters.items() for vv in v])
 
     # get incidents if we have filters
     incidents = []
     if filters_count > 0:
-        incidents = msb_api_service.get_list(
+        incidents = incident_api_service.get_list(
             user_token, data=valid_filters, no_cache=True
         )
 
@@ -198,94 +180,6 @@ def incident_index(request):
 
 
 @login_required
-def incident_create(request):
-    request.user.profile
-    request.user.token
-    foto_base64 = None
-    if request.POST:
-        form = CreateIncidentForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            # print(form.cleaned_data)
-            # print(request.FILES['foto'])
-            # foto = request.FILES['foto']
-            foto = form.cleaned_data.get("foto")
-            # with open(foto.file, "rb") as image_file:
-            #     encoded_string = base64.b64encode(image_file.read())
-            # print(foto.temporary_file_path)
-
-            # b64_img = base64.urlsafe_b64encode(foto.read()).decode('utf-8')
-
-            encode_b64(foto)
-
-            # image = ImageFile.open(foto)
-            # encodedBytes = base64.b64encode(image.read())
-            # b64_img = str(encodedBytes, "utf-8")
-
-            # b64_img = escape(b64_img)
-
-            # b64_img = base64.urlsafe_b64encode(b64_img)
-            # b64_img = base64.b64encode(foto.read()).decode('ascii')
-            # print(b64_img)
-
-            # with open(default_storage.path(foto.name), 'wb+') as image_file:
-            #     encoded_string = base64.b64encode(image_file.read())
-
-            # b64_img = encoded_string.decode('ascii')
-            # b64_img = encoded_string.decode('utf-8')
-
-            # print(b64_img)
-
-            # img = cv2.imread('test_image.jpg')
-            # jpg_img = cv2.imencode('.jpg', img)
-            # b64_string = base64.b64encode(jpg_img[1]).decode('utf-8')
-
-            # image = open(foto, 'rb') #open binary file in read mode
-            # image_read = image.read()
-            # image_64_encode = base64.b64encode(image_read)
-
-            # print(encoded_string)
-            # print(b64_img)
-            # data = {
-            #     "fotos": [{
-            #         "dataUrl": b64_img,
-            #         # "dataUrl": f"data:image/png;base64,{b64_img}",
-            #         "isEindsituatie": False,
-            #     }],
-            #     "huisnummer": "114",
-            #     "melderInformeren": False,
-            #     "meldingtype": "S",
-            #     "omschrijving": "Er ligt hier vuil op straat",
-            #     "onderwerp": "47",
-            #     "spoed": False,
-            #     "straat": "66400",
-            #     "x": 89789,
-            #     "y": 438634
-            # }
-            # result = msb_api_service.melding_aanmaken(user_token, data)
-            # print(result)
-            # foto = f"data:image/png;base64,{b64_img}"
-
-            # foto_base64 = format_html(mark_safe('iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='))
-            # foto_base64 = format_html(mark_safe(b64_img))
-            foto_base64 = format_html(mark_safe(""))
-            # return redirect(reverse("incident_create"))
-    else:
-        form = CreateIncidentForm()
-
-    # foto_base64 = format_html(mark_safe('iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='))
-    print(foto_base64)
-    return render(
-        request,
-        "incident/create.html",
-        {
-            "form": form,
-            "foto_base64": foto_base64,
-        },
-    )
-
-
-@login_required
 def incident_detail(request, id):
     return render(
         request,
@@ -301,8 +195,8 @@ def incident_detail_part(request, id):
     profile = request.user.profile
     user_token = request.user.token
 
-    incident = msb_api_service.get_detail(id, user_token)
-    categories = msb_api_service.get_onderwerpgroepen(user_token)
+    incident = incident_api_service.get_detail(id, user_token)
+    categories = incident_api_service.get_onderwerpgroepen(user_token)
     sub_cat_ids = {
         sub_cat.get("id"): cat
         for cat in categories
@@ -310,7 +204,7 @@ def incident_detail_part(request, id):
     }
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
     spoed_cache_key = f"incident_{incident.get('id')}_spoed"
-    areas = msb_api_service.get_wijken(user_token)
+    areas = incident_api_service.get_wijken(user_token)
 
     incident = {
         **incident,
@@ -335,7 +229,7 @@ def incident_detail_part(request, id):
 @login_required
 def incident_list_item(request, id):
     user_token = request.user.token
-    incident = msb_api_service.get_detail(id, user_token)
+    incident = incident_api_service.get_detail(id, user_token)
     spoed_cache_key = f"incident_{incident.get('id')}_spoed"
     incident = {
         **incident,
@@ -358,7 +252,7 @@ def incident_modal_handle(request, id, handled_type=None):
     if not handled_type:
         return HttpResponse("")
     user_token = request.user.token
-    incident = msb_api_service.get_detail(id, user_token)
+    incident = incident_api_service.get_detail(id, user_token)
     form = HandleForm(handled_type=handled_type)
     warnings = []
     errors = []
@@ -402,9 +296,9 @@ def incident_modal_handle(request, id, handled_type=None):
                     }
                 )
 
-            print(data)
-            result = msb_api_service.afhandelen(incident.get("id"), user_token, data)
-            print(result)
+            result = incident_api_service.afhandelen(
+                incident.get("id"), user_token, data
+            )
             if result.get("warnings"):
                 warnings = result.get("warnings")
             if result.get("errors"):
@@ -415,7 +309,7 @@ def incident_modal_handle(request, id, handled_type=None):
             form_submitted = True
             is_handled = not warnings and not errors
             warnings or errors
-            if not conf.MSB_ENABLE_MELDING_AFHANDELEN:
+            if not settings.ENABLE_MELDING_AFHANDELEN:
                 messages.append(
                     "In deze omgeving kunnen meldingen niet worden afgehanded!"
                 )
@@ -448,7 +342,7 @@ def image_thumbnail(request, id):
 
 @login_required
 def image_full(request, id, thumbnail=False):
-    blob = msb_api_service.get_foto(id, request.user.token, thumbnail)
+    blob = incident_api_service.get_foto(id, request.user.token, thumbnail)
     return FileResponse(blob)
 
 
