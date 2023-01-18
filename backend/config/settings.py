@@ -38,7 +38,6 @@ INSTALLED_APPS = (
     "health_check",
     "health_check.cache",
     "health_check.storage",
-    "profilr_api_services",
     # Apps
     "apps.profilr",
     "apps.health",
@@ -169,15 +168,27 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
-MSB_API_URL = os.getenv("MSB_API_URL", "https://diensten.rotterdam.nl")
-PROFILR_API_URL = os.getenv("PROFILR_API_URL", "https://api.profilr.forzamor.nl")
-PROFILR_API_HEALTH_URL = f"{PROFILR_API_URL}/health/"
-
-MSB_ENABLE_MELDING_AFHANDELEN = (
-    os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
+MSB_API_URL = os.getenv("MSB_API_URL")
+INCIDENT_API_URL = os.getenv("INCIDENT_API_URL", f"{MSB_API_URL}/sbmob/api")
+INCIDENT_API_HEALTH_CHECK_URL = os.getenv(
+    "INCIDENT_API_HEALTH_CHECK_URL", f"{MSB_API_URL}/health"
+)
+INCIDENT_API_SERVICE = os.getenv(
+    "INCIDENT_API_SERVICE", "profilr_api_services.IncidentAPIService"
 )
 
-MSB_ENABLE_AFDELING_RELATIES_ENDPOINT = (
+PROFILR_API_URL = os.getenv("PROFILR_API_URL")
+PROFILE_API_URL = os.getenv("PROFILE_API_URL", f"{PROFILR_API_URL}/v1")
+PROFILE_API_HEALTH_CHECK_URL = os.getenv(
+    "PROFILE_API_HEALTH_CHECK_URL", f"{PROFILR_API_URL}/health/"
+)
+PROFILE_API_SERVICE = os.getenv(
+    "PROFILE_API_SERVICE", "profilr_api_services.ProfileAPIService"
+)
+
+ENABLE_MELDING_AFHANDELEN = os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
+
+ENABLE_AFDELING_RELATIES_ENDPOINT = (
     os.getenv("ENABLE_AFDELING_RELATIES_ENDPOINT", False) in TRUE_VALUES
 )
 

@@ -5,7 +5,6 @@ from apps.profilr.views import (
     http_500,
     image_full,
     image_thumbnail,
-    incident_create,
     incident_detail,
     incident_detail_part,
     incident_index,
@@ -53,5 +52,4 @@ if settings.DEBUG:
     urlpatterns += [
         path("404/", http_404, name="404"),
         path("500/", http_500, name="500"),
-        path("incident/create", incident_create, name="incident_create"),
     ]
