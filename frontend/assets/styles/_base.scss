@@ -66,9 +66,11 @@ h6, .h6 {
     }
 }
 
-a {
+a,
+.link {
     color: $primary;
     text-decoration: underline;
+    cursor: pointer;
 
     &:hover,
     &:focus {
