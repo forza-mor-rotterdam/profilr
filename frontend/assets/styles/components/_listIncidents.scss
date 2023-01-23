@@ -35,6 +35,13 @@
             }
         }
     }
+
+    .btn-navigate {
+        &--small {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+    }
 }
 
 .container__list {
