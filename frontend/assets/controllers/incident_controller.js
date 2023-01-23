@@ -207,13 +207,13 @@ export default class extends Controller {
     }
 
     updateSwipeRestPosition(evt) {
-    
-        let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
-        if(differenceInX > -100 && differenceInX < 100) {
-            this.element.style.left = '0';
+        if(this.lastTouchPos) {
+            let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
+            if(differenceInX > -100 && differenceInX < 100) {
+                this.element.style.left = '0';
+            }
+            this.initialTouchPos = this.getGesturePointFromEvent(evt);
         }
-    
-        this.initialTouchPos = this.getGesturePointFromEvent(evt);
     }
 
     closeModal() {
