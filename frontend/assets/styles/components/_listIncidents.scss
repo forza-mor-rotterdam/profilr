@@ -54,9 +54,6 @@
         box-sizing: content-box;
         transition: height .3s ease-in-out, left .5s ease-out;
         min-height: 100px;
-        border-bottom: 1px solid $gray-tint04;
-        // scroll-snap-type: x mandatory;
-        // overflow-x: auto;
         touch-action: pan-y pinch-zoom;
         scrollbar-width: none;
         cursor: grab;
@@ -110,7 +107,8 @@
         .container__flex {
             display: flex;
             justify-items: flex-start;
-            
+            min-width: 300px;
+            min-height: 100px;
         }
 
         .container__image {
