@@ -9,6 +9,7 @@ export default class extends Controller {
     
      
     makeRoute(e) {
+        console.log('makeRoute', typeof(e.params.incidents))
         let routeUrl = "https://www.google.com/maps/dir"
 
         function handleCurrentLocation(pos) {
