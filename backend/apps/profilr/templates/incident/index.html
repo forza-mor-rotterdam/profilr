@@ -5,8 +5,8 @@
 {% block title %}Meldingen{% endblock %}
 
 {% block body %}
-    <turbo-frame id="incidents_list" src="{{ main_view }}"></turbo-frame>
-
+<turbo-frame id="base_frame">
+    <turbo-frame id="incidents_list" src="{% url 'incident_list_part' %}"></turbo-frame>
     {% include "snippets/filter.html" %}
-
+</turbo-frame>
 {% endblock %}

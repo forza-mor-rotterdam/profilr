@@ -1,8 +1,11 @@
-{% load webpack_static from profilr_tags %}
+{% extends 'base.html' %}
+{% block title %}{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }} mutatieregels{% endblock %}
 
-<turbo-frame id="incident_detail_part">
+{% comment %} {% block initial_src_url %}{% url 'mutation_lines_part' id %}{% endblock %} {% endcomment %}
+{% block body %}
+<turbo-frame id="base_frame" data-turbo-action="advance">
     <div>
-        <a href="/incident/{{ id }}" data-turbo-action="advance" target="_top" class="link--back">Terug</a>
+        <a href="{% url 'incident_detail' id %}" rel="next" class="link--back">Terug</a>
     </div>
     <div>
         <h1 class="h4">Mutatieregels</h1>
@@ -36,3 +39,4 @@
         
     </div>
 </turbo-frame>
+{% endblock %}

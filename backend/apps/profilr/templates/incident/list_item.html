@@ -79,8 +79,8 @@
 {% endblock %}
 
 {% block modal_body %}
-        <turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-src="{% url 'incident_modal_handle_part' incident.id %}" src="{% url 'incident_modal_handle_part' incident.id %}" laoding="lazy">
-        </turbo-frame>
+    <turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-src="{% url 'incident_modal_handle_part' incident.id %}" src="{% url 'incident_modal_handle_part' incident.id %}" loading="lazy">
+    </turbo-frame>
 {% endblock %}
 
 {% block after_modal_content %}

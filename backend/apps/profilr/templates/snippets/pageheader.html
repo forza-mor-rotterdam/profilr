@@ -1,7 +1,7 @@
 {% load webpack_static from profilr_tags %}
 <header data-testid="pageHeader">
     <div class="container">
-        <a href="/incident/">
+        <a href="{% url 'root' %}">
             <img src="{% webpack_static 'images/assets/images/logo-organisatie.svg' %}" alt="Logo organisatie" />
         </a>
     </div>
