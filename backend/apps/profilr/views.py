@@ -336,6 +336,25 @@ def incident_modal_handle(request, id, handled_type=None):
 
 
 @login_required
+def incident_mutation_lines(request, id):
+    request.user.profile
+    user_token = request.user.token
+
+    incident_api_service.get_detail(id, user_token)
+
+    mutation_lines = incident_api_service.get_mutatieregels(id, user_token)
+
+    return render(
+        request,
+        "incident/mutation_lines.html",
+        {
+            "id": id,
+            "mutationLines": mutation_lines,
+        },
+    )
+
+
+@login_required
 def image_thumbnail(request, id):
     return image_full(request, id, True)
 

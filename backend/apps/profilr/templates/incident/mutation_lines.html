@@ -1,0 +1,26 @@
+{% load webpack_static from profilr_tags %}
+
+<turbo-frame id="incident_detail_part">
+    <div>
+        <a href="/incident/{{ id }}" data-turbo-action="advance" target="_top" class="link--back">Terug</a>
+    </div>
+    <div>
+        <h1 class="h4">Mutatieregels</h1>
+    </div>
+    <div>
+        
+        <span>Melding {{ id }}</span>
+        <ul class="list__mutations">
+            {% for mutation in mutationLines %}
+                <li>
+                    <strong>{{ mutation.datum }} - {{ mutation.gebruiker }}</strong>
+                    <p>{{ mutation.opmerking }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+    <div>
+        <small>{{ id }}<br>{{ mutationLines }}</small>
+    </div>
+</turbo-frame>

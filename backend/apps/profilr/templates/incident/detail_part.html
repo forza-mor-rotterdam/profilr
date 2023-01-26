@@ -200,8 +200,9 @@
             <section class="section--seperated" data-testid="detailActions">
                 <div class="container__details">
                     <ul class="list-clean incident-meta-list">
-                        <!-- <li>
-                            <a href="#" class="link--file-text">
+                        
+                        <li>
+                            <a href="{% url 'mutation_lines' incident.id %}" data-turbo-action="advance" class="link--file-text">
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3.25 3.75H10.75V5.25H3.25V3.75Z" fill="#00811F"/>
                                     <path d="M10.75 6.75H3.25V8.25H10.75V6.75Z" fill="#00811F"/>
@@ -211,7 +212,8 @@
                                 </svg>
                                 Mutatieregels
                             </a>
-                        </li> -->
+                        </li>
+                        
                         <!-- <li>
                             <a href="#" class="link--file">
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
