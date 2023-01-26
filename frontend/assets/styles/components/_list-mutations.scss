@@ -1,11 +1,28 @@
 .list__mutations {
     @include list-clean;
     border-top: 1px solid $gray-tint04; 
-    li {
+    >li {
         border-bottom: 1px solid $gray-tint04;
         padding: 16px 0;
         p {
             margin: 8px 0 0;
+        }
+    }
+
+    dl {
+
+        dt,
+        dd {
+            display: block;
+            margin: 0;
+        }
+
+        dt {
+            font-weight: 700;
+        }
+
+        dd {
+            margin-bottom: .5rem;
         }
     }
 }
