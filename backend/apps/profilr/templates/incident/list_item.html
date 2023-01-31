@@ -22,7 +22,7 @@
         </button>
         <div class="wrapper__swipe">
             <div class="container__flex">
-                <a href="/incident/{{ incident.id }}">
+                <a href="/incident/{{ incident.id }}" aria-label="Bekijk melding {{ incident.id }}">
                     <div class="container__image">
                         {% if incident.fotos %}
                         {% with incident.fotos|first as first_foto %}
