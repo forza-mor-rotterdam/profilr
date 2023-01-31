@@ -96,6 +96,15 @@ a,
         @include has-icon();
     }
 
+    &.link--back {
+        @include has-icon();
+        margin-left: 20px;
+        > svg {
+            left: -20px;
+            transform: rotate(180deg);
+        }
+    }
+
     &.link--file {
         @include has-icon();
     }
