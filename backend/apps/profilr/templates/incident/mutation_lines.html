@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }} mutatieregels{% endblock %}
+
+{% comment %} {% block initial_src_url %}{% url 'mutation_lines_part' id %}{% endblock %} {% endcomment %}
+{% block body %}
+<turbo-frame id="base_frame" data-turbo-action="advance">
+    <div>
+        <a href="{% url 'incident_detail' id %}" data-turbo-action="advance" class="link--back">Terug</a>
+    </div>
+    <div>
+        <h1 class="h4">Mutatieregels</h1>
+    </div>
+    <div>
+        
+        <span>Melding {{ id }}</span>
+        <ul class="list__mutations">
+            {% for mutation in mutationLines %}
+                <li>
+                    <details>
+                        <summary>
+                            <strong>{{ mutation.datum }} - {{ mutation.gebruiker }}</strong>
+                            <p>{{ mutation.opmerking }}</p>
+                        </summary>
+                        {% if mutation.details|length > 0 %}
+                            <dl>
+                                {% for detail in mutation.details %}
+                                    {% if detail.key and detail.value %}
+                                        <dt>{{ detail.key }}</dt>
+                                        <dd>{{ detail.value }}</dd>
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
+                            
+                        {% endif %}
+                    </details>
+                </li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+</turbo-frame>
+{% endblock %}

@@ -4,7 +4,7 @@
         "@babel/preset-env": "^7.16.0",
         "@hotwired/stimulus": "^3.0.0",
         "@hotwired/stimulus-webpack-helpers": "^1.0.1",
-        "@hotwired/turbo": "^7.0.1",
+        "@hotwired/turbo": "^7.2.4",
         "babel-loader": "^9.1.0",
         "copy-webpack-plugin": "^11.0.0",
         "core-js": "^3.23.0",

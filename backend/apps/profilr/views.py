@@ -158,7 +158,7 @@ def incident_list(request):
 
     return render(
         request,
-        "incident/list.html",
+        "incident/part_list.html",
         {
             "incidents": incidents,
             "filters_count": filters_count,
@@ -168,30 +168,7 @@ def incident_list(request):
 
 
 @login_required
-def incident_index(request):
-    return render(
-        request,
-        "incident/index.html",
-        {
-            "main_view": reverse("incident_list_part"),
-            "fullpage_view": reverse("filter_part"),
-        },
-    )
-
-
-@login_required
 def incident_detail(request, id):
-    return render(
-        request,
-        "incident/detail.html",
-        {
-            "id": id,
-        },
-    )
-
-
-@login_required
-def incident_detail_part(request, id):
     profile = request.user.profile
     user_token = request.user.token
 
@@ -215,7 +192,7 @@ def incident_detail_part(request, id):
 
     return render(
         request,
-        "incident/detail_part.html",
+        "incident/detail.html",
         {
             "id": id,
             "incident": incident,
@@ -331,6 +308,26 @@ def incident_modal_handle(request, id, handled_type=None):
                 "handled_type": handled_type,
                 "is_handled": is_handled,
             },
+        },
+    )
+
+
+@login_required
+def incident_mutation_lines(request, id):
+    request.user.profile
+    user_token = request.user.token
+
+    incident = incident_api_service.get_detail(id, user_token)
+
+    mutation_lines = incident_api_service.get_mutatieregels(id, user_token)
+
+    return render(
+        request,
+        "incident/mutation_lines.html",
+        {
+            "id": id,
+            "mutationLines": mutation_lines,
+            "incident": incident,
         },
     )
 
