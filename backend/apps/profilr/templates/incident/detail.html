@@ -7,7 +7,7 @@
 
 {% block before_modal_content %}
 
-<turbo-frame id="base_frame">
+<turbo-frame id="base_frame" data-turbo-action="advance">
     <div  data-controller="incident" data-action="cancelHandle->incident#cancelHandleHandler" >
         <div 
             data-controller="detail"
