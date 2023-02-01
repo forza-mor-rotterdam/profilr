@@ -43,11 +43,6 @@ export default class extends Controller {
         const marker = L.marker(incidentCoordinates).addTo(map);
     }
 
-    showString(event) {
-        console.log('showString', event)
-        return event;
-    }
-
     mappingFunction(object) {
         console.log(this.Mapping)
         const result = {};
