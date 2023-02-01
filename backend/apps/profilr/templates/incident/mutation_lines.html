@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load to_date from profilr_tags %}
 {% block title %}{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }} mutatieregels{% endblock %}
 
 {% comment %} {% block initial_src_url %}{% url 'mutation_lines_part' id %}{% endblock %} {% endcomment %}
@@ -20,14 +21,16 @@
         <span>Melding {{ id }}</span>
         <ul class="list__mutations">
             {% for mutation in mutationLines %}
-                <li>
+                <li data-controller="datetime" data-datetime-date-object-value="{{ mutation.datum }}">
                     <details>
                         <summary>
-                            <strong>{{ mutation.datum }} - {{ mutation.gebruiker }}</strong>
+                            <strong>{{ mutation.datum|to_date|date:"d-m-Y" }} <span data-datetime-target="timeHoursMinutes"></span> - {{ mutation.gebruiker }}</strong>
                             <p>{{ mutation.opmerking }}</p>
                         </summary>
                         {% if mutation.details|length > 0 %}
                             <dl>
+                                <dt>Datum</dt>
+                                <dd>{{ mutation.datum|to_date|date:"d-m-Y" }} <span data-datetime-target="timeHoursMinutes2"></span></dd>
                                 {% for detail in mutation.details %}
                                     {% if detail.key and detail.value %}
                                         <dt>{{ detail.key }}</dt>
