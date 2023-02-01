@@ -192,6 +192,18 @@ button[class="icon"] {
                 padding: 0;
             }
         }
+
+        &--small {
+            span {
+                padding: 0 2px;
+            }
+        }
+    }
+
+    &-navigate--small {
+        span {
+            padding: 0 16px;
+        }
     }
 
     &-textlink {
