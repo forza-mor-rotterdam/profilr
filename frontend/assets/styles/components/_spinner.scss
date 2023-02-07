@@ -26,11 +26,12 @@ turbo-frame {
             width: 60px;
             height: 60px;
             animation: spin 2s linear infinite;
-            left: calc(50% - 15px);
-            top: calc(50% - 15px);
+            left: calc(50% - 30px);
+            top: calc(50% - 30px);
             display: block;
             position: fixed;
             z-index: 2001;
+            box-sizing: border-box;
         }
     }
 
@@ -47,6 +48,8 @@ turbo-frame {
                 border-top: 4px solid rgba(0, 129, 31, 0.5);
                 width: 30px;
                 height: 30px;
+                left: calc(50% - 15px);
+                top: calc(50% - 15px);
                 position: absolute;
             }
         }
