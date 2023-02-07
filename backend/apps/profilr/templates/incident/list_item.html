@@ -32,26 +32,27 @@
                             <div class="background-image" style="background-image: url('{% webpack_static 'icons/assets/icons/noimage.svg' %}'); background-size: 40%;"></div>
                         {% endif %}
                     </div>
-                </a>
-                <div class="container__info">
-                    {# <a href="/incident/{{ incident.id }}/handle"> #}
-                        <div class="incident__header">
-                            <h2>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {% if incident.locatie.adres.huisnummer %}{{ incident.locatie.adres.huisnummer }}{%endif%}</h2>
-                            {% if incident.spoed %}<span class="icon icon--warning">{% endif %}</span>
-                        </div>
+                
+                    <div class="container__info">
+                        {# <a href="/incident/{{ incident.id }}/handle"> #}
+                            <div class="incident__header">
+                                <h2>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {% if incident.locatie.adres.huisnummer %}{{ incident.locatie.adres.huisnummer }}{%endif%}</h2>
+                                {% if incident.spoed %}<span class="icon icon--warning">{% endif %}</span>
+                            </div>
 
-                        <span class="incident__category">
-                            {{ incident.onderwerp.omschrijving }}
-                        </span>
-                        <div class="incident__moment">
-                            <span>{{ incident.status }}</span>
-                            <span data-incident-target="incidentDate">
-                                {{ incident.datumMelding|to_date|date:"d-M-Y" }} 
-                                {{ incident.datumMelding|to_date|date:"H:i" }}
+                            <span class="incident__category">
+                                {{ incident.onderwerp.omschrijving }}
                             </span>
-                        </div>
-                    {# </a> #}
-                </div>
+                            <div class="incident__moment">
+                                <span>{{ incident.status }}</span>
+                                <span data-incident-target="incidentDate">
+                                    {{ incident.datumMelding|to_date|date:"d-M-Y" }} 
+                                    {{ incident.datumMelding|to_date|date:"H:i" }}
+                                </span>
+                            </div>
+                        {# </a> #}
+                    </div>
+                </a>
             </div>
         </div>
         <button

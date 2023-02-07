@@ -104,10 +104,15 @@
         }
 
         .container__flex {
-            display: flex;
-            justify-items: flex-start;
             min-width: 300px;
             min-height: 100px;
+            
+            a {
+                display: flex;
+                justify-items: flex-start;
+                color: inherit;
+                text-decoration: none;
+            }
         }
 
         .container__image {
