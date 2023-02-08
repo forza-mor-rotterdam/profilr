@@ -266,6 +266,14 @@
                             >
                                 Afhandelen
                             </button>
+                            <button 
+                                class="btn btn-tertiary"
+                                data-id="{{ incident.id }}"
+                                data-incident-is-finished-param = false
+                                data-action="incident#openModal"
+                            >
+                                Niet opgelost
+                            </button>
                         </div>
                     {% endif %}
                 </div>
