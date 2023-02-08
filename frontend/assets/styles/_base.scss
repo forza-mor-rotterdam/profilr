@@ -183,6 +183,30 @@ section {
     &.section--seperated {
         padding: 1rem 0 0.75rem;
         border-bottom: 1px solid $gray-tint04;
+
+        &__no-border-bottom {
+            border-bottom: 0;
+        }
+    }
+}
+
+// STICKY
+
+.has-sticky-footer {
+    padding-bottom: 130px;
+}
+.sticky {
+    position: fixed;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    left: 0;
+    background-color: white;
+    z-index: 2000;
+    
+    &--bottom {
+        bottom: 0;
+        border-top: 1px solid $gray-tint04;
     }
 }
 
