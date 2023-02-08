@@ -199,7 +199,6 @@ def incident_detail(request, id):
             "groupedSubjects": categories,
             "areas": areas,
             "profile": profile,
-            "environment": settings.ENVIRONMENT,
         },
     )
 

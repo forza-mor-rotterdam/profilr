@@ -8,6 +8,7 @@
 {% block before_modal_content %}
 
 <turbo-frame id="base_frame" data-turbo-action="advance">
+    1 {{ ENVIRONMENT }}
     <div>
         <a href="{% url 'incident_index' %}" data-turbo-action="advance" class="link--back" aria-label="Terug">
             <svg width="25" height="16" viewBox="0 0 25 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,7 +24,7 @@
             data-detail-incident-y-value="{{ incident.locatie.y }}"
             data-detail-area-list-value="{{ areas|json_encode }}"
             data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
-            {% if incident.magAfhandelen or 'development' in environment %} class="has-sticky-footer" {% endif %}
+            {% if incident.magAfhandelen or ENVIRONMENT == 'development' %} class="has-sticky-footer" {% endif %}
         >
             <section class="section--seperated" data-testid="detailPhotoviewer" {% if incident.fotos|length < 2 %}style="border: 0;"{% endif %}>
                 <div class="full-width">
@@ -257,7 +258,7 @@
                         </li>
                         {% endif %}
                     </ul>
-                    {% if incident.magAfhandelen or 'development' in environment %}
+                    {% if incident.magAfhandelen or ENVIRONMENT == 'development' %}
                     <div class="sticky sticky--bottom">
                         <div class="form-row">
                             <button 
