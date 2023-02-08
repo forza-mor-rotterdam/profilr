@@ -8,6 +8,14 @@
 {% block before_modal_content %}
 
 <turbo-frame id="base_frame" data-turbo-action="advance">
+    <div>
+        <a href="{% url 'incident_index' %}" data-turbo-action="advance" class="link--back">
+            <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99275 6.99995L0.689453 1.69665L1.75011 0.635986L8.11407 6.99995L1.75011 13.3639L0.689453 12.3032L5.99275 6.99995Z" fill="#00811F"/>
+            </svg>
+            Terug
+        </a>
+    </div>
     <div  data-controller="incident" data-action="cancelHandle->incident#cancelHandleHandler" >
         <div 
             data-controller="detail"
