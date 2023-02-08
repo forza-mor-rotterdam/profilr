@@ -98,7 +98,7 @@ a,
 
     &.link--back {
         @include has-icon();
-        margin-left: 20px;
+        margin: 0 0 20px 20px;
         > svg {
             left: -20px;
             path {

@@ -24,7 +24,7 @@
     height: 40px;
     background-repeat: no-repeat;
     background-position: center;
-    margin: 1em $container-padding-x 0;
+    margin: 0 $container-padding-x;
 }
 
 .container__imageslider {
@@ -37,6 +37,7 @@
     .imageslider {
         display: flex;
         left: 0;
+        margin-top: 0;
     }
 
     .container__image {
