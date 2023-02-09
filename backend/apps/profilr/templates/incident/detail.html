@@ -23,7 +23,7 @@
             data-detail-incident-y-value="{{ incident.locatie.y }}"
             data-detail-area-list-value="{{ areas|json_encode }}"
             data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
-            {% if incident.magAfhandelen or ENVIRONMENT == 'development' %} class="has-sticky-footer" {% endif %}
+            {% if incident.magAfhandelen %} class="has-sticky-footer" {% endif %}
         >
             <section class="section--seperated" data-testid="detailPhotoviewer" {% if incident.fotos|length < 2 %}style="border: 0;"{% endif %}>
                 <div class="full-width">
@@ -257,7 +257,7 @@
                         </li>
                         {% endif %}
                     </ul>
-                    {% if incident.magAfhandelen or ENVIRONMENT == 'development' %}
+                    {% if incident.magAfhandelen %}
                     <div class="sticky sticky--bottom">
                         <div class="form-row">
                             <button 
