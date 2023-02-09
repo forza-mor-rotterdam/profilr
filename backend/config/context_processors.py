@@ -17,4 +17,5 @@ def general_settings(context):
         "INCIDENT_API_URL": settings.INCIDENT_API_URL,
         "FRONTEND_URL": settings.FRONTEND_URL,
         "PROJECT_URL": settings.PROJECT_URL,
+        "ENVIRONMENT": settings.ENVIRONMENT,
     }

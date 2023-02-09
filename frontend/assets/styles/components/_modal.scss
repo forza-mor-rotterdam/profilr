@@ -38,11 +38,7 @@ body.show-modal--first-filter {
     left: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    z-index: 1100;
-
-    &.show {
-        
-    }
+    z-index: 2100;
 
     &-dialog {
         display: flex;

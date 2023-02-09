@@ -23,6 +23,7 @@
             data-detail-incident-y-value="{{ incident.locatie.y }}"
             data-detail-area-list-value="{{ areas|json_encode }}"
             data-detail-current-district-value="{{ incident.locatie.buurtNummer }}"
+            {% if incident.magAfhandelen or ENVIRONMENT == 'development' %} class="has-sticky-footer" {% endif %}
         >
             <section class="section--seperated" data-testid="detailPhotoviewer" {% if incident.fotos|length < 2 %}style="border: 0;"{% endif %}>
                 <div class="full-width">
@@ -205,7 +206,7 @@
                 </div>
             </section>
 
-            <section class="section--seperated" data-testid="detailActions">
+            <section class="section--seperated section--seperated__no-border-bottom" data-testid="detailActions">
                 <div class="container__details">
                     <ul class="list-clean incident-meta-list">
                         
@@ -222,14 +223,14 @@
                             </a>
                         </li>
                         
-                        <!-- <li>
+                        {% comment %} <li>
                             <a href="#" class="link--file">
                                 <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M0.25 18H13.75V6V4.5V3.75L10 0H9.25H7.75H0.25V18ZM12.25 4.5L9.25 1.5V4.5H12.25ZM9.25 6H8.5H7.75V1.5H1.75V16.5H12.25V6H9.25Z" fill="#00811F"/>
                                 </svg>
                                 Bestanden
                             </a>
-                        </li> -->
+                        </li> {% endcomment %}
                         {% if incident.magInBehandelingNemen %}
                         <li>
                             <a href="#" class="link--next">
@@ -256,7 +257,8 @@
                         </li>
                         {% endif %}
                     </ul>
-                    {% if incident.magAfhandelen %}
+                    {% if incident.magAfhandelen or ENVIRONMENT == 'development' %}
+                    <div class="sticky sticky--bottom">
                         <div class="form-row">
                             <button 
                                 class="btn btn-action"
@@ -275,6 +277,7 @@
                                 Niet opgelost
                             </button>
                         </div>
+                    </div>
                     {% endif %}
                 </div>
             </section>
