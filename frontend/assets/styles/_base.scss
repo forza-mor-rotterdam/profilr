@@ -201,12 +201,10 @@ section {
     padding: 20px;
     box-sizing: border-box;
     left: 0;
-    background-color: white;
     z-index: 2000;
     
     &--bottom {
         bottom: 0;
-        border-top: 1px solid $gray-tint04;
     }
 }
 
@@ -215,7 +213,6 @@ section {
     height: auto;
     overflow: hidden;
     
-
     &.hidden {
         height: 0;
         padding: 0;
