@@ -4,6 +4,7 @@
 
 
 <turbo-frame id="incidents_list">
+    
     <div
         class="page-incidents"
         data-incidents-filters-value="{{ filters|json_encode }}"
@@ -11,6 +12,21 @@
         <div class="container__header">
             <h1 class="h3">Meldingen {% if filters_count > 0 %}({{ incidents | length }}){% endif %}</h1>
             <div>
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-sort--small"
+                    data-controller="incidentList"
+                    data-action="incidentList#onSort"
+                    data-incidentList-sorttype-param="days"
+                    aria-label="Sorteer de lijst"
+                >
+                    <span>
+                        <svg width="19" height="10" viewBox="0 0 19 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.85903 3.93007L6.38935 3.39974L4.03042 1.04081L4.04273 1.02849L3.51241 0.498169L2.9831 1.02748L2.97079 1.01517L0.61084 3.37512L1.14116 3.90544L3.13371 1.91289V9.50183H3.88371V1.95476L5.85903 3.93007Z" fill="white"/>
+                            <path d="M17.859 6.06993L18.3894 6.60026L16.0304 8.95919L16.0427 8.97151L15.5124 9.50183L14.9831 8.97252L14.9708 8.98483L12.6108 6.62488L13.1412 6.09456L15.1337 8.08711V0.498169L15.8837 0.498169V8.04524L17.859 6.06993Z" fill="white"/>
+                        </svg>
+                    </span>
+                </button>
                 <button
                     type="button"
                     class="btn btn-secondary btn-navigate--small"
@@ -41,6 +57,14 @@
                     <span class="count count--filter">{{ filters_count }}</span>
                 </button>
             </div>
+        </div>
+        <div class="">
+            <select data-action="change->incidentList#onSort" data-controller="incidentList">
+                <option value="-days" {% if sort_by == "-days" %} selected{% endif %}>Oud > nieuw</option>
+                <option value="days" {% if sort_by == "days" %} selected{% endif %}>Nieuw > oud</option>
+                <option value="streetName" {% if sort_by == "streetName" %} selected{% endif %}>Straat (a-z)</option>
+                <option value="-streetName" {% if sort_by == "-streetName" %} selected{% endif %}>Straat (z-a)</option>
+            </select>
         </div>
         <div class="container__list seperated">
             {% if filters_count %}

@@ -1,12 +1,17 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    
     connect() {
         
     }
-      
-    
+
+    onSort(e) {
+        const frame = document.getElementById('incidents_list');
+        sortDirectionReversed = !sortDirectionReversed
+        const url = `${frame.dataset.src}?sort-by=${e.target.value}&reverse=${sortDirectionReversed}`
+        console.log('url', url)
+        frame.setAttribute('src', url);
+    }
      
     makeRoute(e) {
         console.log('makeRoute', typeof(e.params.incidents))
@@ -15,9 +20,7 @@ export default class extends Controller {
         function handleCurrentLocation(pos) {
             const crd = pos.coords;
             routeUrl += `/${crd.latitude}+${crd.longitude}`
-            
             getRoute()
-    
         }
 
         function handleNoCurrentLocation(error) {

@@ -6,7 +6,7 @@
 
 {% block body %}
 <turbo-frame id="base_frame">
-    <turbo-frame id="incidents_list" src="{% url 'incident_list_part' %}"></turbo-frame>
+    <turbo-frame id="incidents_list" src="{% url 'incident_list_part' %}" data-src="{% url 'incident_list_part' %}"></turbo-frame>
     {% include "snippets/filter.html" %}
 </turbo-frame>
 {% endblock %}

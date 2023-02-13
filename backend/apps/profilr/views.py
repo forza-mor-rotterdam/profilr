@@ -140,9 +140,22 @@ def filter(request):
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
+    sort_by_with_reverse = request.GET.get("sort-by", "-startDate")
+    sort_by = sort_by_with_reverse.lstrip("-")
+    sort_reverse = (
+        len(sort_by_with_reverse.split("-", 1)) > 1
+        and sort_by_with_reverse.split("-", 1)[0] == ""
+    )
     valid_filters = incident_api_service.validate_filters(profile.get("filters"))
 
     filters_count = len([vv for k, v in valid_filters.items() for vv in v])
+
+    order_options = {
+        "streetName": lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam"),
+        "days": lambda x: x.get("werkdagenSindsRegistratie"),
+    }
+
+    selected_order_option = order_options.get(sort_by, order_options["days"])
 
     # get incidents if we have filters
     incidents = []
@@ -150,9 +163,13 @@ def incident_list(request):
         incidents = incident_api_service.get_list(
             user_token, data=valid_filters, no_cache=True
         )
+        # incidents_sorted = sorted(incidents, key=selected_order_option )
+        incidents_sorted = sorted(
+            incidents, key=selected_order_option, reverse=sort_reverse
+        )
 
         # temp: spoed key only available in list items, set cache for it
-        for i in incidents:
+        for i in incidents_sorted:
             cache_key = f"incident_{i.get('id')}_spoed"
             cache.set(cache_key, bool(i.get("spoed")), 60 * 60 * 24)
 
@@ -160,9 +177,10 @@ def incident_list(request):
         request,
         "incident/part_list.html",
         {
-            "incidents": incidents,
+            "incidents": incidents_sorted,
             "filters_count": filters_count,
             "filters": valid_filters,
+            "sort_by": sort_by_with_reverse,
         },
     )
 
