@@ -136,11 +136,26 @@ def filter(request):
     )
 
 
+STREET_NAME = "streetName"
+DAYS = "days"
+
+sort_function = {
+    STREET_NAME: lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam"),
+    DAYS: lambda x: x.get("werkdagenSindsRegistratie"),
+}
+sort_options = (
+    (f"-{DAYS}", "Oud > nieuw"),
+    (f"{DAYS}", "Nieuw > oud"),
+    (f"{STREET_NAME}", "Straat (a-z)"),
+    (f"-{STREET_NAME}", "Straat (z-a)"),
+)
+
+
 @login_required
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
-    sort_by_with_reverse = request.GET.get("sort-by", "-startDate")
+    sort_by_with_reverse = request.GET.get("sort-by", f"-{DAYS}")
     sort_by = sort_by_with_reverse.lstrip("-")
     sort_reverse = (
         len(sort_by_with_reverse.split("-", 1)) > 1
@@ -150,12 +165,7 @@ def incident_list(request):
 
     filters_count = len([vv for k, v in valid_filters.items() for vv in v])
 
-    order_options = {
-        "streetName": lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam"),
-        "days": lambda x: x.get("werkdagenSindsRegistratie"),
-    }
-
-    selected_order_option = order_options.get(sort_by, order_options["days"])
+    selected_order_option = sort_function.get(sort_by, sort_function[DAYS])
 
     # get incidents if we have filters
     incidents = []
@@ -181,6 +191,7 @@ def incident_list(request):
             "filters_count": filters_count,
             "filters": valid_filters,
             "sort_by": sort_by_with_reverse,
+            "sort_options": sort_options,
         },
     )
 

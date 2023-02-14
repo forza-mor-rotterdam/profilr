@@ -2,7 +2,6 @@
 {% load to_date from profilr_tags %}
 {% load json_encode from profilr_tags %}
 
-
 <turbo-frame id="incidents_list">
     
     <div
@@ -16,8 +15,7 @@
                     type="button"
                     class="btn btn-secondary btn-sort--small"
                     data-controller="incidentList"
-                    data-action="incidentList#onSort"
-                    data-incidentList-sorttype-param="days"
+                    data-action="incidentList#onToggleSortingContainer"
                     aria-label="Sorteer de lijst"
                 >
                     <span>
@@ -58,13 +56,16 @@
                 </button>
             </div>
         </div>
-        <div class="">
-            <select data-action="change->incidentList#onSort" data-controller="incidentList">
-                <option value="-days" {% if sort_by == "-days" %} selected{% endif %}>Oud > nieuw</option>
-                <option value="days" {% if sort_by == "days" %} selected{% endif %}>Nieuw > oud</option>
-                <option value="streetName" {% if sort_by == "streetName" %} selected{% endif %}>Straat (a-z)</option>
-                <option value="-streetName" {% if sort_by == "-streetName" %} selected{% endif %}>Straat (z-a)</option>
-            </select>
+        <div class="container__sorting hide" data-controller="incidentList">
+            <div data-incidentList-target="sorting">
+                {% if sort_options %}
+                <select data-action="change->incidentList#onSort">
+                    {% for option in sort_options %}
+                    <option value="{{option.0}}" {% if option.0 == sort_by %} selected{% endif %}>{{ option.1 }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </div>
         </div>
         <div class="container__list seperated">
             {% if filters_count %}

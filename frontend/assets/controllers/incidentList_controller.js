@@ -1,8 +1,12 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    connect() {
-        
+
+    static targets = ['sorting']
+
+    onToggleSortingContainer() {
+        console.log('toggle')
+        this.sortingTarget.classList.toggle("hide")
     }
 
     onSort(e) {
