@@ -13,9 +13,6 @@ export default class extends Controller {
 
     connect(e) {
         
-        console.log('showSortingContainer 1', showSortingContainer)
-        console.log('sortDirectionReversed 1', sortDirectionReversed)
-
         if(this.hasSortingTarget && showSortingContainer === true ) {
             this.sortingTarget.classList.remove("hidden-vertical")
             this.sortingTarget.classList.add("show-vertical")
@@ -23,13 +20,10 @@ export default class extends Controller {
     }
 
     onToggleSortingContainer() {
-        console.log('toggle')
         this.sortingTarget.classList.toggle("hidden-vertical")
         this.sortingTarget.classList.toggle("show-vertical")
         showSortingContainer = !showSortingContainer
         sortDirectionReversed = sortDirectionReversed === undefined ? false : true
-        console.log('showSortingContainer 2', showSortingContainer)
-        console.log('sortDirectionReversed 2', sortDirectionReversed)
     }
 
     onSort(e) {
@@ -37,12 +31,10 @@ export default class extends Controller {
         
         sortDirectionReversed = !sortDirectionReversed
         const url = `${frame.dataset.src}?sort-by=${e.target.value}&reverse=${sortDirectionReversed}`
-        console.log('url', url)
         frame.setAttribute('src', url);
     }
      
     makeRoute(e) {
-        console.log('makeRoute', typeof(e.params.incidents))
         let routeUrl = "https://www.google.com/maps/dir"
 
         function handleCurrentLocation(pos) {
