@@ -81,6 +81,7 @@
         summary {
             display: flex;
             justify-content: space-between;
+            flex-direction: row;
             padding: 24px 16px 24px 40px;
             position: relative;
             cursor: pointer;

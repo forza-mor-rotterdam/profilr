@@ -2,27 +2,62 @@
     @include list-clean;
     border-top: 1px solid $gray-tint04; 
     >li {
-        border-bottom: 1px solid $gray-tint04;
+        margin: 0 calc(-1 * (map-get($container-margin, md)));
+        padding: 0 map-get($container-margin, md);
+        &:nth-child(even) {
+            background-color: $gray-tint02;
+        }
+        
         p {
             margin: 8px 0 0;
+        }
+        
+        &:last-child {
+            details {
+                &::before {
+                    height: 0;
+                }
+            }
         }
     }
 
     details {
-
+        position: relative;
+        &::before {
+            content: "";
+            width: 2px;
+            height: 100%;
+            position: absolute;
+            left: 6px;
+            top: 23px;
+            background-color: $gray-tint11;
+        }
+        
         summary {
             padding: 16px 0 16px 24px;
             border: 0;
 
             &::before {
+                content: "";
+                top: 17px;
                 left: 0;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background-color: $gray-tint11;
             }
+        }
+
+        dl {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-bottom: 16px;
         }
 
         &[open] {
             > summary {
                 &::before {
-                    left: 3px;
+                    left: 0;
                 }
             }
         }
