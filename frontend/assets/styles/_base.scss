@@ -220,6 +220,10 @@ section {
     }
 }
 
+.hidden {
+    display: none;
+}
+
 .visually-hidden {
     display: inline-block;
     position: absolute;

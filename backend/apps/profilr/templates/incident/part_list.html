@@ -8,58 +8,56 @@
         class="page-incidents"
         data-incidents-filters-value="{{ filters|json_encode }}"
     >
-        <div class="container__header">
-            <h1 class="h3">Meldingen {% if filters_count > 0 %}({{ incidents | length }}){% endif %}</h1>
-            <div>
-                <button
-                    type="button"
-                    class="btn btn-secondary btn-sort--small"
-                    data-controller="incidentList"
-                    data-action="incidentList#onToggleSortingContainer"
-                    aria-label="Sorteer de lijst"
-                >
-                    <span>
-                        <svg width="19" height="10" viewBox="0 0 19 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.85903 3.93007L6.38935 3.39974L4.03042 1.04081L4.04273 1.02849L3.51241 0.498169L2.9831 1.02748L2.97079 1.01517L0.61084 3.37512L1.14116 3.90544L3.13371 1.91289V9.50183H3.88371V1.95476L5.85903 3.93007Z" fill="white"/>
-                            <path d="M17.859 6.06993L18.3894 6.60026L16.0304 8.95919L16.0427 8.97151L15.5124 9.50183L14.9831 8.97252L14.9708 8.98483L12.6108 6.62488L13.1412 6.09456L15.1337 8.08711V0.498169L15.8837 0.498169V8.04524L17.859 6.06993Z" fill="white"/>
-                        </svg>
-                    </span>
-                </button>
-                <button
-                    type="button"
-                    class="btn btn-secondary btn-navigate--small"
-                    data-controller="incidentList"
-                    data-action="incidentList#makeRoute"
-                    data-incidentList-incidents-param="{{ incidents|json_encode }}"
-                    aria-label="Maak route"
-                >
-                    <span>
-                        <svg width="13" height="13" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M26.2196 0.280273L15.921 26.0267L11.63 14.8699L0.473145 10.5789L26.2196 0.280273ZM5.94958 10.5424L13.1775 13.3223L15.9575 20.5503L22.6295 3.87038L5.94958 10.5424Z" fill="white"/>
-                        </svg>
-                            
-                    </span>
-                </button>
-                <button
-                    type="button"
-                    class="btn btn-secondary btn-filter--small"
-                    data-controller="filter--filter"
-                    data-action="filter--filter#showFilters"
-                >
-                    <span>
-                        <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.8125 7.63864V12.625C4.8125 12.7784 4.89205 12.9202 5.02243 13.0011C5.09315 13.0449 5.17358 13.067 5.25446 13.067C5.32208 13.067 5.38971 13.0515 5.45202 13.0206L7.94309 11.6947C8.09292 11.6195 8.1875 11.4666 8.1875 11.2991V7.63864L12.5412 3.79267C12.6345 3.70913 12.6875 3.5898 12.6875 3.46429V1.25446C12.6875 1.0105 12.4899 0.8125 12.2455 0.8125H0.754464C0.510058 0.8125 0.3125 1.0105 0.3125 1.25446V3.46429C0.3125 3.5898 0.365536 3.70913 0.45879 3.79267L4.8125 7.63864ZM1.4375 1.9375H11.5625V3.26761L7.20879 7.11358C7.11554 7.19712 7.0625 7.31645 7.0625 7.44196V10.9375L5.9375 11.5V7.44196C5.9375 7.31645 5.88446 7.19712 5.79121 7.11358L1.4375 3.26761V1.9375Z" fill="white"/>
-                        </svg>
-                    </span>
-                    <span>Filter</span>
-                    <span class="count count--filter">{{ filters_count }}</span>
-                </button>
+        <div class="container__header" data-controller="incidentlist">
+            <div class="row">
+                <h1 class="h3">Meldingen {% if filters_count > 0 %}({{ incidents | length }}){% endif %}</h1>
+                <div class="container__controls">
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-sort--small"
+                        data-action="incidentlist#onToggleSortingContainer"
+                        aria-label="Sorteer de lijst"
+                    >
+                        <span>
+                            <svg width="19" height="10" viewBox="0 0 19 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.85903 3.93007L6.38935 3.39974L4.03042 1.04081L4.04273 1.02849L3.51241 0.498169L2.9831 1.02748L2.97079 1.01517L0.61084 3.37512L1.14116 3.90544L3.13371 1.91289V9.50183H3.88371V1.95476L5.85903 3.93007Z" fill="white"/>
+                                <path d="M17.859 6.06993L18.3894 6.60026L16.0304 8.95919L16.0427 8.97151L15.5124 9.50183L14.9831 8.97252L14.9708 8.98483L12.6108 6.62488L13.1412 6.09456L15.1337 8.08711V0.498169L15.8837 0.498169V8.04524L17.859 6.06993Z" fill="white"/>
+                            </svg>
+                        </span>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-navigate--small"
+                        data-action="incidentlist#makeRoute"
+                        data-incidentlist-incidents-param="{{ incidents|json_encode }}"
+                        aria-label="Maak route"
+                    >
+                        <span>
+                            <svg width="13" height="13" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M26.2196 0.280273L15.921 26.0267L11.63 14.8699L0.473145 10.5789L26.2196 0.280273ZM5.94958 10.5424L13.1775 13.3223L15.9575 20.5503L22.6295 3.87038L5.94958 10.5424Z" fill="white"/>
+                            </svg>
+                                
+                        </span>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-filter--small"
+                        data-controller="filter--filter"
+                        data-action="filter--filter#showFilters"
+                    >
+                        <span>
+                            <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.8125 7.63864V12.625C4.8125 12.7784 4.89205 12.9202 5.02243 13.0011C5.09315 13.0449 5.17358 13.067 5.25446 13.067C5.32208 13.067 5.38971 13.0515 5.45202 13.0206L7.94309 11.6947C8.09292 11.6195 8.1875 11.4666 8.1875 11.2991V7.63864L12.5412 3.79267C12.6345 3.70913 12.6875 3.5898 12.6875 3.46429V1.25446C12.6875 1.0105 12.4899 0.8125 12.2455 0.8125H0.754464C0.510058 0.8125 0.3125 1.0105 0.3125 1.25446V3.46429C0.3125 3.5898 0.365536 3.70913 0.45879 3.79267L4.8125 7.63864ZM1.4375 1.9375H11.5625V3.26761L7.20879 7.11358C7.11554 7.19712 7.0625 7.31645 7.0625 7.44196V10.9375L5.9375 11.5V7.44196C5.9375 7.31645 5.88446 7.19712 5.79121 7.11358L1.4375 3.26761V1.9375Z" fill="white"/>
+                            </svg>
+                        </span>
+                        <span>Filter</span>
+                        <span class="count count--filter">{{ filters_count }}</span>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="container__sorting hide" data-controller="incidentList">
-            <div data-incidentList-target="sorting">
+            <div class="container__sorting hidden" data-incidentlist-target="sorting">
                 {% if sort_options %}
-                <select data-action="change->incidentList#onSort">
+                <select class="form-select" data-action="change->incidentlist#onSort">
                     {% for option in sort_options %}
                     <option value="{{option.0}}" {% if option.0 == sort_by %} selected{% endif %}>{{ option.1 }}</option>
                     {% endfor %}
@@ -67,6 +65,7 @@
                 {% endif %}
             </div>
         </div>
+        
         <div class="container__list seperated">
             {% if filters_count %}
                 <div

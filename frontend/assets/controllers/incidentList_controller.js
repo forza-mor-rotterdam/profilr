@@ -2,11 +2,20 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    static targets = ['sorting']
+    static targets = [ "sorting" ]
+
+    connect(e) {
+        console.log('showSortingContainer 1', showSortingContainer)
+        if(this.hasSortingTarget && showSortingContainer ) {
+            this.sortingTarget.classList.remove("hidden")
+        }
+    }
 
     onToggleSortingContainer() {
         console.log('toggle')
-        this.sortingTarget.classList.toggle("hide")
+        this.sortingTarget.classList.toggle("hidden")
+        showSortingContainer = !showSortingContainer
+        console.log('showSortingContainer 2', showSortingContainer)
     }
 
     onSort(e) {

@@ -91,7 +91,8 @@ $form-search-indicator-position: left 10px center !default;
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 24px 24px;
-    padding-right: 32px;
+    padding: 8px 48px 8px 16px;
+    font-size: 1rem;;
   &.search {
     background-image: escape-svg($form-search-indicator), escape-svg($form-select-indicator) !important;
     background-position: $form-search-indicator-position, $form-select-bg-position;
