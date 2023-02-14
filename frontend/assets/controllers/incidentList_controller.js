@@ -1,23 +1,46 @@
 import { Controller } from '@hotwired/stimulus';
 
+let showSortingContainer = false;
+let sortDirectionReversed = false;
 export default class extends Controller {
+
+    static targets = [ "sorting" ]
+
     
-    connect() {
-        
+    initialize() {
+
     }
-      
-    
+
+    connect(e) {
+        
+        if(this.hasSortingTarget && showSortingContainer === true ) {
+            this.sortingTarget.classList.remove("hidden-vertical")
+            this.sortingTarget.classList.add("show-vertical")
+        }
+    }
+
+    onToggleSortingContainer() {
+        this.sortingTarget.classList.toggle("hidden-vertical")
+        this.sortingTarget.classList.toggle("show-vertical")
+        showSortingContainer = !showSortingContainer
+        sortDirectionReversed = sortDirectionReversed === undefined ? false : true
+    }
+
+    onSort(e) {
+        const frame = document.getElementById('incidents_list');
+        
+        sortDirectionReversed = !sortDirectionReversed
+        const url = `${frame.dataset.src}?sort-by=${e.target.value}&reverse=${sortDirectionReversed}`
+        frame.setAttribute('src', url);
+    }
      
     makeRoute(e) {
-        console.log('makeRoute', typeof(e.params.incidents))
         let routeUrl = "https://www.google.com/maps/dir"
 
         function handleCurrentLocation(pos) {
             const crd = pos.coords;
             routeUrl += `/${crd.latitude}+${crd.longitude}`
-            
             getRoute()
-    
         }
 
         function handleNoCurrentLocation(error) {

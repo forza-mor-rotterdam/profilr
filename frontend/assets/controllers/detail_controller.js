@@ -15,9 +15,7 @@ export default class extends Controller {
     };
 	
     initialize() {
-        console.log('incidentObject', this.incidentObjectValue)
-        console.log('mapped incidentObject', this.mappingFunction(this.incidentObjectValue))
-
+        
         if(this.currentDistrictValue) {
             let currentArea = JSON.parse(this.areaListValue).find(area => area.buurten.some((district) => district.code === this.currentDistrictValue))
             this.areaTarget.textContent = currentArea.omschrijving
@@ -44,11 +42,9 @@ export default class extends Controller {
     }
 
     mappingFunction(object) {
-        console.log(this.Mapping)
         const result = {};
         for (const key in this.Mapping) {
 			const newKey = this.Mapping[key];
-            console.log('newKey', newKey)
             if (object.hasOwnProperty(key)) {
                 result[newKey] = object[key];
             } else {

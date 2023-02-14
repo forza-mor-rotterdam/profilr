@@ -136,13 +136,48 @@ def filter(request):
     )
 
 
+STREET_NAME = "streetName"
+DAYS = "days"
+DEPARTMENT = "department"
+STATUS = "status"
+
+sort_function = {
+    STREET_NAME: lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam"),
+    DAYS: lambda x: x.get("werkdagenSindsRegistratie"),
+    DEPARTMENT: lambda x: x.get("afdeling", {}).get("omschrijving", {}),
+    STATUS: lambda x: x.get("status", {}),
+}
+
+sort_options = (
+    (f"-{DAYS}", "Oud > nieuw"),
+    (f"{DAYS}", "Nieuw > oud"),
+    (f"{STREET_NAME}", "Straat (a-z)"),
+    (f"-{STREET_NAME}", "Straat (z-a)"),
+    (f"{DEPARTMENT}", "Afdeling (a-z)"),
+    (f"-{DEPARTMENT}", "Afdeling (z-a)"),
+    (f"{STATUS}", "Status (a-z)"),
+    (f"-{STATUS}", "Status (z-a)"),
+)
+
+
 @login_required
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
+    sort_by_with_reverse_session = request.session.get("sort_by", f"-{DAYS}")
+    sort_by_with_reverse = request.GET.get("sort-by", sort_by_with_reverse_session)
+    request.session["sort_by"] = sort_by_with_reverse
+
+    sort_by = sort_by_with_reverse.lstrip("-")
+    sort_reverse = (
+        len(sort_by_with_reverse.split("-", 1)) > 1
+        and sort_by_with_reverse.split("-", 1)[0] == ""
+    )
     valid_filters = incident_api_service.validate_filters(profile.get("filters"))
 
     filters_count = len([vv for k, v in valid_filters.items() for vv in v])
+
+    selected_order_option = sort_function.get(sort_by, sort_function[DAYS])
 
     # get incidents if we have filters
     incidents = []
@@ -150,9 +185,13 @@ def incident_list(request):
         incidents = incident_api_service.get_list(
             user_token, data=valid_filters, no_cache=True
         )
+        # incidents_sorted = sorted(incidents, key=selected_order_option )
+        incidents_sorted = sorted(
+            incidents, key=selected_order_option, reverse=sort_reverse
+        )
 
         # temp: spoed key only available in list items, set cache for it
-        for i in incidents:
+        for i in incidents_sorted:
             cache_key = f"incident_{i.get('id')}_spoed"
             cache.set(cache_key, bool(i.get("spoed")), 60 * 60 * 24)
 
@@ -160,9 +199,11 @@ def incident_list(request):
         request,
         "incident/part_list.html",
         {
-            "incidents": incidents,
+            "incidents": incidents_sorted,
             "filters_count": filters_count,
             "filters": valid_filters,
+            "sort_by": sort_by_with_reverse,
+            "sort_options": sort_options,
         },
     )
 

@@ -132,7 +132,6 @@ export default class extends Controller {
 
     // Handle the start of gestures
     handleGestureStart(evt) {
-        console.log('handleGestureStart')
         evt.preventDefault();
         this.isMoving = false;
         if((evt.touches && evt.touches.length > 1)) {
@@ -145,8 +144,7 @@ export default class extends Controller {
 
     // Handle end gestures
     handleGestureEnd(evt) {
-        console.log('handleGestureEnd')
-
+        
         evt.preventDefault();       
         if ((evt.touches && evt.touches.length > 0)) {
             return;
@@ -157,13 +155,11 @@ export default class extends Controller {
     
         this.initialTouchPos = null;
         if (this.isMoving !== true) {
-            console.log('is klik')
             this.isMoving = false;
         }
     }
 
     handleGestureMove(evt) {
-        console.log('handleGestureMove')
         evt.preventDefault();
         this.isMoving = true;
         if (!this.initialTouchPos) {
@@ -219,14 +215,11 @@ export default class extends Controller {
 
     updateSwipeRestPosition(evt) {
         if(this.lastTouchPos) {
-            console.log('this.lastTouchPos', this.lastTouchPos)
             let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
             if(differenceInX > -100 && differenceInX < 100) {
                 this.element.style.left = '0';
             }
             this.initialTouchPos = this.getGesturePointFromEvent(evt);
-        } else {
-            console.log('klik?')
         }
     }
 
