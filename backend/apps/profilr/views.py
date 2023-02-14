@@ -138,7 +138,6 @@ def filter(request):
 
 STREET_NAME = "streetName"
 DAYS = "days"
-DEPARTMENT = "department"
 SUBJECT = "subject"
 STATUS = "status"
 
