@@ -139,12 +139,13 @@ def filter(request):
 STREET_NAME = "streetName"
 DAYS = "days"
 DEPARTMENT = "department"
+SUBJECT = "subject"
 STATUS = "status"
 
 sort_function = {
     STREET_NAME: lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam"),
     DAYS: lambda x: x.get("werkdagenSindsRegistratie"),
-    DEPARTMENT: lambda x: x.get("afdeling", {}).get("omschrijving", {}),
+    SUBJECT: lambda x: x.get("onderwerp", {}).get("omschrijving", {}),
     STATUS: lambda x: x.get("status", {}),
 }
 
@@ -153,8 +154,8 @@ sort_options = (
     (f"{DAYS}", "Nieuw > oud"),
     (f"{STREET_NAME}", "Straat (a-z)"),
     (f"-{STREET_NAME}", "Straat (z-a)"),
-    (f"{DEPARTMENT}", "Afdeling (a-z)"),
-    (f"-{DEPARTMENT}", "Afdeling (z-a)"),
+    (f"{SUBJECT}", "Onderwerp (a-z)"),
+    (f"-{SUBJECT}", "Onderwerp (z-a)"),
     (f"{STATUS}", "Status (a-z)"),
     (f"-{STATUS}", "Status (z-a)"),
 )
