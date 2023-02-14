@@ -1,12 +1,22 @@
 import { Controller } from '@hotwired/stimulus';
 
+let showSortingContainer = false;
+let sortDirectionReversed = false;
 export default class extends Controller {
 
     static targets = [ "sorting" ]
 
+    
+    initialize() {
+
+    }
+
     connect(e) {
+        
         console.log('showSortingContainer 1', showSortingContainer)
-        if(this.hasSortingTarget && showSortingContainer ) {
+        console.log('sortDirectionReversed 1', sortDirectionReversed)
+
+        if(this.hasSortingTarget && showSortingContainer === true ) {
             this.sortingTarget.classList.remove("hidden-vertical")
             this.sortingTarget.classList.add("show-vertical")
         }
@@ -17,11 +27,14 @@ export default class extends Controller {
         this.sortingTarget.classList.toggle("hidden-vertical")
         this.sortingTarget.classList.toggle("show-vertical")
         showSortingContainer = !showSortingContainer
+        sortDirectionReversed = sortDirectionReversed === undefined ? false : true
         console.log('showSortingContainer 2', showSortingContainer)
+        console.log('sortDirectionReversed 2', sortDirectionReversed)
     }
 
     onSort(e) {
         const frame = document.getElementById('incidents_list');
+        
         sortDirectionReversed = !sortDirectionReversed
         const url = `${frame.dataset.src}?sort-by=${e.target.value}&reverse=${sortDirectionReversed}`
         console.log('url', url)

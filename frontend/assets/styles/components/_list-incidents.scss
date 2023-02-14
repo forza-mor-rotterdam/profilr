@@ -4,7 +4,7 @@
     .row {
         display: flex;
         justify-content: space-between;
-        align-items: center;        
+        align-items: center;
     }
     h1 {
         margin-bottom: 0;
@@ -29,7 +29,7 @@
             line-height: 12px;
             margin-bottom: 0;
             margin-left: 8px;
-            max-width: 66px;
+            max-width: 37px;
     
             span {
                 display: inline-block;
@@ -39,11 +39,10 @@
 }
 
 .container__sorting {
-    background-color: $gray-tint02;
-    margin-top: $input-padding-x;
     box-sizing: content-box;
-
+    // padding-top: 16px;
     > div {
+        background-color: $gray-tint02;
         padding: $input-padding-y;
     }
     select {

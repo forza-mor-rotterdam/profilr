@@ -155,7 +155,10 @@ sort_options = (
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
-    sort_by_with_reverse = request.GET.get("sort-by", f"-{DAYS}")
+    sort_by_with_reverse_session = request.session.get("sort_by", f"-{DAYS}")
+    sort_by_with_reverse = request.GET.get("sort-by", sort_by_with_reverse_session)
+    request.session["sort_by"] = sort_by_with_reverse
+
     sort_by = sort_by_with_reverse.lstrip("-")
     sort_reverse = (
         len(sort_by_with_reverse.split("-", 1)) > 1
