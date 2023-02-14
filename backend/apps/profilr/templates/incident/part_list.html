@@ -55,13 +55,15 @@
                     </button>
                 </div>
             </div>
-            <div class="container__sorting hidden" data-incidentlist-target="sorting">
+            <div class="container__sorting hidden-vertical" data-incidentlist-target="sorting">
                 {% if sort_options %}
-                <select class="form-select" data-action="change->incidentlist#onSort">
-                    {% for option in sort_options %}
-                    <option value="{{option.0}}" {% if option.0 == sort_by %} selected{% endif %}>{{ option.1 }}</option>
-                    {% endfor %}
-                </select>
+                <div>
+                    <select class="form-select" data-action="change->incidentlist#onSort">
+                        {% for option in sort_options %}
+                        <option value="{{option.0}}" {% if option.0 == sort_by %} selected{% endif %}>{{ option.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
                 {% endif %}
             </div>
         </div>

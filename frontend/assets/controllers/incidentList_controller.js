@@ -7,13 +7,15 @@ export default class extends Controller {
     connect(e) {
         console.log('showSortingContainer 1', showSortingContainer)
         if(this.hasSortingTarget && showSortingContainer ) {
-            this.sortingTarget.classList.remove("hidden")
+            this.sortingTarget.classList.remove("hidden-vertical")
+            this.sortingTarget.classList.add("show-vertical")
         }
     }
 
     onToggleSortingContainer() {
         console.log('toggle')
-        this.sortingTarget.classList.toggle("hidden")
+        this.sortingTarget.classList.toggle("hidden-vertical")
+        this.sortingTarget.classList.toggle("show-vertical")
         showSortingContainer = !showSortingContainer
         console.log('showSortingContainer 2', showSortingContainer)
     }

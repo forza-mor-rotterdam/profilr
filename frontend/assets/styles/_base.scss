@@ -220,8 +220,20 @@ section {
     }
 }
 
-.hidden {
-    display: none;
+.show-vertical {
+    max-height: 100%;
+    transition: max-height 0.25s ease-in;
+
+    &.container__sorting {
+        max-height: 70px;
+    }
+}
+
+.hidden-vertical {
+    // display: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease-in;
 }
 
 .visually-hidden {

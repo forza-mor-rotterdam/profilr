@@ -39,10 +39,13 @@
 }
 
 .container__sorting {
-    padding: $input-padding-y;
     background-color: $gray-tint02;
     margin-top: $input-padding-x;
+    box-sizing: content-box;
 
+    > div {
+        padding: $input-padding-y;
+    }
     select {
         margin: 0;
         max-width: 50%;
