@@ -41,13 +41,15 @@
 .container__sorting {
     box-sizing: content-box;
     // padding-top: 16px;
-    > div {
+    .wrapper {
         background-color: $gray-tint02;
-        padding: $input-padding-y;
+        padding: $input-padding-x;
+        display: flex;
+        justify-content: space-between;
+
     }
     select {
-        margin: 0;
-        max-width: 50%;
+        margin: 0 $container-padding-x 0 0;
     }
 }
 
@@ -235,6 +237,23 @@
                 }
             }
         }
+    }
+
+    details {
+        &:first-child {
+            summary {
+                border-top: 0;
+            }
+        }
+
+        &[open] {
+            summary {
+                border-bottom: 1px solid $gray-tint04;
+            }
+        }
+    }
+    summary {
+        flex-direction: row;
     }
 }
 

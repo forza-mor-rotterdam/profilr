@@ -164,6 +164,7 @@ sort_options = (
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
+
     sort_by_with_reverse_session = request.session.get("sort_by", f"-{DAYS}")
     sort_by_with_reverse = request.GET.get("sort-by", sort_by_with_reverse_session)
     request.session["sort_by"] = sort_by_with_reverse
@@ -173,6 +174,13 @@ def incident_list(request):
         len(sort_by_with_reverse.split("-", 1)) > 1
         and sort_by_with_reverse.split("-", 1)[0] == ""
     )
+
+    grouped_by_session = request.session.get("grouped_by", "false")
+
+    grouped_by = request.GET.get("grouped-by", grouped_by_session)
+    request.session["grouped_by"] = grouped_by
+    grouped_by = grouped_by == "true"
+
     valid_filters = incident_api_service.validate_filters(profile.get("filters"))
 
     filters_count = len([vv for k, v in valid_filters.items() for vv in v])
@@ -181,6 +189,8 @@ def incident_list(request):
 
     # get incidents if we have filters
     incidents = []
+    incidents_sorted = []
+    groups = []
     if filters_count > 0:
         incidents = incident_api_service.get_list(
             user_token, data=valid_filters, no_cache=True
@@ -189,6 +199,36 @@ def incident_list(request):
         incidents_sorted = sorted(
             incidents, key=selected_order_option, reverse=sort_reverse
         )
+        # incidents_sorted = []
+        if grouped_by:
+            # incidents_sorted = [
+            #     {
+            #         "title": "Weena",
+            #         "items": [],
+            #     }
+            #     for incident in incidents_sorted
+            # ]
+
+            for incident in incidents_sorted:
+                # if incident.get("locatie", {}).get("adres", {}).get("straatNaam") not in groups:
+                if incident.get("status", {}) not in groups:
+                    # groups.append(incident.get("locatie", {}).get("adres", {}).get("straatNaam"))
+                    groups.append(incident.get("status", {}))
+            groups = sorted(groups)
+            print(groups)
+            groups = [
+                {
+                    "title": g,
+                    "items": [],
+                }
+                for g in groups
+            ]
+            for group in groups:
+                for incident in incidents_sorted:
+                    # if incident.get("locatie", {}).get("adres", {}).get("straatNaam") == group["title"]:
+                    if incident.get("status", {}) == group["title"]:
+                        group["items"].append(incident)
+            print(groups)
 
         # temp: spoed key only available in list items, set cache for it
         for i in incidents_sorted:
@@ -197,13 +237,17 @@ def incident_list(request):
 
     return render(
         request,
-        "incident/part_list.html",
+        "incident/part_list.html"
+        if not grouped_by
+        else "incident/part_list_grouped.html",
         {
             "incidents": incidents_sorted,
             "filters_count": filters_count,
             "filters": valid_filters,
             "sort_by": sort_by_with_reverse,
             "sort_options": sort_options,
+            "groups": groups,
+            "grouped_by": grouped_by,
         },
     )
 
