@@ -143,18 +143,21 @@ DAYS = "days"
 SUBJECT = "subject"
 STATUS = "status"
 
-# target_functions = {
-#     STREET_NAME: '("locatie", {}).get("adres", {}).get("straatNaam")',
-#     DAYS: '("werkdagenSindsRegistratie")',
-#     SUBJECT: '("onderwerp", {}).get("omschrijving", {})',
-#     STATUS: '("status", {})',
-# }
-
 sort_function = {
-    STREET_NAME: lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam"),
-    DAYS: lambda x: x.get("werkdagenSindsRegistratie"),
-    SUBJECT: lambda x: x.get("onderwerp", {}).get("omschrijving", {}),
-    STATUS: lambda x: x.get("status", {}),
+    STREET_NAME: (
+        lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam", ""),
+        None,
+        None,
+    ),
+    DAYS: (
+        lambda x: x.get("werkdagenSindsRegistratie", 0),
+        lambda x: datetime.strptime(
+            x.get("datumMelding"), "%Y-%m-%dT%H:%M:%S"
+        ).strftime("%Y%m01"),
+        lambda x: datetime.strptime(x, "%Y%m01").strftime("%B %Y"),
+    ),
+    SUBJECT: (lambda x: x.get("onderwerp", {}).get("omschrijving", ""), None, None),
+    STATUS: (lambda x: x.get("status", ""), None, None),
 }
 
 sort_options = (
@@ -170,7 +173,7 @@ sort_options = (
 
 
 @login_required
-def incident_list(request):  # noqa
+def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
 
@@ -194,7 +197,7 @@ def incident_list(request):  # noqa
 
     filters_count = len([vv for k, v in valid_filters.items() for vv in v])
 
-    selected_order_option = sort_function.get(sort_by, sort_function[DAYS])
+    selected_order_option = sort_function.get(sort_by, sort_function[DAYS])[0]
 
     # get incidents if we have filters
     incidents = []
@@ -207,73 +210,38 @@ def incident_list(request):  # noqa
         incidents_sorted = sorted(
             incidents, key=selected_order_option, reverse=sort_reverse
         )
-        print(sort_by)
         if grouped_by:
-            for incident in incidents_sorted:
-                if sort_by == STATUS:
-                    if incident.get("status", {}) not in groups:
-                        groups.append(incident.get("status", {}))
-                elif sort_by == DAYS:
-                    datum = datetime.strptime(
-                        incident.get("datumMelding"), "%Y-%m-%dT%H:%M:%S"
-                    ).strftime("%B %Y")
-                    if datum not in groups:
-                        groups.append(datum)
-                elif sort_by == SUBJECT:
-                    if (
-                        incident.get("onderwerp", {}).get("omschrijving", {})
-                        not in groups
-                    ):
-                        groups.append(
-                            incident.get("onderwerp", {}).get("omschrijving", {})
-                        )
-                elif sort_by == STREET_NAME:
-                    if (
-                        incident.get("locatie", {}).get("adres", {}).get("straatNaam")
-                        not in groups
-                    ):
-                        groups.append(
-                            incident.get("locatie", {})
-                            .get("adres", {})
-                            .get("straatNaam")
-                        )
-
-            groups = sorted(groups)
+            groups = sorted(
+                [
+                    *set(
+                        [
+                            sort_function[sort_by][1](i)
+                            if sort_function[sort_by][1]
+                            else sort_function[sort_by][0](i)
+                            for i in incidents_sorted
+                        ]
+                    )
+                ]
+            )
 
             groups = [
                 {
-                    "title": g,
-                    "items": [],
+                    "title": sort_function[sort_by][2](g)
+                    if sort_function[sort_by][2]
+                    else g,
+                    "items": [
+                        i
+                        for i in incidents_sorted
+                        if g
+                        == (
+                            sort_function[sort_by][1](i)
+                            if sort_function[sort_by][1]
+                            else sort_function[sort_by][0](i)
+                        )
+                    ],
                 }
                 for g in groups
             ]
-            for group in groups:
-                for incident in incidents_sorted:
-                    if sort_by == STATUS:
-                        if incident.get("status", {}) == group["title"]:
-                            group["items"].append(incident)
-                    elif sort_by == DAYS:
-                        if (
-                            datetime.strptime(
-                                incident.get("datumMelding"), "%Y-%m-%dT%H:%M:%S"
-                            ).strftime("%B %Y")
-                            == group["title"]
-                        ):
-                            group["items"].append(incident)
-                    elif sort_by == SUBJECT:
-                        if (
-                            incident.get("onderwerp", {}).get("omschrijving", {})
-                            == group["title"]
-                        ):
-                            group["items"].append(incident)
-                    elif sort_by == STREET_NAME:
-                        if (
-                            incident.get("locatie", {})
-                            .get("adres", {})
-                            .get("straatNaam")
-                            == group["title"]
-                        ):
-                            group["items"].append(incident)
 
         # temp: spoed key only available in list items, set cache for it
         for i in incidents_sorted:
