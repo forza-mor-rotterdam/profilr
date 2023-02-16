@@ -3,8 +3,6 @@
 {% load json_encode from profilr_tags %}
 
 <turbo-frame id="incidents_list">
-    {{ grouped_by }}
-
     <div
         class="page-incidents"
         data-incidents-filters-value="{{ filters|json_encode }}"
@@ -93,7 +91,7 @@
                     data-testid="incidentsList" 
                     >
                     {% block list_template%}
-                    
+
                     {% comment %} {% for incident in incidents %}
                     <turbo-frame id="incident_list_item" src="{% url 'incident_list_item_part' incident.id %}"></turbo-frame>
                     {% endfor %} {% endcomment %}
