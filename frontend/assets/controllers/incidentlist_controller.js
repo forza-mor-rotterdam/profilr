@@ -8,7 +8,7 @@ export default class extends Controller {
 
     
     initialize() {
-
+        console.log('showSortingContainer', showSortingContainer)
     }
 
     connect(e) {

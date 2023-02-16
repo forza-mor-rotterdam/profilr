@@ -3,7 +3,8 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ["button", "turboFormHandler", "incidentDate"]
     static values = {
-        date: String
+        date: String,
+        days: Number
     }
 
     connect() {
@@ -17,8 +18,11 @@ export default class extends Controller {
             this.addInitialListeners();
             this.isMoving = false;
 
-            if(!!this.dateValue) {
-                this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue)
+            // if(!!this.dateValue) {
+            //     this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue)
+            // }
+            if(!!this.daysValue) {
+                this.incidentDateTarget.textContent = this.getNumberOfDays(this.daysValue)
             }
         }
     }
