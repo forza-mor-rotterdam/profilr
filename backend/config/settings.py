@@ -1,6 +1,9 @@
+import locale
 import os
 import sys
 from os.path import join
+
+locale.setlocale(locale.LC_ALL, "nl_NL.UTF-8")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TRUE_VALUES = [True, "True", "true", "1"]
