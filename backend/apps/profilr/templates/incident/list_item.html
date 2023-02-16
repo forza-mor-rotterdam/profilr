@@ -10,7 +10,8 @@
         class="list-item{% if form_submitted %} form-is-submitted{% endif %}{% if errors and warnings %} has-errors{% endif %}"
         data-controller="incident" 
         data-action="formHandleIsConnected->incident#formHandleIsConnectedHandler cancelHandle->incident#cancelHandleHandler"
-        data-incident-date-value="{{ incident.datumMelding }}">
+        data-incident-date-value="{{ incident.datumMelding }}"
+        data-incident-days-value="{{ incident.werkdagenSindsRegistratie }}">
         <button
             class="container__actions handle--no-success"
             data-id="{{ incident.id }}"
@@ -45,8 +46,11 @@
                             </span>
                             <div class="incident__moment">
                                 <span>{{ incident.status }}</span>
+                            </div>
+
+                            <div class="incident__moment">
                                 <span data-incident-target="incidentDate">
-                                    {{ incident.werkdagenSindsRegistratie }} werkdagen
+                                    {{ incident.werkdagenSindsRegistratie|floatformat }} werkdagen
                                 </span>
                             </div>
                         {# </a> #}
@@ -79,7 +83,7 @@
 {% endblock %}
 
 {% block modal_body %}
-    <turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-src="{% url 'incident_modal_handle_part' incident.id %}" src="{% url 'incident_modal_handle_part' incident.id %}" loading="lazy">
+    <turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-handled="handled" data-not-handled="not-handled" data-src="{% url 'incident_modal_handle_part' incident.id %}" src="{% url 'incident_modal_handle_part' incident.id %}" loading="lazy">
     </turbo-frame>
 {% endblock %}
 

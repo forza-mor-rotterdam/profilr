@@ -4,13 +4,13 @@ export default class extends Controller {
     static targets = ["button", "turboFormHandler", "incidentDate"]
     static values = {
         date: String,
-        days: Number
+        days: String
     }
 
     connect() {
         if(this.element.classList.contains('list-item')) {
 
-            const frame = this.element.closest("turbo-frame")
+            // const frame = this.element.closest("turbo-frame")
             this.initialTouchPos = null
             this.bindStart = this.handleGestureStart.bind(this);
             this.bindMove = this.handleGestureMove.bind(this);
@@ -18,11 +18,8 @@ export default class extends Controller {
             this.addInitialListeners();
             this.isMoving = false;
 
-            // if(!!this.dateValue) {
-            //     this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue)
-            // }
-            if(!!this.daysValue) {
-                this.incidentDateTarget.textContent = this.getNumberOfDays(this.daysValue)
+            if(!!this.dateValue && !!this.daysValue) {
+                this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue, parseInt(this.daysValue))
             }
         }
     }
@@ -31,19 +28,15 @@ export default class extends Controller {
         this.removeAllListeners()
     }
 
-    getNumberOfDays(date) {
+    getNumberOfDays(date, days) {
         const date_incident = new Date(date);
-        const date_today = new Date();
-        const difference = date_today.getTime() - date_incident.getTime();
-        const totalDays = Math.floor(difference / (1000 * 3600 * 24));
         const dateTypes = ["Vandaag", "Gisteren", "Eergisteren", "dagen"]
-
-        if(totalDays < 3) {
+        if(days < 3) {
             const minutes = date_incident.getMinutes() < 10 ? `0${date_incident.getMinutes()}` : date_incident.getMinutes();
             const time = `${date_incident.getHours()}:${minutes}`
-            return `${dateTypes[totalDays]}, ${time}`;
+            return `${dateTypes[1]}, ${time}`;
         } else {
-            return `${totalDays} dagen`
+            return `${days} werkdagen`
         }
     }
 
@@ -246,7 +239,7 @@ export default class extends Controller {
             return
         }
 
-        this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
+        this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "handled/": "not-handled/"))
 
         this.removeAllListeners()
         const modalHeader = this.element.querySelector('.modal-header h1 span');

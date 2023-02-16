@@ -176,12 +176,11 @@
             }
 
             .incident__moment {
-                display: flex;
-                justify-content: space-between;
-
-                span {
-                    &:last-child {
-                        display: block;
+                span {        
+                    display: block;
+                }
+                &:last-child {
+                    span {        
                         flex: 1;
                         text-align: right;
                         padding-left: 4px;
