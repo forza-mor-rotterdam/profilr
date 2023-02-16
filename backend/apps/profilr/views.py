@@ -14,6 +14,7 @@ from django.urls import reverse
 from profilr_api_services import MSB_VALID_FILTERS
 
 PAGE_SIZE = 10
+# INCIDENT_LIST_ITEM_CACHE
 
 
 def http_404(request):
@@ -270,8 +271,8 @@ def incident_list(request):  # noqa
 
         # temp: spoed key only available in list items, set cache for it
         for i in incidents_sorted:
-            cache_key = f"incident_{i.get('id')}_spoed"
-            cache.set(cache_key, bool(i.get("spoed")), 60 * 60 * 24)
+            cache_key = f"incident_{i.get('id')}_list_item"
+            cache.set(cache_key, i, 60 * 60 * 24)
 
     return render(
         request,
@@ -303,13 +304,15 @@ def incident_detail(request, id):
         for sub_cat in cat.get("onderwerpen")
     }
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
-    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
+    list_item_cache_key = f"incident_{incident.get('id')}_list_item"
     areas = incident_api_service.get_wijken(user_token)
-
     incident = {
         **incident,
         **{
-            "spoed": cache.get(spoed_cache_key, False),
+            "spoed": cache.get(list_item_cache_key, {}).get("spoed", False),
+            "werkdagenSindsRegistratie": cache.get(list_item_cache_key, {}).get(
+                "werkdagenSindsRegistratie"
+            ),
         },
     }
 
@@ -331,11 +334,14 @@ def incident_detail(request, id):
 def incident_list_item(request, id):
     user_token = request.user.token
     incident = incident_api_service.get_detail(id, user_token)
-    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
+    list_item_cache_key = f"incident_{incident.get('id')}_list_item"
     incident = {
         **incident,
         **{
-            "spoed": cache.get(spoed_cache_key, False),
+            "spoed": cache.get(list_item_cache_key, {}).get("spoed", False),
+            "werkdagenSindsRegistratie": cache.get(list_item_cache_key, {}).get(
+                "werkdagenSindsRegistratie"
+            ),
         },
     }
 
