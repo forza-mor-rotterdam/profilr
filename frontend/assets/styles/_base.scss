@@ -30,7 +30,7 @@ header {
 
 main,
 header {
-    padding: 0 map-get($container-margin, md) 16px;
+    padding: 0 map-get($container-margin, s) 16px;
 }
 
 // HEADINGS
@@ -227,6 +227,7 @@ section {
 
     &.container__sorting {
         max-height: 100px;
+        overflow: hidden;
     }
 }
 

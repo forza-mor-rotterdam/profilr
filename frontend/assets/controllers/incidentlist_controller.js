@@ -8,7 +8,7 @@ export default class extends Controller {
 
     
     initialize() {
-
+        console.log('showSortingContainer', showSortingContainer)
     }
 
     connect(e) {
@@ -17,6 +17,13 @@ export default class extends Controller {
             this.sortingTarget.classList.remove("hidden-vertical")
             this.sortingTarget.classList.add("show-vertical")
         }
+    }
+
+    onGroup(e) {
+        console.log("onGroup", e.target.checked)
+        const frame = document.getElementById('incidents_list');
+        const url = `${frame.dataset.src}?grouped-by=${e.target.checked}`
+        frame.setAttribute('src', url);
     }
 
     onToggleSortingContainer() {
@@ -28,9 +35,7 @@ export default class extends Controller {
 
     onSort(e) {
         const frame = document.getElementById('incidents_list');
-        
-        sortDirectionReversed = !sortDirectionReversed
-        const url = `${frame.dataset.src}?sort-by=${e.target.value}&reverse=${sortDirectionReversed}`
+        const url = `${frame.dataset.src}?sort-by=${e.target.value}`
         frame.setAttribute('src', url);
     }
      

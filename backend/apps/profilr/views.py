@@ -1,5 +1,6 @@
 import copy
 from collections import Counter
+from datetime import datetime
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
@@ -14,6 +15,7 @@ from django.urls import reverse
 from profilr_api_services import MSB_VALID_FILTERS
 
 PAGE_SIZE = 10
+# INCIDENT_LIST_ITEM_CACHE
 
 
 def http_404(request):
@@ -142,10 +144,20 @@ SUBJECT = "subject"
 STATUS = "status"
 
 sort_function = {
-    STREET_NAME: lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam"),
-    DAYS: lambda x: x.get("werkdagenSindsRegistratie"),
-    SUBJECT: lambda x: x.get("onderwerp", {}).get("omschrijving", {}),
-    STATUS: lambda x: x.get("status", {}),
+    STREET_NAME: (
+        lambda x: x.get("locatie", {}).get("adres", {}).get("straatNaam", ""),
+        None,
+        None,
+    ),
+    DAYS: (
+        lambda x: x.get("werkdagenSindsRegistratie", 0),
+        lambda x: datetime.strptime(
+            x.get("datumMelding"), "%Y-%m-%dT%H:%M:%S"
+        ).strftime("%Y%m01"),
+        lambda x: datetime.strptime(x, "%Y%m01").strftime("%B %Y"),
+    ),
+    SUBJECT: (lambda x: x.get("onderwerp", {}).get("omschrijving", ""), None, None),
+    STATUS: (lambda x: x.get("status", ""), None, None),
 }
 
 sort_options = (
@@ -164,6 +176,7 @@ sort_options = (
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
+
     sort_by_with_reverse_session = request.session.get("sort_by", f"-{DAYS}")
     sort_by_with_reverse = request.GET.get("sort-by", sort_by_with_reverse_session)
     request.session["sort_by"] = sort_by_with_reverse
@@ -173,37 +186,81 @@ def incident_list(request):
         len(sort_by_with_reverse.split("-", 1)) > 1
         and sort_by_with_reverse.split("-", 1)[0] == ""
     )
+
+    grouped_by_session = request.session.get("grouped_by", "false")
+
+    grouped_by = request.GET.get("grouped-by", grouped_by_session)
+    request.session["grouped_by"] = grouped_by
+    grouped_by = grouped_by == "true"
+
     valid_filters = incident_api_service.validate_filters(profile.get("filters"))
 
     filters_count = len([vv for k, v in valid_filters.items() for vv in v])
 
-    selected_order_option = sort_function.get(sort_by, sort_function[DAYS])
+    selected_order_option = sort_function.get(sort_by, sort_function[DAYS])[0]
 
     # get incidents if we have filters
     incidents = []
+    incidents_sorted = []
+    groups = []
     if filters_count > 0:
         incidents = incident_api_service.get_list(
             user_token, data=valid_filters, no_cache=True
         )
-        # incidents_sorted = sorted(incidents, key=selected_order_option )
         incidents_sorted = sorted(
             incidents, key=selected_order_option, reverse=sort_reverse
         )
+        if grouped_by:
+            groups = sorted(
+                [
+                    *set(
+                        [
+                            sort_function[sort_by][1](i)
+                            if sort_function[sort_by][1]
+                            else sort_function[sort_by][0](i)
+                            for i in incidents_sorted
+                        ]
+                    )
+                ]
+            )
+
+            groups = [
+                {
+                    "title": sort_function[sort_by][2](g)
+                    if sort_function[sort_by][2]
+                    else g,
+                    "items": [
+                        i
+                        for i in incidents_sorted
+                        if g
+                        == (
+                            sort_function[sort_by][1](i)
+                            if sort_function[sort_by][1]
+                            else sort_function[sort_by][0](i)
+                        )
+                    ],
+                }
+                for g in groups
+            ]
 
         # temp: spoed key only available in list items, set cache for it
         for i in incidents_sorted:
-            cache_key = f"incident_{i.get('id')}_spoed"
-            cache.set(cache_key, bool(i.get("spoed")), 60 * 60 * 24)
+            cache_key = f"incident_{i.get('id')}_list_item"
+            cache.set(cache_key, i, 60 * 60 * 24)
 
     return render(
         request,
-        "incident/part_list.html",
+        "incident/part_list.html"
+        if not grouped_by
+        else "incident/part_list_grouped.html",
         {
             "incidents": incidents_sorted,
             "filters_count": filters_count,
             "filters": valid_filters,
             "sort_by": sort_by_with_reverse,
             "sort_options": sort_options,
+            "groups": groups,
+            "grouped_by": grouped_by,
         },
     )
 
@@ -221,13 +278,16 @@ def incident_detail(request, id):
         for sub_cat in cat.get("onderwerpen")
     }
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
-    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
+    list_item_cache_key = f"incident_{incident.get('id')}_list_item"
     areas = incident_api_service.get_wijken(user_token)
 
     incident = {
         **incident,
         **{
-            "spoed": cache.get(spoed_cache_key, False),
+            "spoed": cache.get(list_item_cache_key, {}).get("spoed", False),
+            "werkdagenSindsRegistratie": cache.get(list_item_cache_key, {}).get(
+                "werkdagenSindsRegistratie"
+            ),
         },
     }
 
@@ -249,11 +309,14 @@ def incident_detail(request, id):
 def incident_list_item(request, id):
     user_token = request.user.token
     incident = incident_api_service.get_detail(id, user_token)
-    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
+    list_item_cache_key = f"incident_{incident.get('id')}_list_item"
     incident = {
         **incident,
         **{
-            "spoed": cache.get(spoed_cache_key, False),
+            "spoed": cache.get(list_item_cache_key, {}).get("spoed", False),
+            "werkdagenSindsRegistratie": cache.get(list_item_cache_key, {}).get(
+                "werkdagenSindsRegistratie"
+            ),
         },
     }
 
