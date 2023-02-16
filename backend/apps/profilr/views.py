@@ -1,5 +1,6 @@
 import copy
 from collections import Counter
+from datetime import datetime
 
 from apps.auth.backends import authenticate
 from apps.auth.decorators import login_required
@@ -14,7 +15,6 @@ from django.urls import reverse
 from profilr_api_services import MSB_VALID_FILTERS
 
 PAGE_SIZE = 10
-# INCIDENT_LIST_ITEM_CACHE
 
 
 def http_404(request):
@@ -213,8 +213,11 @@ def incident_list(request):  # noqa
                     if incident.get("status", {}) not in groups:
                         groups.append(incident.get("status", {}))
                 elif sort_by == DAYS:
-                    if incident.get("werkdagenSindsRegistratie", {}) not in groups:
-                        groups.append(incident.get("werkdagenSindsRegistratie", {}))
+                    datum = datetime.strptime(
+                        incident.get("datumMelding"), "%Y-%m-%dT%H:%M:%S"
+                    ).strftime("%B %Y")
+                    if datum not in groups:
+                        groups.append(datum)
                 elif sort_by == SUBJECT:
                     if (
                         incident.get("onderwerp", {}).get("omschrijving", {})
@@ -250,7 +253,9 @@ def incident_list(request):  # noqa
                             group["items"].append(incident)
                     elif sort_by == DAYS:
                         if (
-                            incident.get("werkdagenSindsRegistratie", {})
+                            datetime.strptime(
+                                incident.get("datumMelding"), "%Y-%m-%dT%H:%M:%S"
+                            ).strftime("%B %Y")
                             == group["title"]
                         ):
                             group["items"].append(incident)
@@ -271,8 +276,8 @@ def incident_list(request):  # noqa
 
         # temp: spoed key only available in list items, set cache for it
         for i in incidents_sorted:
-            cache_key = f"incident_{i.get('id')}_list_item"
-            cache.set(cache_key, i, 60 * 60 * 24)
+            cache_key = f"incident_{i.get('id')}_spoed"
+            cache.set(cache_key, bool(i.get("spoed")), 60 * 60 * 24)
 
     return render(
         request,
@@ -304,15 +309,13 @@ def incident_detail(request, id):
         for sub_cat in cat.get("onderwerpen")
     }
     incident["groep"] = sub_cat_ids.get(incident.get("onderwerp", {}).get("id"))
-    list_item_cache_key = f"incident_{incident.get('id')}_list_item"
+    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
     areas = incident_api_service.get_wijken(user_token)
+
     incident = {
         **incident,
         **{
-            "spoed": cache.get(list_item_cache_key, {}).get("spoed", False),
-            "werkdagenSindsRegistratie": cache.get(list_item_cache_key, {}).get(
-                "werkdagenSindsRegistratie"
-            ),
+            "spoed": cache.get(spoed_cache_key, False),
         },
     }
 
@@ -334,14 +337,11 @@ def incident_detail(request, id):
 def incident_list_item(request, id):
     user_token = request.user.token
     incident = incident_api_service.get_detail(id, user_token)
-    list_item_cache_key = f"incident_{incident.get('id')}_list_item"
+    spoed_cache_key = f"incident_{incident.get('id')}_spoed"
     incident = {
         **incident,
         **{
-            "spoed": cache.get(list_item_cache_key, {}).get("spoed", False),
-            "werkdagenSindsRegistratie": cache.get(list_item_cache_key, {}).get(
-                "werkdagenSindsRegistratie"
-            ),
+            "spoed": cache.get(spoed_cache_key, False),
         },
     }
 

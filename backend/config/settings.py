@@ -18,7 +18,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 USE_TZ = True
 TIME_ZONE = "Europe/Amsterdam"
 USE_L10N = True
+USE_I18N = True
 LANGUAGE_CODE = "nl-NL"
+LANGUAGES = [("nl", "Dutch")]
 
 DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
@@ -28,6 +30,7 @@ GIT_SHA = os.environ.get("GITHUB_SHA", "no_git_sha")
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
 PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
 ENABLE_PROFILR_API = os.environ.get("ENABLE_PROFILR_API", True) in TRUE_VALUES
+MSB_ENABLE_AFDELING_RELATIES_ENDPOINT = True
 
 INSTALLED_APPS = (
     "django.contrib.staticfiles",
@@ -49,13 +52,13 @@ LOGIN_URL = "/login/"
 MIDDLEWARE = (
     "profilr_api_services.middleware.ApiServiceExceptionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "csp.middleware.CSPMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "apps.auth.middleware.AuthenticationMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
