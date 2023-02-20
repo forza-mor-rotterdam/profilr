@@ -86,6 +86,16 @@ $form-search-indicator-position: left 10px center !default;
     background-position: $form-search-indicator-position;
   }
 }
+
+.form-control__with-helptext {
+    .form-control {
+        margin-bottom: 0.25rem;
+    }
+    .helptext {
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+}
 .form-select {
     background-image: url("data:image/svg+xml, <svg width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 xmlns=%27http://www.w3.org/2000/svg%27> <path fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M15.75 9.75L12 4.5L8.25 9.75H15.75ZM15.75 14.25L12 19.5L8.25 14.25H15.75Z%27 fill=%27%2365757B%27/> </svg>");
     background-repeat: no-repeat;
@@ -287,6 +297,10 @@ textarea {
     .form--login & {
         > label {
             font-size: $h3-font-size;
+        }
+
+        &:last-child {
+            margin-top: 1rem;
         }
     }
 
