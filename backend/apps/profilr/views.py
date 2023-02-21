@@ -142,6 +142,7 @@ STREET_NAME = "streetName"
 DAYS = "days"
 SUBJECT = "subject"
 STATUS = "status"
+SPEED = "speed"
 
 sort_function = {
     STREET_NAME: (
@@ -158,6 +159,11 @@ sort_function = {
     ),
     SUBJECT: (lambda x: x.get("onderwerp", {}).get("omschrijving", ""), None, None),
     STATUS: (lambda x: x.get("status", ""), None, None),
+    SPEED: (
+        lambda x: x.get("spoed", False),
+        None,
+        lambda x: "Spoed" if x else "Geen spoed",
+    ),
 }
 
 sort_options = (
@@ -169,6 +175,7 @@ sort_options = (
     (f"-{SUBJECT}", "Onderwerp (z-a)"),
     (f"{STATUS}", "Status (a-z)"),
     (f"-{STATUS}", "Status (z-a)"),
+    (f"-{SPEED}", "Spoed"),
 )
 
 

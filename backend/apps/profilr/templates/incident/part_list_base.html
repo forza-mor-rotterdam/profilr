@@ -92,9 +92,6 @@
                     >
                     {% block list_template%}
 
-                    {% comment %} {% for incident in incidents %}
-                    <turbo-frame id="incident_list_item" src="{% url 'incident_list_item_part' incident.id %}"></turbo-frame>
-                    {% endfor %} {% endcomment %}
                     {% endblock %}
                 </ul>
             {% else %}
