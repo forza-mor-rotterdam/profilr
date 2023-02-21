@@ -249,6 +249,8 @@ def incident_list(request):
                 }
                 for g in groups
             ]
+            if sort_reverse:
+                groups.reverse()
 
         # temp: spoed key only available in list items, set cache for it
         for i in incidents_sorted:
