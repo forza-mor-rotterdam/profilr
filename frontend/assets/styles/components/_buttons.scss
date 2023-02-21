@@ -217,6 +217,18 @@ button[class="icon"] {
         color: $primary;
         font-weight: 300;
         font-size: inherit;
+
+        &.btn-with-icon {
+            display: flex;
+            align-items: center;
+            svg {
+                margin-right: 4px;
+                path {
+                    fill: currentColor;
+                }
+            }
+
+        }
     }
 
     
