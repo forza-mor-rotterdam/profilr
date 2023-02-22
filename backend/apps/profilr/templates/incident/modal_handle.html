@@ -26,8 +26,11 @@
 
         <fieldset>
             <div class="form-row">
-                <button class="btn-textlink top-right" type="button" data-action="incidentHandleForm#clearExternalMessage">Wissen</button>
-                {{ form.external_text.label_tag }}
+                <div class="display-flex">
+                    {{ form.external_text.label_tag }}
+                    <button class="btn-textlink" type="button" data-action="incidentHandleForm#clearExternalMessage">Wissen</button>
+                    
+                </div>
                 {{ form.external_text }}
                 {{ form.external_text.errors }}
                 <button class="btn-textlink" type="button" data-action="incidentHandleForm#defaultExternalMessage">Gebruik de standaard afhandeltekst</button>

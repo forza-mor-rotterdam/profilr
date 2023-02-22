@@ -80,7 +80,7 @@ $buttons: (
 button[class="icon"] {
   border: none;
   background-color: transparent;
-  font-size: 1.3rem;                                          // Result in icon size of 24x24px
+  font-size: 1.3em;                                          // Result in icon size of 24x24px
   margin-left: -6px;                                          // Result in 8px distance between icon and label
 }
 
@@ -94,9 +94,9 @@ button[class="icon"] {
     min-height: 48px;
     line-height: 24px;
     font-family: 'Bolder', sans-serif;
-    font-size: 1rem;
+    font-size: 1em;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5em;
 
 
     span {
@@ -229,6 +229,12 @@ button[class="icon"] {
             }
 
         }
+    }
+
+    &-togglemenu {
+        width: 56px;
+        height: 64px;
+        background: transparent;
     }
 
     

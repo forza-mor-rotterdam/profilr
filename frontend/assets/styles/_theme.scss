@@ -111,13 +111,13 @@ $link-hover-color: $primary-active;
 $font-family-sans-serif: "Bolder", Arial, sans-serif;
 
 $headings-font-weight: 700;     
-$h1-font-size: calc(1.375rem + 1.5vw);
-$h2-font-size: calc(1.275rem + 0.3vw);
-$h3-font-size: 1.25rem;
-$h4-font-size: 1.125rem;
-$h5-font-size: 1rem;
-$h6-font-size: 0.75rem;
-$font-size-base: 1rem;
+$h1-font-size: calc(1.375em + 1.5vw);
+$h2-font-size: calc(1.275em + 0.3vw);
+$h3-font-size: 1.25em;
+$h4-font-size: 1.125em;
+$h5-font-size: 1em;
+$h6-font-size: 0.75em;
+$font-size-base: 1em;
 
 $body-color: $gray-tint11;
 $text-muted: $gray-tint09;
