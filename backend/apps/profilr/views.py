@@ -74,6 +74,24 @@ def login(request):
 
 
 @login_required
+def ui_settings_handler(request):
+    UI_SETTINGS = "ui_settings"
+    profile = request.user.profile
+    request.user.token
+    if request.POST:
+        profile = {
+            UI_SETTINGS: {"fontsize": request.POST.get("fontsize", "fz-medium")},
+        }
+        profile = request.user.set_profile(profile)
+
+    return render(
+        request,
+        "snippets/form_pageheader.html",
+        {"profile": profile},
+    )
+
+
+@login_required
 def filter(request):
     FILTERS = "filters"
     AFDELINGEN = "afdelingen"
@@ -180,6 +198,17 @@ sort_options = (
 
 
 @login_required
+def incident_list_page(request):
+    profile = request.user.profile
+
+    return render(
+        request,
+        "incident/index.html",
+        {"profile": profile},
+    )
+
+
+@login_required
 def incident_list(request):
     profile = request.user.profile
     user_token = request.user.token
@@ -270,6 +299,7 @@ def incident_list(request):
             "sort_options": sort_options,
             "groups": groups,
             "grouped_by": grouped_by,
+            "profile": profile,
         },
     )
 

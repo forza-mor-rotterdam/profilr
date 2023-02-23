@@ -1,8 +1,53 @@
 {% load webpack_static from profilr_tags %}
-<header data-testid="pageHeader">
+<header
+    class="pageheader"
+    data-testid="pageHeader"
+    data-controller="pageHeader"
+>
+
     <div class="container">
         <a href="{% url 'root' %}">
             <img src="{% webpack_static 'images/assets/images/logo-organisatie.svg' %}" alt="Logo organisatie" />
         </a>
+        <button aria-expanded="false" class="btn btn-togglemenu" data-action="pageHeader#openModal">
+            <svg
+                fill="currentColor"
+                height="32"
+                viewBox="0 0 32 32"
+                width="32"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                aria-label="Open menu"
+            >
+                <g>
+                    <path d="m4 6h24v2h-24z"></path>
+                    <path d="m4 15h24v2h-24z"></path>
+                    <path d="m4 24h24v2h-24z"></path>
+                </g>
+            </svg>
+        </button>
+    </div>
+
+    <div class="modal">
+        <div class="modal-dialog modal-navigation">
+            <div class="modal-backdrop modal-exit" id="modal-backdrop" data-action="click->pageHeader#closeModal"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Sluit"
+                    data-action="pageHeader#closeModal">    
+                </button> 
+                    
+                </div>
+
+                <div class="modal-body">
+                    <turbo-frame id="form_pageheader">
+                        {% include "snippets/form_pageheader.html" %}
+                    </turbo-frame>        
+                </div>
+            </div>
+        </div>
     </div>
 </header>

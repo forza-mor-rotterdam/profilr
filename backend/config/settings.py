@@ -34,6 +34,7 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
 PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
 ENABLE_PROFILR_API = os.environ.get("ENABLE_PROFILR_API", True) in TRUE_VALUES
 MSB_ENABLE_AFDELING_RELATIES_ENDPOINT = True
+UI_SETTINGS = {"fontsizes": ["fz-medium", "fz-large", "fz-xlarge"]}
 
 INSTALLED_APPS = (
     "django.contrib.staticfiles",

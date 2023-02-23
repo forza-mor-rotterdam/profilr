@@ -1,8 +1,79 @@
-header {
+.pageheader {
     height: 64px;
-
+    padding: 0;
     img {
         max-height: 40px;
         margin: 10px 0 0 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .modal-navigation {
+        width: 100%;
+        max-width: 400px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0;
+
+        ul {
+            font-size: 1.25em;
+            
+            &:first-of-type {
+                margin: 0;
+            }
+
+            a {
+                line-height: 3.2rem;
+                text-decoration: none;
+                padding: $container-padding-x 0;
+                color: $gray-tint11;
+
+                &:active {
+                    color: $green-tint01;
+                }
+            }
+
+            &.list-nav--secondary {
+                border-top: 1px solid $gray-tint04;
+                font-size: 1rem;
+
+                .wrapper-horizontal {
+                    line-height: 1rem;
+                    padding: 1em 0;
+
+                    button,
+                    span {
+                        padding: 0 0.5rem;
+                        display: inline-block;
+                        box-sizing: content-box;
+                    }
+
+                    button {
+                        text-decoration: none;
+                        font-weight: 400;
+                        color: $gray-tint11;
+                        width: 30px;
+                    }
+
+                    svg {
+                        path {
+                            fill: $gray-tint06;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .modal-header {
+        height: 64px;
+    }
+    .modal-content {
+        height: 100%;
     }
 }

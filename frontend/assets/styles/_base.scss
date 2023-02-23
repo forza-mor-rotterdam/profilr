@@ -2,11 +2,11 @@ html,
 body {
     margin: 0;
     font-family: 'Bolder', sans-serif;
-    font-size: 16px;
+    font-size: 1em;
     color: $gray-tint11;
 
     @media (min-width: map-get($grid-breakpoints, sm)) {
-        font-size: 18px;
+        font-size: 1.125em;
     }
 }
 
@@ -26,6 +26,16 @@ header {
         max-width: map-get($container-max-widths , sm );
         margin: 0 auto;
     }
+}
+
+.fz-medium {
+    font-size: 1em !important;
+}
+.fz-large {
+    font-size: 1.5em !important;
+}
+.fz-xlarge {
+    font-size: 2em !important;
 }
 
 main,
@@ -62,7 +72,7 @@ h6, .h6 {
     svg {
         position: absolute;
         left: -25px;
-        top: 4px;
+        top: 0.25em;
 
         path {
             fill: $primary;
@@ -169,7 +179,7 @@ dl {
 
         dd,
         dt {
-            margin: 0 0 .5rem;
+            margin: 0 0 .5em;
         }
         dt {
             margin-right: .5rem;
@@ -181,7 +191,7 @@ dl {
 // SECTIONS
 section {
     &.section--seperated {
-        padding: 1rem 0 0.75rem;
+        padding: 1em 0 0.75em;
         border-bottom: 1px solid $gray-tint04;
 
         &__no-border-bottom {
@@ -253,4 +263,9 @@ section {
     padding: 0;
     border: 0;
     pointer-events: none;
+}
+
+.display-flex {
+    display: flex;
+    justify-content: space-between;
 }
