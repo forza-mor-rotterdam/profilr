@@ -36,6 +36,7 @@ export default class extends Controller {
     }
 
     onSubmitFilter() {
+        console.log('onSubmitFilter')
         const frame = document.getElementById('incidents_list');
         frame.reload()
         this.hideFilters()
@@ -64,6 +65,5 @@ export default class extends Controller {
             idArray.splice(index, 1); 
         }
         input.value = JSON.stringify(idArray)
-
     }
 }
