@@ -90,7 +90,7 @@
             </fieldset>
         </details>
         
-        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_departments"{% if "foldout_departments" in foldout_states %} open{% endif %}>
+        <details class="filter" data-action="filter--filter#toggleActiveFilter" id="foldout_departments"{% if "foldout_departments" in foldout_states or filters.afdelingen|length == 0 %} open{% endif %}>
             <summary>
                 <span>Afdelingen</span>
                 <span>({{ filters.afdelingen|length }})</span>
