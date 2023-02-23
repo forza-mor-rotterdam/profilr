@@ -3,8 +3,14 @@
 
 {% block title %}Inloggen{% endblock %}
 
+{% block pageheader %}
+    {% with hide_menu=True %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
 {% block body %}
-<turbo-frame id="base_frame">
+
+
 <h1>Inloggen</h1>
 {% if error %} {{ error }} {% endif %}
 <form action="{% url 'login' %}" method="post" data-testid="loginForm" data-controller="login" class="form--login">
@@ -56,5 +62,4 @@
     </div>
 </form>
 
-</turbo-frame>
 {% endblock %}
