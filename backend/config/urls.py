@@ -8,15 +8,16 @@ from apps.profilr.views import (
     incident_detail,
     incident_list,
     incident_list_item,
+    incident_list_page,
     incident_modal_handle,
     incident_mutation_lines,
     login,
     logout,
     root,
+    ui_settings_handler,
 )
 from django.conf import settings
 from django.urls import include, path
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path("", root, name="root"),
@@ -24,7 +25,7 @@ urlpatterns = [
     path("logout/", logout, name="logout"),
     path(
         "incident/",
-        TemplateView.as_view(template_name="incident/index.html"),
+        incident_list_page,
         name="incident_index",
     ),
     path("incident/<int:id>/", incident_detail, name="incident_detail"),
@@ -38,6 +39,7 @@ urlpatterns = [
     path("config/", config, name="config"),
     path("health/", include("health_check.urls")),
     # START partials
+    path("part/pageheader-form/", ui_settings_handler, name="pageheader_form_part"),
     path("part/filter/", filter, name="filter_part"),
     path("part/incident-list/", incident_list, name="incident_list_part"),
     path(

@@ -22,7 +22,7 @@
         </script>
         
     </head>
-    <body>
+    <body class="{% if profile.ui_settings.fontsize %}{{ profile.ui_settings.fontsize }}{% endif %}">
     {% if not PROFILE_API_AVAILABLE %}<span class="container">Je filter instellingen kunnen niet worden opgeslagen of opgehaald!</span>{% endif %}
     {% include 'snippets/pageheader.html' %}
         <main>

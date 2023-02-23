@@ -43,21 +43,28 @@
                 font-size: 1rem;
 
                 .wrapper-horizontal {
-                    display: flex;
-                    justify-content: flex-start;
                     line-height: 1rem;
                     padding: 1em 0;
 
                     button,
                     span {
-                        flex: 0 1;
-                        padding: .5em;
-                        margin-right: .5em;
-                        text-decoration: none;
-                        display: contents;
+                        padding: 0 0.5rem;
+                        display: inline-block;
+                        box-sizing: content-box;
                     }
 
+                    button {
+                        text-decoration: none;
+                        font-weight: 400;
+                        color: $gray-tint11;
+                        width: 30px;
+                    }
 
+                    svg {
+                        path {
+                            fill: $gray-tint06;
+                        }
+                    }
                 }
             }
         }
@@ -69,6 +76,4 @@
     .modal-content {
         height: 100%;
     }
-
-
 }

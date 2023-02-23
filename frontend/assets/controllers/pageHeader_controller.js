@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
 
     resetFontSize(e) {
-        document.body.classList.remove('fz-normal', 'fz-large', 'fz-xlarge')
+        document.body.classList.remove('fz-medium', 'fz-large', 'fz-xlarge')
     }
 
     setFontSize(e) {
