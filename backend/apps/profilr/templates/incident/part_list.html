@@ -1,0 +1,7 @@
+{% extends "incident/part_list_base.html" %}
+
+{% block list_template%}
+    {% for incident in incidents %}
+        <turbo-frame id="incident_list_item" src="{% url 'incident_list_item_part' incident.id %}"></turbo-frame>
+    {% endfor %}
+{% endblock %}

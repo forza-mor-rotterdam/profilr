@@ -1,6 +1,6 @@
 {% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
-<html>
+<html lang="nl">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +13,20 @@
         {% block javascripts %}
             {% render_bundle 'app' 'js' %}
         {% endblock %}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+            integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+            crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+            integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+            crossorigin="">
+        </script>
+        
     </head>
-    <body>
-    {% if not PROFILR_API_AVAILABLE %}<span>Je filter instellingen kunnen niet worden opgeslagen of opgehaald!</span>{% endif %}
-    {% include 'snippets/pageheader.html' %}
+    <body class="{% if profile.ui_settings.fontsize %}{{ profile.ui_settings.fontsize }}{% endif %}">
+    {% if not PROFILE_API_AVAILABLE %}<span class="container">Je filter instellingen kunnen niet worden opgeslagen of opgehaald!</span>{% endif %}
+    {% block pageheader %}
+        {% include 'snippets/pageheader.html' %}
+    {% endblock %}
         <main>
             <div class="container">
                 {% block body %}{% endblock %}

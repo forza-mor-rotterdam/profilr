@@ -1,6 +1,9 @@
+import locale
 import os
 import sys
 from os.path import join
+
+locale.setlocale(locale.LC_ALL, "nl_NL.UTF-8")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TRUE_VALUES = [True, "True", "true", "1"]
@@ -18,7 +21,9 @@ WSGI_APPLICATION = "config.wsgi.application"
 USE_TZ = True
 TIME_ZONE = "Europe/Amsterdam"
 USE_L10N = True
+USE_I18N = True
 LANGUAGE_CODE = "nl-NL"
+LANGUAGES = [("nl", "Dutch")]
 
 DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
@@ -28,6 +33,8 @@ GIT_SHA = os.environ.get("GITHUB_SHA", "no_git_sha")
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
 PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
 ENABLE_PROFILR_API = os.environ.get("ENABLE_PROFILR_API", True) in TRUE_VALUES
+MSB_ENABLE_AFDELING_RELATIES_ENDPOINT = True
+UI_SETTINGS = {"fontsizes": ["fz-medium", "fz-large", "fz-xlarge"]}
 
 INSTALLED_APPS = (
     "django.contrib.staticfiles",
@@ -38,7 +45,6 @@ INSTALLED_APPS = (
     "health_check",
     "health_check.cache",
     "health_check.storage",
-    "profilr_api_services",
     # Apps
     "apps.profilr",
     "apps.health",
@@ -50,13 +56,13 @@ LOGIN_URL = "/login/"
 MIDDLEWARE = (
     "profilr_api_services.middleware.ApiServiceExceptionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "csp.middleware.CSPMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "apps.auth.middleware.AuthenticationMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
@@ -128,7 +134,7 @@ CSP_SCRIPT_SRC = (
     else ("'self'", "'unsafe-eval'", "unpkg.com", PROJECT_URL)
 )
 CSP_IMG_SRC = (
-    ("'self'", "data:", "unpkg.com")
+    ("'self'", "data:", "unpkg.com", "tile.openstreetmap.org")
     if not DEBUG
     else ("'self'", "data:", "unpkg.com", "tile.openstreetmap.org", PROJECT_URL)
 )
@@ -169,15 +175,27 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
-MSB_API_URL = os.getenv("MSB_API_URL", "https://diensten.rotterdam.nl")
-PROFILR_API_URL = os.getenv("PROFILR_API_URL", "https://api.profilr.forzamor.nl")
-PROFILR_API_HEALTH_URL = f"{PROFILR_API_URL}/health/"
-
-MSB_ENABLE_MELDING_AFHANDELEN = (
-    os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
+MSB_API_URL = os.getenv("MSB_API_URL")
+INCIDENT_API_URL = os.getenv("INCIDENT_API_URL", f"{MSB_API_URL}/sbmob/api")
+INCIDENT_API_HEALTH_CHECK_URL = os.getenv(
+    "INCIDENT_API_HEALTH_CHECK_URL", f"{MSB_API_URL}/health"
+)
+INCIDENT_API_SERVICE = os.getenv(
+    "INCIDENT_API_SERVICE", "profilr_api_services.IncidentAPIService"
 )
 
-MSB_ENABLE_AFDELING_RELATIES_ENDPOINT = (
+PROFILR_API_URL = os.getenv("PROFILR_API_URL")
+PROFILE_API_URL = os.getenv("PROFILE_API_URL", f"{PROFILR_API_URL}/v1")
+PROFILE_API_HEALTH_CHECK_URL = os.getenv(
+    "PROFILE_API_HEALTH_CHECK_URL", f"{PROFILR_API_URL}/health/"
+)
+PROFILE_API_SERVICE = os.getenv(
+    "PROFILE_API_SERVICE", "profilr_api_services.ProfileAPIService"
+)
+
+ENABLE_MELDING_AFHANDELEN = os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
+
+ENABLE_AFDELING_RELATIES_ENDPOINT = (
     os.getenv("ENABLE_AFDELING_RELATIES_ENDPOINT", False) in TRUE_VALUES
 )
 

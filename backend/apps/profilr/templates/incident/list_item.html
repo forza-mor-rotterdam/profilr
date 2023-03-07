@@ -10,7 +10,8 @@
         class="list-item{% if form_submitted %} form-is-submitted{% endif %}{% if errors and warnings %} has-errors{% endif %}"
         data-controller="incident" 
         data-action="formHandleIsConnected->incident#formHandleIsConnectedHandler cancelHandle->incident#cancelHandleHandler"
-        data-incident-date-value="{{ incident.datumMelding }}">
+        data-incident-date-value="{{ incident.datumMelding }}"
+        data-incident-days-value="{{ incident.werkdagenSindsRegistratie }}">
         <button
             class="container__actions handle--no-success"
             data-id="{{ incident.id }}"
@@ -22,7 +23,7 @@
         </button>
         <div class="wrapper__swipe">
             <div class="container__flex">
-                <a href="/incident/{{ incident.id }}">
+                <a href="/incident/{{ incident.id }}" aria-label="Bekijk melding {{ incident.id }}">
                     <div class="container__image">
                         {% if incident.fotos %}
                         {% with incident.fotos|first as first_foto %}
@@ -32,26 +33,29 @@
                             <div class="background-image" style="background-image: url('{% webpack_static 'icons/assets/icons/noimage.svg' %}'); background-size: 40%;"></div>
                         {% endif %}
                     </div>
-                </a>
-                <div class="container__info">
-                    {# <a href="/incident/{{ incident.id }}/handle"> #}
-                        <div class="incident__header">
-                            <h2>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</h2>
-                            {% if incident.spoed %}<span class="icon icon--warning">{% endif %}</span>
-                        </div>
+                
+                    <div class="container__info">
+                        {# <a href="/incident/{{ incident.id }}/handle"> #}
+                            <div class="incident__header">
+                                <h2>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {% if incident.locatie.adres.huisnummer %}{{ incident.locatie.adres.huisnummer }}{%endif%}</h2>
+                                {% if incident.spoed %}<span class="icon icon--warning">{% endif %}</span>
+                            </div>
 
-                        <span class="incident__category">
-                            {{ incident.onderwerp.omschrijving }}
-                        </span>
-                        <div class="incident__moment">
-                            <span>{{ incident.status }}</span>
-                            <span data-incident-target="incidentDate">
-                                {{ incident.datumMelding|to_date|date:"d-M-Y" }} 
-                                {{ incident.datumMelding|to_date|date:"H:i" }}
+                            <span class="incident__category">
+                                {{ incident.onderwerp.omschrijving }}
                             </span>
-                        </div>
-                    {# </a> #}
-                </div>
+                            <div class="incident__moment">
+                                <span>{{ incident.status }}</span>
+                            </div>
+
+                            <div class="incident__moment">
+                                <span data-incident-target="incidentDate">
+                                    {{ incident.werkdagenSindsRegistratie|floatformat }} werkdagen
+                                </span>
+                            </div>
+                        {# </a> #}
+                    </div>
+                </a>
             </div>
         </div>
         <button
@@ -70,12 +74,17 @@
     <span>Afhandelen</span><br>
     <small data-address>{{ incident.locatie.adres.straatNaam|lower|capfirst }} {{ incident.locatie.adres.huisnummer }}</small>
 </h1>
-<button type="button" class="btn-close modal-exit" aria-label="Sluit"></button> 
+<button
+    type="button"
+    class="btn-close"
+    aria-label="Sluit"
+    data-action="incident#closeModal"
+></button> 
 {% endblock %}
 
 {% block modal_body %}
-        <turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-src="{% url 'incident_modal_handle_part' incident.id %}" src="{% url 'incident_modal_handle_part' incident.id %}" laoding="lazy">
-        </turbo-frame>
+    <turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-handled="handled" data-not-handled="not-handled" data-src="{% url 'incident_modal_handle_part' incident.id %}" src="{% url 'incident_modal_handle_part' incident.id %}" loading="lazy">
+    </turbo-frame>
 {% endblock %}
 
 {% block after_modal_content %}

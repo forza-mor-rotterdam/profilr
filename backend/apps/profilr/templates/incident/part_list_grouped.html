@@ -1,0 +1,16 @@
+{% extends "incident/part_list_base.html" %}
+
+{% block list_template%}
+
+    {% for group in groups %}
+        <details>
+            <summary>
+                <span>{{ group.title }}</span>
+                <span>({{ group.items|length }})</span>
+            </summary>
+        {% for incident in group.items %}
+        <turbo-frame id="incident_list_item" src="{% url 'incident_list_item_part' incident.id %}"></turbo-frame>
+        {% endfor %}
+        </details>
+    {% endfor %}
+{% endblock %}

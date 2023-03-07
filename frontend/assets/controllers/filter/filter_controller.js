@@ -2,17 +2,15 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    showFilters(e) {
+    showFilters() {
         document.body.classList.add('show-filters')
     }
 
-    hideFilters(e) {
+    hideFilters() {
         document.body.classList.remove('show-filters')
     }
 
     removeFilter(e) {
-        // e.preventDefault()
-        // document.body.classList.add('show-spinner')
         const input = document.querySelector(`[name="${e.params.description}"][value="${e.params.code}"]`);
         input.checked = false;
         document.getElementById('incidentFilterAllForm').requestSubmit()
@@ -38,6 +36,7 @@ export default class extends Controller {
     }
 
     onSubmitFilter() {
+        console.log('onSubmitFilter')
         const frame = document.getElementById('incidents_list');
         frame.reload()
         this.hideFilters()
@@ -49,5 +48,22 @@ export default class extends Controller {
         checkList.forEach(element => {
             element.checked = doCheck
         });
+    }
+
+    removeAllFilters(e) {
+        const checkedFilters = Array.from(document.getElementsByClassName(`btn-filter--active`));
+        checkedFilters.forEach(filter => {
+            const input = document.querySelector(`[name="${filter.getAttribute('data-filter--filter-description-param')}"][value="${filter.getAttribute('data-filter--filter-code-param')}"]`);
+            input.checked = false;
+        })
+        document.getElementById('foldout_active_filters').removeAttribute('open');
+        document.getElementById('incidentFilterAllForm').requestSubmit();
+        const input = document.querySelector(`[name=foldout_states]`);
+        let idArray = JSON.parse(input.value)
+        let index = idArray.indexOf('foldout_active_filters')
+        if (index > -1) {
+            idArray.splice(index, 1); 
+        }
+        input.value = JSON.stringify(idArray)
     }
 }

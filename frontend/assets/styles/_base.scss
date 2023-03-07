@@ -2,28 +2,45 @@ html,
 body {
     margin: 0;
     font-family: 'Bolder', sans-serif;
-    font-size: 16px;
+    font-size: 1em;
     color: $gray-tint11;
 
     @media (min-width: map-get($grid-breakpoints, sm)) {
-        font-size: 18px;
+        font-size: 1.125em;
     }
 }
 
 body {
     -webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-smoothing: antialiased;
 }
 
-main {
-    padding: 0 map-get($container-margin, md) 16px;
+body,
+main,
+header {
     margin: 0 auto;
 
     > .container {
+        display: block;
         max-width: map-get($container-max-widths , sm );
         margin: 0 auto;
     }
+}
+
+.fz-medium {
+    font-size: 1em !important;
+}
+.fz-large {
+    font-size: 1.5em !important;
+}
+.fz-xlarge {
+    font-size: 2em !important;
+}
+
+main,
+header {
+    padding: 0 map-get($container-margin, s) 16px;
 }
 
 // HEADINGS
@@ -49,19 +66,25 @@ h6, .h6 {
 
 @mixin has-icon {
     display: inline-block;
-        margin-left: 25px;
-        position: relative;
-        &:before {
-            content: '';
-            position: absolute;
-            left: -25px;
-            top: 4px;
+    margin-left: 25px;
+    position: relative;
+    
+    svg {
+        position: absolute;
+        left: -25px;
+        top: 0.25em;
+
+        path {
+            fill: $primary;
         }
+    }
 }
 
-a {
-    color: $green-tint01;
+a,
+.link {
+    color: $primary;
     text-decoration: underline;
+    cursor: pointer;
 
     &:hover,
     &:focus {
@@ -70,89 +93,57 @@ a {
 
     &.link--location {
         @include has-icon();
-        &:before {
-            content: url('../icons/pin.svg');
-        }
     }
 
     &.link--email {
         @include has-icon();
-        &:before {
-            content: url('../icons/email.svg');
-            top: 2px;
-        }
     }
     &.link--phone {
         @include has-icon();
-        &:before {
-            content: url('../icons/phone.svg');
-            top: 0;
-            left: -22px;
-        }
     }
 
     &.link--next {
         @include has-icon();
-        &:before {
-            content: url('../icons/arrow-right.svg');
-            top: 2px;
-            left: -18px;
+    }
+
+    &.link--back {
+        @include has-icon();
+        margin: 0 0 20px 20px;
+        > svg {
+            left: -20px;
+            path {
+                fill: $black;
+            }
         }
     }
 
     &.link--file {
         @include has-icon();
-        &:before {
-            content: url('../icons/file.svg');
-            top: 0;
-            left: -22px;
-        }
     }
 
     &.link--file-text {
         @include has-icon();
-        &:before {
-            content: url('../icons/file-text.svg');
-            top: 0;
-            left: -22px;
-        }
     }
     &.link--bin {
         @include has-icon();
-        &:before {
-            content: url('../icons/bin.svg');
-            top: 0;
-            left: -22px;
-        }
     }
 }
 
 button {
     &.link--next {
         @include has-icon();
-        &:before {
-            content: url('../icons/arrow-right.svg');
-            top: 2px;
-            left: -18px;
-        }
     }
 }
 
 p {
     &.text--person {
         @include has-icon();
-        &:before {
-            content: url('../icons/person.svg');
-            top: 2px;
-        }
     }
 
     &.text--close {
         @include has-icon();
-        &:before {
-            content: url('../icons/close.svg');
-            top: 2px;
-            left: -23px;
+        svg {
+            top: 6px;
         }
     }
 }
@@ -162,7 +153,7 @@ p {
 
     &--warning {
         &:before {
-            content: url('../icons/warning.svg');
+            content: url('../icons/badge-alert.svg');
             top: -1px;
         }
     }
@@ -188,7 +179,7 @@ dl {
 
         dd,
         dt {
-            margin: 0 0 .5rem;
+            margin: 0 0 .5em;
         }
         dt {
             margin-right: .5rem;
@@ -200,8 +191,30 @@ dl {
 // SECTIONS
 section {
     &.section--seperated {
-        padding: 1rem 0 0.75rem;
+        padding: 1em 0 0.75em;
         border-bottom: 1px solid $gray-tint04;
+
+        &__no-border-bottom {
+            border-bottom: 0;
+        }
+    }
+}
+
+// STICKY
+
+.has-sticky-footer {
+    padding-bottom: 130px;
+}
+.sticky {
+    position: fixed;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    left: 0;
+    z-index: 2000;
+    
+    &--bottom {
+        bottom: 0;
     }
 }
 
@@ -210,11 +223,32 @@ section {
     height: auto;
     overflow: hidden;
     
-
     &.hidden {
         height: 0;
         padding: 0;
         margin: 0;
+    }
+}
+
+.show-vertical {
+    max-height: 100%;
+    padding-top: 16px;
+    transition: all 0.25s ease-in;
+
+    &.container__sorting {
+        max-height: 100px;
+        overflow: hidden;
+    }
+}
+
+.hidden-vertical {
+    // display: none;
+    padding-top: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease-in;
+    &.container__sorting {
+        transition: all 0.25s ease-in;
     }
 }
 
@@ -229,4 +263,9 @@ section {
     padding: 0;
     border: 0;
     pointer-events: none;
+}
+
+.display-flex {
+    display: flex;
+    justify-content: space-between;
 }

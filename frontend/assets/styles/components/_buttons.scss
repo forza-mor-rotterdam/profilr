@@ -4,11 +4,11 @@ $buttons: (
     "background": $action,
     "border": $action,
     "color": $white,
-    "hover-background": $magenta-tint02,
-    "hover-border": $magenta-tint02,
+    "hover-background": $action-active,
+    "hover-border": $action-active,
     "hover-color": $white,
-    "active-background": $magenta-tint02,
-    "active-border": $magenta-tint02,
+    "active-background": $action-active,
+    "active-border": $action-active,
     "active-color": $white,
     "disabled-background": $gray-tint04,
     "disabled-border": $gray-tint04,
@@ -19,11 +19,11 @@ $buttons: (
     "background": $primary,
     "border": $primary,
     "color": $white,
-    "hover-background": $green-tint02,
-    "hover-border": $green-tint02,
+    "hover-background": $primary-active,
+    "hover-border": $primary-active,
     "hover-color": $white,
-    "active-background": $green-tint02,
-    "active-border": $green-tint02,
+    "active-background": $primary-active,
+    "active-border": $primary-active,
     "active-color": $white,
     "disabled-background": $gray-tint04,
     "disabled-border": $gray-tint04,
@@ -50,11 +50,11 @@ $buttons: (
     "border": $gray-tint08,
     "color": $gray-tint11,
     "hover-background": $white,
-    "hover-border": $green-tint01,
-    "hover-color": $green-tint01,
+    "hover-border": $primary,
+    "hover-color": $primary,
     "active-background": $white,
-    "active-border": $green-tint01,
-    "active-color": $green-tint01,
+    "active-border": $primary,
+    "active-color": $primary,
     "disabled-background": $gray-tint01,
     "disabled-border": $gray-tint05,
     "disabled-color": $gray-tint07
@@ -63,7 +63,7 @@ $buttons: (
     "text-decoration": underline,
     "background": $white,
     "border": $white,
-    "color": $green-tint01,
+    "color": $primary,
     "hover-background": $white,
     "hover-border": $white,
     "hover-color": $gray-tint11,
@@ -80,7 +80,7 @@ $buttons: (
 button[class="icon"] {
   border: none;
   background-color: transparent;
-  font-size: 1.3rem;                                          // Result in icon size of 24x24px
+  font-size: 1.3em;                                          // Result in icon size of 24x24px
   margin-left: -6px;                                          // Result in 8px distance between icon and label
 }
 
@@ -94,9 +94,9 @@ button[class="icon"] {
     min-height: 48px;
     line-height: 24px;
     font-family: 'Bolder', sans-serif;
-    font-size: 1rem;
+    font-size: 1em;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5em;
 
 
     span {
@@ -104,15 +104,15 @@ button[class="icon"] {
     }
 
     &-action {
-        background-color: $magenta-tint01;
-        border-color: $magenta-tint01;
+        background-color: $action;
+        border-color: $action;
         color: $white;
 
         &:hover,
         &:focus {
             color: $white;
-            background-color: $magenta-tint02;
-            border-color: $magenta-tint02;
+            background-color: $action-active;
+            border-color: $action-active;
         }
         &[disabled] {
             background-color: $gray-tint04;
@@ -127,9 +127,9 @@ button[class="icon"] {
 
         &:hover,
         &:focus {
-            color: $green-tint01;
+            color: $primary;
             background-color: $white;
-            border-color: $green-tint01;
+            border-color: $primary;
         }
 
     }
@@ -173,24 +173,36 @@ button[class="icon"] {
 
     &-filter {
         &--active {
-            border-color: $green-tint01;
+            border-color: $primary;
             color: $white;
             font-weight: 700;
             width: auto;
             min-height: 0;
             padding: 6px 40px 6px 8px;
             text-align: left;
-            background: $green-tint01 url("data:image/svg+xml,%3csvg width=%2732%27 height=%2732%27 viewBox=%270 0 32 32%27 fill=%27black%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M26.6077 6.80752L25.1935 5.39331L16.0011 14.5857L6.80875 5.39331L5.39453 6.80752L14.5869 15.9999L5.39453 25.1923L6.80874 26.6065L16.0011 17.4141L25.1935 26.6065L26.6077 25.1923L17.4153 15.9999L26.6077 6.80752Z%27 fill=%27white%27/%3e%3c/svg%3e") calc(100% - 8px)/28px auto no-repeat;
+            background: $primary url("data:image/svg+xml,%3csvg width=%2732%27 height=%2732%27 viewBox=%270 0 32 32%27 fill=%27black%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M26.6077 6.80752L25.1935 5.39331L16.0011 14.5857L6.80875 5.39331L5.39453 6.80752L14.5869 15.9999L5.39453 25.1923L6.80874 26.6065L16.0011 17.4141L25.1935 26.6065L26.6077 25.1923L17.4153 15.9999L26.6077 6.80752Z%27 fill=%27white%27/%3e%3c/svg%3e") calc(100% - 8px)/28px auto no-repeat;
 
             &:hover,
             &:active {
-                background-color: $green-tint02;
-                border-color: $green-tint02;
+                background-color: $primary-active;
+                border-color: $primary-active;
             }
 
             span {
                 padding: 0;
             }
+        }
+
+        &--small {
+            span {
+                padding: 0 2px;
+            }
+        }
+    }
+
+    &-navigate--small {
+        span {
+            padding: 0 16px;
         }
     }
 
@@ -202,9 +214,27 @@ button[class="icon"] {
         margin: 0;
         text-decoration: underline;
         max-width: none;
-        color: $green-tint01;
+        color: $primary;
         font-weight: 300;
         font-size: inherit;
+
+        &.btn-with-icon {
+            display: flex;
+            align-items: center;
+            svg {
+                margin-right: 4px;
+                path {
+                    fill: currentColor;
+                }
+            }
+
+        }
+    }
+
+    &-togglemenu {
+        width: 56px;
+        height: 64px;
+        background: transparent;
     }
 
     

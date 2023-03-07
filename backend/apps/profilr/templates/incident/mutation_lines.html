@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load to_date from profilr_tags %}
+{% block title %}{{ incident.locatie.adres.straatNaam }} {{ incident.locatie.adres.huisnummer }} mutatieregels{% endblock %}
+
+{% comment %} {% block initial_src_url %}{% url 'mutation_lines_part' id %}{% endblock %} {% endcomment %}
+{% block body %}
+<turbo-frame id="base_frame" data-turbo-action="advance">
+    <div>
+        <a href="{% url 'incident_detail' id %}" data-turbo-action="advance" class="link--back" aria-label="Terug">
+            <svg width="25" height="16" viewBox="0 0 25 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.15173 1.73256L7.73753 0.318359L1.44704 6.60885L1.4142 6.576L0 7.9902L1.4115 9.4017L1.37867 9.43453L7.67186 15.7277L9.08606 14.3135L3.7726 9.00006H24.0098V7.00006H3.88423L9.15173 1.73256Z" fill="#404B4F"/>
+            </svg>
+        </a>
+    </div>
+    <div>
+        <h1 class="h4">Mutatieregels</h1>
+    </div>
+    <div>
+        
+        <span>Melding {{ id }}</span>
+        <ul class="list__mutations">
+            {% for mutation in mutationLines %}
+                <li data-controller="datetime" data-datetime-date-object-value="{{ mutation.datum }}">
+                    <details>
+                        <summary>
+                            <strong>{{ mutation.datum|to_date|date:"d-m-Y" }} <span data-datetime-target="timeHoursMinutes"></span> - {{ mutation.gebruiker }}</strong>
+                            <p>{{ mutation.opmerking }}</p>
+                        </summary>
+                        {% if mutation.details|length > 0 %}
+                            <dl>
+                                <dt>Datum</dt>
+                                <dd>{{ mutation.datum|to_date|date:"d-m-Y" }} <span data-datetime-target="timeHoursMinutes2"></span></dd>
+                                {% for detail in mutation.details %}
+                                    {% if detail.key and detail.value %}
+                                        <dt>{{ detail.key }}</dt>
+                                        <dd>{{ detail.value }}</dd>
+                                    {% endif %}
+                                {% endfor %}
+                            </dl>
+                            
+                        {% endif %}
+                    </details>
+                </li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+</turbo-frame>
+{% endblock %}

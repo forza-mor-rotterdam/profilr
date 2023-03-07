@@ -88,9 +88,3 @@ class HandleForm(forms.Form):
         if self.data.get("handle_choice", False) == "3":
             self.fields["external_text"].widget = forms.HiddenInput()
             self.fields["external_text"].required = False
-
-
-class CreateIncidentForm(forms.Form):
-    foto = forms.FileField(
-        label="Foto",
-    )

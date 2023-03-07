@@ -3,21 +3,23 @@ import { Controller } from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ["button", "turboFormHandler", "incidentDate"]
     static values = {
-        date: String
+        date: String,
+        days: String
     }
 
     connect() {
         if(this.element.classList.contains('list-item')) {
 
-            const frame = this.element.closest("turbo-frame")
+            // const frame = this.element.closest("turbo-frame")
             this.initialTouchPos = null
             this.bindStart = this.handleGestureStart.bind(this);
             this.bindMove = this.handleGestureMove.bind(this);
             this.bindEnd = this.handleGestureEnd.bind(this);
-            this.addInitialListeners()
+            this.addInitialListeners();
+            this.isMoving = false;
 
-            if(!!this.dateValue) {
-                this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue)
+            if(!!this.dateValue && !!this.daysValue) {
+                this.incidentDateTarget.textContent = this.getNumberOfDays(this.dateValue, parseInt(this.daysValue))
             }
         }
     }
@@ -26,20 +28,15 @@ export default class extends Controller {
         this.removeAllListeners()
     }
 
-
-    getNumberOfDays(date) {
+    getNumberOfDays(date, days) {
         const date_incident = new Date(date);
-        const date_today = new Date();
-        const difference = date_today.getTime() - date_incident.getTime();
-        const totalDays = Math.floor(difference / (1000 * 3600 * 24));
         const dateTypes = ["Vandaag", "Gisteren", "Eergisteren", "dagen"]
-
-        if(totalDays < 3) {
+        if(days < 3) {
             const minutes = date_incident.getMinutes() < 10 ? `0${date_incident.getMinutes()}` : date_incident.getMinutes();
             const time = `${date_incident.getHours()}:${minutes}`
-            return `${dateTypes[totalDays]}, ${time}`;
+            return `${dateTypes[1]}, ${time}`;
         } else {
-            return `${totalDays} dagen`
+            return `${days} werkdagen`
         }
     }
 
@@ -133,6 +130,7 @@ export default class extends Controller {
     // Handle the start of gestures
     handleGestureStart(evt) {
         evt.preventDefault();
+        this.isMoving = false;
         if((evt.touches && evt.touches.length > 1)) {
             return;
         }
@@ -143,19 +141,24 @@ export default class extends Controller {
 
     // Handle end gestures
     handleGestureEnd(evt) {
+        
         evt.preventDefault();       
         if ((evt.touches && evt.touches.length > 0)) {
             return;
         }
     
-        this.removeAllListeners()
+        // this.removeAllListeners()
         this.updateSwipeRestPosition(evt);
     
         this.initialTouchPos = null;
+        if (this.isMoving !== true) {
+            this.isMoving = false;
+        }
     }
 
     handleGestureMove(evt) {
         evt.preventDefault();
+        this.isMoving = true;
         if (!this.initialTouchPos) {
           return;
         }
@@ -208,19 +211,18 @@ export default class extends Controller {
     }
 
     updateSwipeRestPosition(evt) {
-    
-        let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
-        if(differenceInX > -100 && differenceInX < 100) {
-            this.element.style.left = '0';
+        if(this.lastTouchPos) {
+            let differenceInX = this.initialTouchPos.x - this.lastTouchPos.x;
+            if(differenceInX > -100 && differenceInX < 100) {
+                this.element.style.left = '0';
+            }
+            this.initialTouchPos = this.getGesturePointFromEvent(evt);
         }
-    
-        this.initialTouchPos = this.getGesturePointFromEvent(evt);
     }
 
     closeModal() {
         const modal = this.element.querySelector('.modal');
         const modalBackdrop = this.element.querySelector('.modal-backdrop');
-        
         modal.classList.remove('show');
         modalBackdrop.classList.remove('show');
         document.body.classList.remove('show-modal');
@@ -237,7 +239,7 @@ export default class extends Controller {
             return
         }
 
-        this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "/handled": "/not-handled"))
+        this.turboFormHandlerTarget.setAttribute("src", this.turboFormHandlerTarget.dataset.src + (isFinished ? "handled/": "not-handled/"))
 
         this.removeAllListeners()
         const modalHeader = this.element.querySelector('.modal-header h1 span');
@@ -248,14 +250,16 @@ export default class extends Controller {
         modal.classList.add('show');
         modalBackdrop.classList.add('show');
         document.body.classList.add('show-modal');
+
+        // TODO only used for modal backdrop, try to get rid of it
         const exits = modal.querySelectorAll('.modal-exit');
-        
         exits.forEach((exit) => {
             exit.addEventListener('click', (event) => {
                 event.preventDefault();
                 this.closeModal()
             });
         });
+        
         setTimeout(function (){
             this.resetIncidentSwipe()
         }.bind(this), 1000)

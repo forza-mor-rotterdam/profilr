@@ -71,11 +71,11 @@ fieldset {
   }
 }
 
-$form-search-indicator: url("data:image/svg+xml,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' clip-rule='evenodd' d='M19.5005 9.75C19.5005 6.825 17.1755 4.5 14.2505 4.5C11.3255 4.5 9.00046 6.825 9.00046 9.75C9.00046 12.675 11.3255 15 14.2505 15C17.1755 15 19.5005 12.675 19.5005 9.75ZM7.50046 9.75C7.50046 6 10.5005 3 14.2505 3C18.0005 3 21.0005 6 21.0005 9.75C21.0005 13.5 18.0005 16.5 14.2505 16.5C12.6478 16.5 11.1822 15.9521 10.0292 15.0319L4.25792 20.8031L3.19727 19.7425L8.96853 13.9712C8.04835 12.8182 7.50046 11.3526 7.50046 9.75Z' fill='#{$gray-800}'/> </svg>");
+$form-search-indicator: url("data:image/svg+xml,<svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' clip-rule='evenodd' d='M19.5005 9.75C19.5005 6.825 17.1755 4.5 14.2505 4.5C11.3255 4.5 9.00046 6.825 9.00046 9.75C9.00046 12.675 11.3255 15 14.2505 15C17.1755 15 19.5005 12.675 19.5005 9.75ZM7.50046 9.75C7.50046 6 10.5005 3 14.2505 3C18.0005 3 21.0005 6 21.0005 9.75C21.0005 13.5 18.0005 16.5 14.2505 16.5C12.6478 16.5 11.1822 15.9521 10.0292 15.0319L4.25792 20.8031L3.19727 19.7425L8.96853 13.9712C8.04835 12.8182 7.50046 11.3526 7.50046 9.75Z' fill='#{$gray-tint09}'/> </svg>");
 $form-search-indicator-position: left 10px center !default;
 .form-control {
     padding: 8px 16px;
-    font-size: 1rem;
+    font-size: 1em;
     font-weight: 400;
     background-color: #fff;
     border: 1px solid #7C8B90;
@@ -86,12 +86,24 @@ $form-search-indicator-position: left 10px center !default;
     background-position: $form-search-indicator-position;
   }
 }
+
+.form-control__with-helptext {
+    .form-control {
+        margin-bottom: 0.25em;
+    }
+    .helptext {
+        display: inline-block;
+        margin-bottom: 1em;
+    }
+}
 .form-select {
     background-image: url("data:image/svg+xml, <svg width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 xmlns=%27http://www.w3.org/2000/svg%27> <path fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M15.75 9.75L12 4.5L8.25 9.75H15.75ZM15.75 14.25L12 19.5L8.25 14.25H15.75Z%27 fill=%27%2365757B%27/> </svg>");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 24px 24px;
-    padding-right: 32px;
+    padding: 8px 34px 8px 16px;
+    font-size: 1em;
+    color: $gray-tint11;
   &.search {
     background-image: escape-svg($form-search-indicator), escape-svg($form-select-indicator) !important;
     background-position: $form-search-indicator-position, $form-select-bg-position;
@@ -107,7 +119,7 @@ textarea {
 
 .form-check {
     display: flex;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.75em;
     margin-left: -0.2rem;
 
     input {
@@ -128,8 +140,8 @@ textarea {
         border-radius: 0;
 
         &:checked[type="checkbox"]{
-            background-color: $green-tint01;
-            border-color: $green-tint01;
+            background-color: $primary;
+            border-color: $primary;
             background-image: url('data:image/svg+xml, %3csvg width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath fill-rule=%27evenodd%27 clip-rule=%27evenodd%27 d=%27M9.86006 16.144L19.406 6.59806L20.4667 7.65873L9.86006 18.2653L3.49609 11.9014L4.55675 10.8407L9.86006 16.144Z%27 fill=%27white%27/%3e%3c/svg%3e');
         }
     
@@ -139,8 +151,8 @@ textarea {
         }
         
         &:checked[type="radio"]{
-            background-color: $green-tint01;
-            border-color: $green-tint01;
+            background-color: $primary;
+            border-color: $primary;
             background-image: url('data:image/svg+xml, %3csvg width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z%27 fill=%27none%27/%3e%3crect x=%278%27 y=%278%27 width=%278%27 height=%278%27 rx=%274%27 fill=%27white%27/%3e%3c/svg%3e');
         }
 
@@ -172,21 +184,90 @@ textarea {
         }
         &:hover,
         &:focus {
-            border-color: $green-tint01;
-            box-shadow: 0 0 0 1px $green-tint01;
+            border-color: $primary;
+            box-shadow: 0 0 0 1px $primary;
             opacity: 1;
         }
 
         ~ .form-check-label {
-            line-height: 1.5rem;
+            line-height: 1.5em;
             font-weight: 400;
         }
 }
 
+// start switch
+.form-switch {
+    position: relative;
+    display: inline-block;
+    display: flex;
+    margin: 0;
+    
+    .form-switch-label {
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Hide default HTML checkbox */
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    /* The slider */
+    .container__slider {
+        display: inline-block;
+        position: relative;
+        width: 44px;
+        height: 24px;
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $gray-tint08;
+        -webkit-transition: .4s;
+        transition: .4s;
+        flex: 1;
+    }
+    
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+  
+    input:checked + .container__slider .slider {
+        background-color: $green-tint01;
+    }
+  
+    input:focus + .slider {
+        box-shadow: 0 0 1px $green-tint01;
+    }
+  
+    input:checked + .container__slider .slider:before {
+        -webkit-transform: translateX(20px);
+        -ms-transform: translateX(20px);
+        transform: translateX(20px);
+    }
+}
+  
+// end switch
+
+
 .list--form-check-input {
     @include list-clean();
     li {
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.25em;
     }
     input {
         @include form-check-input();
@@ -217,6 +298,10 @@ textarea {
         > label {
             font-size: $h3-font-size;
         }
+
+        &:last-child {
+            margin-top: 1em;
+        }
     }
 
     &.container__button {
@@ -241,6 +326,10 @@ textarea {
         position: absolute;
         right: 20px;
         top: 25px;
+        margin-left: -30px;
+        cursor: pointer;
+        width: 20px;
+        height: 14px;
 
         &-active {
             opacity: 0.5;
@@ -255,16 +344,7 @@ textarea {
 }
 
 .form--incident-handle {
-    .btn-textlink {
-        &.top-right {
-            position: absolute;
-            top: 5px;
-            right: 0;
-        }
-    }
-
     textarea + .btn-textlink {
         transform: translateY(-20px);
     }
-
 }

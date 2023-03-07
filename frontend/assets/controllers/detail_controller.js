@@ -5,11 +5,17 @@ export default class extends Controller {
         incidentX: String,
         incidentY: String,
         areaList: String,
-        currentDistrict: String
+        currentDistrict: String,
+        incidentObject: Object
     }
-    static targets = ['area', 'district', 'selectedImage', 'thumbList']
+    static targets = ['area', 'district', 'selectedImage', 'thumbList', 'imageSliderContainer']
     
+    Mapping = {
+        'fotos': 'media',
+    };
+	
     initialize() {
+        
         if(this.currentDistrictValue) {
             let currentArea = JSON.parse(this.areaListValue).find(area => area.buurten.some((district) => district.code === this.currentDistrictValue))
             this.areaTarget.textContent = currentArea.omschrijving
@@ -33,23 +39,43 @@ export default class extends Controller {
         }).setView(incidentCoordinates, 16);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         const marker = L.marker(incidentCoordinates).addTo(map);
+    }
 
-        const onTwoFingerDrag = (e) => {
-            if (e.type === 'touchstart' && e.touches.length === 1) {
-                e.currentTarget.classList.add('swiping')
+    mappingFunction(object) {
+        const result = {};
+        for (const key in this.Mapping) {
+			const newKey = this.Mapping[key];
+            if (object.hasOwnProperty(key)) {
+                result[newKey] = object[key];
             } else {
-                e.currentTarget.classList.remove('swiping')
+                result[newKey] = null;
             }
         }
-        document.getElementById('incidentMap').addEventListener('touchstart', onTwoFingerDrag);
-        document.getElementById('incidentMap').addEventListener('touchend', onTwoFingerDrag);
+        return result;
+    }
+
+
+    onTwoFingerDrag (e) {
+        if (e.type === 'touchstart' && e.touches.length === 1) {
+            e.currentTarget.classList.add('swiping')
+        } else {
+            e.currentTarget.classList.remove('swiping')
+        }
+    }
+
+    onScrollSlider(e) {
+        this.highlightThumb(Math.floor(this.imageSliderContainerTarget.scrollLeft / this.imageSliderContainerTarget.offsetWidth))
     }
 
     selectImage(e) {
-        const imgSrc = e.params.imageSource;
-        this.selectedImageTarget.src = imgSrc;
+        this.imageSliderContainerTarget.scrollTo({left: (Number(e.params.imageIndex) - 1) * this.imageSliderContainerTarget.offsetWidth, top: 0})
         this.deselectThumbs(e.target.closest('ul'));
-        e.target.closest('li').classList.add('selected')
+        e.target.closest('li').classList.add('selected');
+    }
+
+    highlightThumb(index) {
+        this.deselectThumbs(this.thumbListTarget)
+        this.thumbListTarget.getElementsByTagName('li')[index].classList.add('selected')
     }
 
     deselectThumbs(list) {
