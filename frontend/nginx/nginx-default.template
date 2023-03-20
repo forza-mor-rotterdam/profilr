@@ -12,7 +12,11 @@ server {
 
     location / {
         proxy_pass  ${FASTCGI_PASS};
-        include     /etc/nginx/uwsgi_params;
+        proxy_buffering off;
+        proxy_buffer_size 16k;
+        proxy_busy_buffers_size 24k;
+        proxy_buffers 64 4k;
+        proxy_read_timeout 60s
     }
 
     location /build {
