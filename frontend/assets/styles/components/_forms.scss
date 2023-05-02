@@ -348,3 +348,15 @@ textarea {
         transform: translateY(-20px);
     }
 }
+
+.sticky {
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .btn {
+            flex: 1;
+        }
+    }
+}
