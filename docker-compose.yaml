@@ -3,7 +3,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8000:9000"
+      - "8088:9000"
     env_file:
       - .env.local
     volumes:
@@ -19,7 +19,7 @@ services:
     networks:
       - profilr_network
     ports:
-      - "6379:6379"
+      - "6380:6379"
 
 networks:
   profilr_network:
