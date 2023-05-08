@@ -8,8 +8,8 @@ locale.setlocale(locale.LC_ALL, "nl_NL.UTF-8")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TRUE_VALUES = [True, "True", "true", "1"]
 
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY", os.environ.get("SECRET_KEY", os.environ.get("APP_SECRET"))
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY", os.getenv("SECRET_KEY", os.getenv("APP_SECRET"))
 )
 
 ENVIRONMENT = os.getenv("ENVIRONMENT")
@@ -28,10 +28,10 @@ LANGUAGES = [("nl", "Dutch")]
 DEFAULT_ALLOWED_HOSTS = ".forzamor.nl,localhost,127.0.0.1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", DEFAULT_ALLOWED_HOSTS).split(",")
 
-GIT_SHA = os.environ.get("GITHUB_SHA", "no_git_sha")
+GIT_SHA = os.getenv("GITHUB_SHA", "no_git_sha")
 
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://profilr.forzamor.nl")
-PROJECT_URL = os.environ.get("PROJECT_URL", FRONTEND_URL)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://profilr.forzamor.nl")
+PROJECT_URL = os.getenv("PROJECT_URL", FRONTEND_URL)
 
 
 MSB_API_URL = os.getenv("MSB_API_URL")
@@ -56,7 +56,7 @@ PROFILE_API_SERVICE = os.getenv(
     "PROFILE_API_SERVICE", "profilr_api_services.ProfileAPIService"
 )
 
-ENABLE_PROFILR_API = os.environ.get("ENABLE_PROFILR_API", True) in TRUE_VALUES
+ENABLE_PROFILR_API = os.getenv("ENABLE_PROFILR_API", True) in TRUE_VALUES
 
 ENABLE_MELDING_AFHANDELEN = os.getenv("ENABLE_MELDING_AFHANDELEN", False) in TRUE_VALUES
 ENABLE_AFDELING_RELATIES_ENDPOINT = (
@@ -91,10 +91,10 @@ MIDDLEWARE = (
     "django_permissions_policy.PermissionsPolicyMiddleware",
     "csp.middleware.CSPMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "apps.auth.middleware.AuthenticationMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "apps.auth.middleware.AuthenticationMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 
