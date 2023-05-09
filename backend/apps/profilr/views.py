@@ -9,6 +9,7 @@ from apps.profilr.utils import get_filter_options
 from apps.services import incident_api_service
 from django.conf import settings
 from django.core.cache import cache
+from django.core.paginator import Paginator
 from django.http import FileResponse, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -286,6 +287,12 @@ def incident_list(request):
             cache_key = f"incident_{i.get('id')}_list_item"
             cache.set(cache_key, i, 60 * 60 * 24)
 
+    paginator = Paginator(incidents_sorted, 20)
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    incidents_sorted = page_obj.object_list
+
     return render(
         request,
         "incident/part_list.html"
@@ -300,6 +307,7 @@ def incident_list(request):
             "groups": groups,
             "grouped_by": grouped_by,
             "profile": profile,
+            "page_obj": page_obj,
         },
     )
 

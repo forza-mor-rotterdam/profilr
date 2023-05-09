@@ -269,3 +269,13 @@ section {
     display: flex;
     justify-content: space-between;
 }
+
+.wrapper-horizontal {
+    ul {
+        display: flex;
+        margin: 0;
+    }
+    li {
+        margin-right: $alert-padding-x;
+    }
+}

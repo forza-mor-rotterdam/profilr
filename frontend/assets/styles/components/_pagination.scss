@@ -1,0 +1,116 @@
+.container__pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1rem 0;
+
+    .pagination {
+        display: flex;
+
+        button {
+            border: 0;
+            outline: none;
+            width: 32px;
+            height: 32px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:hover {
+                color: $green-tint01;
+                background-color: #E0EEE2;
+            }
+
+            &.btn--next {
+
+                path{
+                    fill: $gray-tint11;
+                }
+            }
+            &.btn--previous {
+                transform: rotate(180deg);
+                svg{
+                    fill: $gray-tint11;
+                }
+            }
+        }
+        span {
+            color: $green-tint01;
+            background-color: #E0EEE2;
+        }
+    }
+
+    .wrapper-horizontal {
+        ul {
+
+            li {
+                margin-right: 0;
+                width: 32px;
+                height: 32px;
+                text-align: center;
+                line-height: 32px;
+                position: relative;
+
+                label, span, a {
+                    font-weight: 400;
+                    font-size: 16px;
+                    display: block;
+                    width: 32px;
+                }
+
+                input {
+                    width: 0;
+                    height: 0;
+                    position: absolute;
+                    border: 0;
+                    box-shadow: none;
+
+                    &::before {
+                        content: "";
+                        display: block;
+                        position: absolute;
+                        width: 32px;
+                        height: 32px;
+                        background-color: white;
+                        z-index: -1;
+                        left: 0;
+                        top: -3px;
+                    }
+                    &:hover,
+                    &:checked {
+                        border: 0;
+                        box-shadow: none;
+                        &::before {
+                            color: $green-tint01;
+                            background-color: #E0EEE2;
+                        }
+                    }
+                }
+                span,
+                a {
+                    text-decoration: none;
+                    color: $gray-tint11;
+                    &.btn--next {
+
+                        path{
+                            fill: $gray-tint11;
+                        }
+                    }
+                    &.btn--previous {
+                        transform: rotate(180deg);
+                        svg{
+                            fill: $gray-tint11;
+                        }
+                    }
+                }
+                span,
+                a:hover {
+                    border: 0;
+                    box-shadow: none;
+                    color: $green-tint01;
+                    background-color: #E0EEE2;
+                }
+
+            }
+        }
+    }
+}
