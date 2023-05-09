@@ -1,0 +1,49 @@
+    <div class="container__pagination">
+        <div class="pagination">
+            <div class="form-row s12  ">
+                <div class="wrapper-horizontal">
+                    <ul class="list--form-check-input">
+                        {% if page_obj.has_previous %}
+                        <li>
+                            <a href="{% url 'incident_list_part' %}?page={{page_obj.previous_page_number}}" class="btn--previous">
+                                <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99275 6.99995L0.689453 1.69665L1.75011 0.635986L8.11407 6.99995L1.75011 13.3639L0.689453 12.3032L5.99275 6.99995Z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% for p in page_obj.paginator.page_range %}
+                        {% if p == 1 and page_obj.number >= 3 %}
+                        <li><a href="{% url 'incident_list_part' %}?page={{p}}" >{{p}}</a></li>
+                        {% if page_obj.number >= 4 %}
+                        <li>...</li>
+                        {% endif %}
+                        {% elif p <= page_obj.number|add:"1" and p >= page_obj.number|add:"-1" %}
+                        <li>
+                            {% if p ==  page_obj.number %}
+                                <span>{{ p }}</span>
+                            {% else %}
+                                <a href="{% url 'incident_list_part' %}?page={{p}}" >{{p}}</a>
+                            {% endif %}
+                        </li>
+                        {% elif p == page_obj.paginator.num_pages %}
+                        {% if page_obj.number <= page_obj.paginator.num_pages|add:"-3" %}
+                        <li>...</li>
+                        {% endif %}
+                        <li><a href="{% url 'incident_list_part' %}?page={{p}}" >{{p}}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                        <li>
+                            <a href="{% url 'incident_list_part' %}?page={{page_obj.next_page_number}}" class="btn--next">
+                                <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99275 6.99995L0.689453 1.69665L1.75011 0.635986L8.11407 6.99995L1.75011 13.3639L0.689453 12.3032L5.99275 6.99995Z"></path>
+                                </svg>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
