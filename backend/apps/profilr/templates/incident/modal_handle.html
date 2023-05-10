@@ -2,7 +2,7 @@
 {% load to_date from profilr_tags %}
 {% load json_encode from profilr_tags %}
 
-<turbo-frame id="incident_modal_handle_{{ incident.id }}">
+<turbo-frame id="incident_modal_handle_{{ incident.id }}" data-incident-target="turboFormHandler" data-handled="handled" data-not-handled="not-handled" data-src="{% url 'incident_modal_handle_part' incident.id %}">
 <div class="container__form" 
     data-controller="incidentHandleForm"
     data-incidentHandleForm-parent-context-value =  "{{ parent_context|json_encode }}"

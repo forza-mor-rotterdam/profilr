@@ -9,7 +9,7 @@
                 <span>({{ group.items|length }})</span>
             </summary>
         {% for incident in group.items %}
-        <turbo-frame id="incident_list_item" src="{% url 'incident_list_item_part' incident.id %}"></turbo-frame>
+        <turbo-frame id="incident_list_item" src="{% url 'incident_list_item_part' incident.id %}"  loading="lazy"></turbo-frame>
         {% endfor %}
         </details>
     {% endfor %}
